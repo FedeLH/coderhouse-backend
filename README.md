@@ -1,5 +1,8 @@
 # coderhouse-backend
-Este repositorio contendrá los entregables correspondientes al curso y poryecto final del mismo.
+Este repositorio contendrá los entregables y proyecto final correspondientes al curso de "Programación-Backend" de Coderhouse comisión #39730 del alumno "Federico Hanson".
 
-Para ejecutar el entregable correspondiente se debe contar con node instalado y correr el comando: node <file_name>.js
+Precondición:
+-Tener instalado node
 
+Para ejecutar el entregable correspondiente se debe contar con node instalado y correr el comando: 
+  node <file_name>.js
