@@ -1,2 +1,5 @@
 # coderhouse-backend
-This is a repository of a Coderhouse backend course in which a e-commerce is created
+Este repositorio contendrá los entregables correspondientes al curso y poryecto final del mismo.
+
+Para ejecutar el entregable correspondiente se debe contar con node instalado y correr el comando: node <file_name>.js
+
