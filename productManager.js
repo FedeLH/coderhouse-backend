@@ -1,17 +1,3 @@
-let productA = {
-    title: "product prueba",
-    description: "Este es un producto prueba",
-    price: 200,
-    thumbnail: "Sin imagen",
-    code:"abc124",
-    stock: 25
-}
-
-let productB = {
-    description: "Aumento el precio porque mejoramos su calidad",
-    price: 250
-}
-
 const fs = require('fs')
 
 class ProductManager {
@@ -31,7 +17,7 @@ class ProductManager {
             fs.writeFileSync(this.#path,'')
         } else {
             let resultado = fs.readFileSync(this.#path,'utf-8')
-            if (resultado.length !== 0) {
+            if (resultado.length !== 0 && resultado !== '[]') {
                 products = JSON.parse(resultado)
                 let lastElement = products[products.length-1]
                 contador = lastElement.id + 1
@@ -40,9 +26,9 @@ class ProductManager {
         }
         return [products,contador]
     }
-
-    addProduct = (product) => {
-
+    
+    addProduct = product => {
+        
         const keysValidator = ["title","description","price","thumbnail","code","stock"]
         for (let i = 0; i < keysValidator.length; i++) {
             const key = keysValidator[i];
@@ -60,9 +46,9 @@ class ProductManager {
             return console.log("✔️  Product add succesfully.")
         }
     }
-
+    
     getProducts = _ => this.#products
-
+    
     getProductById = id => {
         const array = this.#products
         if (array.length === 0) {return console.error("❌ Not found")}
@@ -76,7 +62,7 @@ class ProductManager {
             }
         }
     }
-
+    
     updateProduct = (id,changes) => {
         let array = this.#products
         let array2 = Object.keys(changes)
@@ -95,16 +81,16 @@ class ProductManager {
         } else {
             return console.error("❌ This product id not exists")                
         }
-
+        
     }
-
+    
     deleteProduct = id => {
         let array = this.#products
         if(array.length !== 0 && array.some(element => element.id === id)) {
             for (let i = 0; i < array.length; i++) {
                 const element = array[i];
                 if(element.id === id) {
-                   array.splice(i,1)
+                    array.splice(i,1)
                 }
             }
             fs.writeFileSync(this.#path,`${JSON.stringify(array,'\n','\t')}`)
@@ -114,6 +100,24 @@ class ProductManager {
         }
     }
 }
+
+//Se definen productos para probar la solución
+
+let productA = {
+    title: "product prueba",
+    description: "Este es un producto prueba",
+    price: 200,
+    thumbnail: "Sin imagen",
+    code:"abc124",
+    stock: 25
+}
+
+let productB = {
+    description: "Aumento el precio porque mejoramos su calidad",
+    price: 250
+}
+
+//Se ejecutan las pruebas
 
 //Se crea una instancia de la clase "ProductManager"
 
