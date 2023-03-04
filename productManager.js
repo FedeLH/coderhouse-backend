@@ -42,7 +42,7 @@ class ProductManager {
         } else {
             let newProduct = {id: this.#contador, ...product}
             this.#products.push(newProduct)
-            fs.writeFileSync(this.#path,`${JSON.stringify(this.#products,'\n','\t')}`)
+            fs.writeFileSync(this.#path,`${JSON.stringify(this.#products,null,2)}`)
             return console.log("✔️  Product add succesfully.")
         }
     }
@@ -76,7 +76,7 @@ class ProductManager {
                     }
                 }
             }
-            fs.writeFileSync(this.#path,`${JSON.stringify(array,'\n','\t')}`)
+            fs.writeFileSync(this.#path,`${JSON.stringify(array,null,2)}`)
             return console.log("✔️  Product update succesfully.")
         } else {
             return console.error("❌ This product id not exists")                
@@ -93,7 +93,7 @@ class ProductManager {
                     array.splice(i,1)
                 }
             }
-            fs.writeFileSync(this.#path,`${JSON.stringify(array,'\n','\t')}`)
+            fs.writeFileSync(this.#path,`${JSON.stringify(array,null,2)}`)
             return console.log("✔️  Product deleted succesfully.")
         } else {
             return console.error("❌ This product id not exists")                
