@@ -1,103 +1,118 @@
 const fs = require('fs')
 
 class ProductManager {
-    #contador
-    #products
+
     #path
     constructor(path) {
         this.#path = path
-        this.#products = this.#setVariables()[0]
-        this.#contador = this.#setVariables()[1]
     }
     
-    #setVariables = _ => {
-        let products = []
-        let contador = 1
-        if(!(fs.existsSync(this.#path))) {
-            fs.writeFileSync(this.#path,'')
-        } else {
-            let resultado = fs.readFileSync(this.#path,'utf-8')
-            if (resultado.length !== 0 && resultado !== '[]') {
-                products = JSON.parse(resultado)
-                let lastElement = products[products.length-1]
-                contador = lastElement.id + 1
-                return [products,contador]
+    addProduct = async product => {
+        try {
+            const keysValidator = ["title","description","price","thumbnail","code","stock"]
+            for (let i = 0; i < keysValidator.length; i++) {
+                const key = keysValidator[i];
+                if (!product.hasOwnProperty(key)) {
+                    throw new Error(`❌ ${key} is required.`);
+                } 
             }
-        }
-        return [products,contador]
-    }
-    
-    addProduct = product => {
-        
-        const keysValidator = ["title","description","price","thumbnail","code","stock"]
-        for (let i = 0; i < keysValidator.length; i++) {
-            const key = keysValidator[i];
-            if (!product.hasOwnProperty(key)) {
-                return console.error(`❌ ${key} is required.`);
-            } 
-        }
-        
-        if(this.#products.length !== 0 && this.#products.some(element => element.code === product.code)) {
-            return console.error("❌ This product code already exists")                
-        } else {
-            let newProduct = {id: this.#contador, ...product}
-            this.#products.push(newProduct)
-            fs.writeFileSync(this.#path,`${JSON.stringify(this.#products,null,2)}`)
-            return console.log("✔️  Product add succesfully.")
-        }
-    }
-    
-    getProducts = _ => this.#products
-    
-    getProductById = id => {
-        const array = this.#products
-        if (array.length === 0) {return console.error("❌ Not found")}
-        for (let i = 0; i < array.length; i++) {
-            const element = array[i]
-            if (element.id === id) {
-                const {id, ...rest} = element
-                return rest               
+            const products = await this.getProducts()
+            if(products.length !== 0 && products.some(element => element.code === product.code)) {
+                throw new Error("❌ This product code already exists")                
             } else {
-                return console.error("❌ Not found")
+                let lastElement = products[products.length-1]
+                let newId = lastElement.id + 1
+                let newProduct = {id: newId, ...product}
+                products.push(newProduct)
+                await fs.promises.writeFile(this.#path,`${JSON.stringify(products,null,2)}`)
+                return console.log("✔️  Product add succesfully.")
             }
+        } catch (error) {
+            return console.error(error.message)
         }
+
+       
+    
     }
     
-    updateProduct = (id,changes) => {
-        let array = this.#products
-        let array2 = Object.keys(changes)
-        if(array.length !== 0 && array.some(element => element.id === id)) {
-            for (let i = 0; i < array.length; i++) {
-                const element = array[i];
-                if(element.id === id) {
-                    for (let j = 0; j < array2.length; j++) {
-                        const element2 = array2[j];
-                        array[i][element2] = changes[element2]
+    getProducts = async _ => {
+        try {
+            if(!(fs.existsSync(this.#path))) {
+                return []
+            } else {
+                let products = await fs.promises.readFile(this.#path,'utf-8')
+                if (products.length !== 0 && products !== '[]') {
+                    products = JSON.parse(products)
+                    return products
+                } else {
+                    return []
+                }
+            }
+        } catch (error) {
+            return error.message
+        }
+        
+    }
+    
+    getProductById = async id => {
+        try {
+            const array = await this.getProducts()
+            if (array.length === 0) {throw new Error("❌ Not found")}
+            
+            const filteredProduct = array.filter(product => product.id === id)
+            if (filteredProduct == '') {throw new Error("❌ Not found")}
+
+            return filteredProduct
+        } catch (error) {
+            return error.message
+        }
+    
+    }
+    
+    updateProduct = async (id,changes) => {
+        try {
+            let array = await this.getProducts()
+            let array2 = Object.keys(changes)
+            if(array.length !== 0 && array.some(element => element.id === id)) {
+                for (let i = 0; i < array.length; i++) {
+                    const element = array[i];
+                    if(element.id === id) {
+                        for (let j = 0; j < array2.length; j++) {
+                            const element2 = array2[j];
+                            array[i][element2] = changes[element2]
+                        }
                     }
                 }
+                await fs.promises.writeFile(this.#path,`${JSON.stringify(array,null,2)}`)
+                return console.log("✔️  Product update succesfully.")
+            } else {
+                throw new Error("❌ This product id not exists")                
             }
-            fs.writeFileSync(this.#path,`${JSON.stringify(array,null,2)}`)
-            return console.log("✔️  Product update succesfully.")
-        } else {
-            return console.error("❌ This product id not exists")                
+        } catch (error) {
+            return console.error(error.message)
         }
         
     }
     
-    deleteProduct = id => {
-        let array = this.#products
-        if(array.length !== 0 && array.some(element => element.id === id)) {
-            for (let i = 0; i < array.length; i++) {
-                const element = array[i];
-                if(element.id === id) {
-                    array.splice(i,1)
+    deleteProduct = async id => {
+        try {
+            let array = await this.getProducts()
+            if(array.length !== 0 && array.some(element => element.id === id)) {
+                for (let i = 0; i < array.length; i++) {
+                    const element = array[i];
+                    if(element.id === id) {
+                        array.splice(i,1)
+                    }
                 }
+                await fs.promises.writeFile(this.#path,`${JSON.stringify(array,null,2)}`)
+                return console.log("✔️  Product deleted succesfully.")
+            } else {
+                throw new Error("❌ This product id not exists")                
             }
-            fs.writeFileSync(this.#path,`${JSON.stringify(array,null,2)}`)
-            return console.log("✔️  Product deleted succesfully.")
-        } else {
-            return console.error("❌ This product id not exists")                
+        } catch (error) {
+            return console.error(error.message)
         }
+        
     }
 }
 
@@ -117,32 +132,37 @@ let productB = {
     price: 250
 }
 
-//Se ejecutan las pruebas
-
 //Se crea una instancia de la clase "ProductManager"
 
 let productManager = new ProductManager('./Products.json')
 
-//Se llama al método "getProducts" el cual devolverá un arreglo vacío
-console.log(productManager.getProducts())
+const main = async _ => {
+    
+    //Se ejecutan las pruebas
+    
+    //Se prueba el método "getProducts"
+    //console.log(await productManager.getProducts())
+    
+    //Se prueba el método "addProduct"
+    //await productManager.addProduct(productA)
+    //console.log(await productManager.getProducts())
+    //await productManager.addProduct(productA)
+    // await productManager.addProduct(productB)
+    
+    //Se prueba el método "getProductById"
+    //console.log(await productManager.getProductById(5))
+    //await productManager.getProductById(50)
+    
+    //Se prueba el método "updateProduct"
+    //console.log(await productManager.getProductsById(2))
+    //await productManager.updateProduct(2,productB)
+    //await productManager.updateProduct(6,productB)
+    //console.log(await productManager.getProducts())
+    
+    //Se prueba el método "deleteProduct"
+    //console.log(await productManager.getProducts())
+    //await productManager.deleteProduct(4)
+    //console.log(await productManager.getProducts())
+}
 
-//Se llama al método "addProduct" con los campos mencionados
-productManager.addProduct(productA)
-
-//Se llama al método "getProducts" nuevamente el cual devolverá el producto antes agregado
-console.log(productManager.getProducts())
-
-//Se llama al método "addProduct" nuevamente con los mismos campos, esto arrojará error por encontrarse repetido el "code"
-productManager.addProduct(productA)
-
-//Se llama al método "getProductById" con el id del producto generado, esto devolverá el producto
-console.log(productManager.getProductById(1))
-
-//Se llama al método "getProductById" con un id inexistente, esto devolverá error al no ser encontrado
-productManager.getProductById(50)
-
-//Se llama al método "updateProduct"
-productManager.updateProduct(1,productB)
-
-//Se llama al método "deleteProduct"
-productManager.deleteProduct(1)
+main()
