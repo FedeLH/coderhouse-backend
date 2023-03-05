@@ -28,7 +28,7 @@ export default class ProductManager {
                 return console.log("✔️  Product add succesfully.")
             }
         } catch (error) {
-            return console.error(error.message)
+            return {Error: error.message}
         }
 
        
@@ -49,7 +49,7 @@ export default class ProductManager {
                 }
             }
         } catch (error) {
-            return error.message
+            return {Error: error.message}
         }
         
     }
@@ -64,7 +64,7 @@ export default class ProductManager {
 
             return filteredProduct
         } catch (error) {
-            return error.message
+            return {Error: error.message}
         }
     
     }
@@ -89,7 +89,7 @@ export default class ProductManager {
                 throw new Error("❌ This product id not exists")                
             }
         } catch (error) {
-            return console.error(error.message)
+            return {Error: error.message}
         }
         
     }
@@ -110,7 +110,7 @@ export default class ProductManager {
                 throw new Error("❌ This product id not exists")                
             }
         } catch (error) {
-            return console.error(error.message)
+            return {Error: error.message}
         }
         
     }
