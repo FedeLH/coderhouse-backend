@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "coderhouse-backend",
   "version": "1.0.0",
   "description": "Este repositorio contendrá los entregables y proyecto final correspondientes al curso de \"Programación-Backend\" de Coderhouse comisión #39730 del alumno \"Federico Hanson\".",

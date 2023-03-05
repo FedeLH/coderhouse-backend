@@ -1,6 +1,6 @@
-const fs = require('fs')
+import fs from 'fs'
 
-class ProductManager {
+export default class ProductManager {
 
     #path
     constructor(path) {
@@ -116,53 +116,53 @@ class ProductManager {
     }
 }
 
-//Se definen productos para probar la solución
+// Se definen productos para probar la solución
 
-let productA = {
-    title: "product prueba",
-    description: "Este es un producto prueba",
-    price: 200,
-    thumbnail: "Sin imagen",
-    code:"abc124",
-    stock: 25
-}
+// let productA = {
+//     title: "product prueba",
+//     description: "Este es un producto prueba",
+//     price: 200,
+//     thumbnail: "Sin imagen",
+//     code:"abc124",
+//     stock: 25
+// }
 
-let productB = {
-    description: "Aumento el precio porque mejoramos su calidad",
-    price: 250
-}
+// let productB = {
+//     description: "Aumento el precio porque mejoramos su calidad",
+//     price: 250
+// }
 
-//Se crea una instancia de la clase "ProductManager"
+// Se crea una instancia de la clase "ProductManager"
 
-let productManager = new ProductManager('./Products.json')
+// let productManager = new ProductManager('./Products.json')
 
-const main = async _ => {
+// const main = async _ => {
     
-    //Se ejecutan las pruebas
+//     Se ejecutan las pruebas
     
-    //Se prueba el método "getProducts"
-    //console.log(await productManager.getProducts())
+//     Se prueba el método "getProducts"
+//     console.log(await productManager.getProducts())
     
-    //Se prueba el método "addProduct"
-    //await productManager.addProduct(productA)
-    //console.log(await productManager.getProducts())
-    //await productManager.addProduct(productA)
-    // await productManager.addProduct(productB)
+//     Se prueba el método "addProduct"
+//     await productManager.addProduct(productA)
+//     console.log(await productManager.getProducts())
+//     await productManager.addProduct(productA)
+//     await productManager.addProduct(productB)
     
-    //Se prueba el método "getProductById"
-    //console.log(await productManager.getProductById(5))
-    //await productManager.getProductById(50)
+//     Se prueba el método "getProductById"
+//     console.log(await productManager.getProductById(5))
+//     await productManager.getProductById(50)
     
-    //Se prueba el método "updateProduct"
-    //console.log(await productManager.getProductsById(2))
-    //await productManager.updateProduct(2,productB)
-    //await productManager.updateProduct(6,productB)
-    //console.log(await productManager.getProducts())
+//     Se prueba el método "updateProduct"
+//     console.log(await productManager.getProductsById(2))
+//     await productManager.updateProduct(2,productB)
+//     await productManager.updateProduct(6,productB)
+//     console.log(await productManager.getProducts())
     
-    //Se prueba el método "deleteProduct"
-    //console.log(await productManager.getProducts())
-    //await productManager.deleteProduct(4)
-    //console.log(await productManager.getProducts())
-}
+//     Se prueba el método "deleteProduct"
+//     console.log(await productManager.getProducts())
+//     await productManager.deleteProduct(4)
+//     console.log(await productManager.getProducts())
+// }
 
-main()
+// main()
