@@ -3,7 +3,9 @@ import ProductManager from './productManager.js'
 
 const app = express()
 const productManager = new ProductManager('./src/Products.json')
+const PORT = 8080
 
+app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 app.get('/products',async (req,res) =>{
@@ -23,4 +25,4 @@ app.get('/products/:pid',async (req,res) =>{
     res.send(`${JSON.stringify(product,null,2)}`)
 })
 
-app.listen(8080,()=>console.log("¡Servidor arriba en el puerto 8080!"))
+app.listen(PORT,()=>console.log(`Server up in port: ${PORT}`))

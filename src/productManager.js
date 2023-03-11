@@ -7,15 +7,28 @@ export default class ProductManager {
         this.#path = path
     }
     
-    addProduct = async product => {
-        try {
-            const keysValidator = ["title","description","price","thumbnail","code","stock"]
+    #isValid = (product,flag=0) => {
+        const keysValidator = ["title","description","price","thumbnail","code","stock"]
+        if(flag) {
             for (let i = 0; i < keysValidator.length; i++) {
                 const key = keysValidator[i];
                 if (!product.hasOwnProperty(key)) {
                     throw new Error(`❌ ${key} is required.`);
                 } 
             }
+        }
+        const array = Object.keys(product)
+        for (let i = 0; i < array.length; i++) {
+            const key = array[i]
+            if (!keysValidator.includes(key)) {
+                throw new Error(`❌ Cannot change or add this key: ${key}.`);
+            } 
+        }
+    }
+
+    addProduct = async product => {
+        try {
+            this.#isValid(product,true)
             const products = await this.getProducts()
             if(products.length !== 0 && products.some(element => element.code === product.code)) {
                 throw new Error("❌ This product code already exists")                
@@ -71,6 +84,7 @@ export default class ProductManager {
     
     updateProduct = async (id,changes) => {
         try {
+            this.#isValid(changes)
             let array = await this.getProducts()
             let array2 = Object.keys(changes)
             if(array.length !== 0 && array.some(element => element.id === id)) {
@@ -78,7 +92,7 @@ export default class ProductManager {
                     const element = array[i];
                     if(element.id === id) {
                         for (let j = 0; j < array2.length; j++) {
-                            const element2 = array2[j];
+                            const element2 = array2[j]
                             array[i][element2] = changes[element2]
                         }
                     }
@@ -118,25 +132,26 @@ export default class ProductManager {
 
 // Se definen productos para probar la solución
 
-// let productA = {
-//     title: "product prueba",
-//     description: "Este es un producto prueba",
-//     price: 200,
-//     thumbnail: "Sin imagen",
-//     code:"abc124",
-//     stock: 25
-// }
+let productA = {
+    title: "product prueba",
+    description: "Este es un producto prueba",
+    price: 200,
+    thumbnail: "Sin imagen",
+    code:"abc124",
+    stock: 25
+}
 
-// let productB = {
-//     description: "Aumento el precio porque mejoramos su calidad",
-//     price: 250
-// }
+let productB = {
+    id: 50,
+    description: "Aumento el precio porque mejoramos su calidad",
+    price: 250
+}
 
 // Se crea una instancia de la clase "ProductManager"
 
-// let productManager = new ProductManager('./Products.json')
+let productManager = new ProductManager('./src/Products.json')
 
-// const main = async _ => {
+const main = async _ => {
     
 //     Se ejecutan las pruebas
     
@@ -147,7 +162,7 @@ export default class ProductManager {
 //     await productManager.addProduct(productA)
 //     console.log(await productManager.getProducts())
 //     await productManager.addProduct(productA)
-//     await productManager.addProduct(productB)
+//     console.log(await productManager.updateProduct(1,productB))
     
 //     Se prueba el método "getProductById"
 //     console.log(await productManager.getProductById(5))
@@ -163,6 +178,6 @@ export default class ProductManager {
 //     console.log(await productManager.getProducts())
 //     await productManager.deleteProduct(4)
 //     console.log(await productManager.getProducts())
-// }
+}
 
-// main()
+main()
