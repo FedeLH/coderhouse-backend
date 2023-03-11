@@ -54,7 +54,7 @@ export default class ProductManager {
         
     }
     
-    getProductById = async id => {
+    getProductById = async (id) => {
         try {
             const array = await this.getProducts()
             if (array.length === 0) {throw new Error("❌ Not found")}
@@ -78,7 +78,8 @@ export default class ProductManager {
                     const element = array[i];
                     if(element.id === id) {
                         for (let j = 0; j < array2.length; j++) {
-                            const element2 = array2[j];
+                            const element2 = array2[j]
+                            element2.id=id
                             array[i][element2] = changes[element2]
                         }
                     }
@@ -128,13 +129,12 @@ export default class ProductManager {
 // }
 
 // let productB = {
-//     description: "Aumento el precio porque mejoramos su calidad",
-//     price: 250
+//     id: 50
 // }
 
 // Se crea una instancia de la clase "ProductManager"
 
-// let productManager = new ProductManager('./Products.json')
+// let productManager = new ProductManager('./src/Products.json')
 
 // const main = async _ => {
     
@@ -154,9 +154,9 @@ export default class ProductManager {
 //     await productManager.getProductById(50)
     
 //     Se prueba el método "updateProduct"
-//     console.log(await productManager.getProductsById(2))
+//     console.log(await productManager.getProductById(2))
 //     await productManager.updateProduct(2,productB)
-//     await productManager.updateProduct(6,productB)
+//    await productManager.updateProduct(6,productB)
 //     console.log(await productManager.getProducts())
     
 //     Se prueba el método "deleteProduct"
