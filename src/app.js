@@ -11,6 +11,7 @@ app.use(express.urlencoded({extended:true}))
 app.get('/products',async (req,res) =>{
     const allProducts = await productManager.getProducts()
     const limit = req.query.limit
+    if(allProducts.status) return res.status(product.status).send(`${JSON.stringify(product,null,2)}`)
     if (!limit) {
         res.send(`${JSON.stringify(allProducts,null,2)}`)
     } else {
@@ -22,6 +23,7 @@ app.get('/products',async (req,res) =>{
 app.get('/products/:pid',async (req,res) =>{
     const id = Number(req.params.pid)
     const product = await productManager.getProductById(id)
+    if(product.status) return res.status(product.status).send(`${JSON.stringify(product,null,2)}`)
     res.send(`${JSON.stringify(product,null,2)}`)
 })
 

@@ -41,7 +41,7 @@ export default class ProductManager {
                 return console.log("✔️  Product add succesfully.")
             }
         } catch (error) {
-            return {Error: error.message}
+            return {name: "error", status: 400, message: error.message}
         }
 
        
@@ -50,19 +50,15 @@ export default class ProductManager {
     
     getProducts = async _ => {
         try {
-            if(!(fs.existsSync(this.#path))) {
-                return []
-            } else {
-                let products = await fs.promises.readFile(this.#path,'utf-8')
-                if (products.length !== 0 && products !== '[]') {
-                    products = JSON.parse(products)
-                    return products
-                } else {
-                    return []
-                }
-            }
+            if(!(fs.existsSync(this.#path))) return []
+
+            let products = await fs.promises.readFile(this.#path,'utf-8')
+            if (!(products.length !== 0 && products !== '[]')) return []
+            
+            products = JSON.parse(products)
+            return products
         } catch (error) {
-            return {Error: error.message}
+            return {name: "error", status: 500, message: error.message}
         }
         
     }
@@ -77,7 +73,7 @@ export default class ProductManager {
 
             return filteredProduct
         } catch (error) {
-            return {Error: error.message}
+            return {name: "error", status: 404, message: error.message}
         }
     
     }
@@ -103,7 +99,7 @@ export default class ProductManager {
                 throw new Error("❌ This product id not exists")                
             }
         } catch (error) {
-            return {Error: error.message}
+            return {name: "error", status: 400, message: error.message}
         }
         
     }
@@ -124,7 +120,7 @@ export default class ProductManager {
                 throw new Error("❌ This product id not exists")                
             }
         } catch (error) {
-            return {Error: error.message}
+            return {name: "error", status: 400, message: error.message}
         }
         
     }
@@ -132,26 +128,26 @@ export default class ProductManager {
 
 // Se definen productos para probar la solución
 
-let productA = {
-    title: "product prueba",
-    description: "Este es un producto prueba",
-    price: 200,
-    thumbnail: "Sin imagen",
-    code:"abc124",
-    stock: 25
-}
+// let productA = {
+//     title: "product prueba",
+//     description: "Este es un producto prueba",
+//     price: 200,
+//     thumbnail: "Sin imagen",
+//     code:"abc124",
+//     stock: 25
+// }
 
-let productB = {
-    id: 50,
-    description: "Aumento el precio porque mejoramos su calidad",
-    price: 250
-}
+// let productB = {
+//     id: 50,
+//     description: "Aumento el precio porque mejoramos su calidad",
+//     price: 250
+// }
 
 // Se crea una instancia de la clase "ProductManager"
 
-let productManager = new ProductManager('./src/Products.json')
+// let productManager = new ProductManager('./src/Products.json')
 
-const main = async _ => {
+// const main = async _ => {
     
 //     Se ejecutan las pruebas
     
@@ -178,6 +174,6 @@ const main = async _ => {
 //     console.log(await productManager.getProducts())
 //     await productManager.deleteProduct(4)
 //     console.log(await productManager.getProducts())
-}
+// }
 
-main()
+// main()
