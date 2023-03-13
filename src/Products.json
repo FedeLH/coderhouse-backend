@@ -2,8 +2,8 @@
   {
     "id": 1,
     "title": "product prueba",
-    "description": "Este es un producto prueba",
-    "price": 200,
+    "description": "Aumento el precio porque mejoramos su calidad",
+    "price": 250,
     "thumbnail": "Sin imagen",
     "code": "abc124",
     "stock": 25
