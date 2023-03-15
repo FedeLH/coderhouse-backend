@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-export default class ProductManager {
+class ProductManager {
 
     #path
     constructor(path) {
@@ -76,10 +76,10 @@ export default class ProductManager {
     getProductById = async (id) => {
         try {
             const array = await this.getProducts()
-            if (array.length === 0) {throw new Error('Not found')}
+            if (array.length === 0) throw new Error('Not found')
             
             const filteredProduct = array.filter(product => product.id === id)
-            if (filteredProduct == '') {throw new Error('Not found')}
+            if (filteredProduct == '') throw new Error('Not found')
 
             return filteredProduct
         } catch (error) {
@@ -133,3 +133,7 @@ export default class ProductManager {
         }
     }
 }
+
+const productManager = new ProductManager('./src/Products.json')
+
+export {ProductManager, productManager}

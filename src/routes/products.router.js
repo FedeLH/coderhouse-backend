@@ -1,8 +1,7 @@
 import { Router } from 'express'
-import ProductManager from '../productManager.js'
+import { productManager } from '../productManager.js'
 
 const router = Router()
-const productManager = new ProductManager('./src/Products.json')
 
 router.get('/',async (req,res) =>{
     const allProducts = await productManager.getProducts()
@@ -11,14 +10,13 @@ router.get('/',async (req,res) =>{
     let limitedProducts = []
     if (limit) limitedProducts = activeProducts.slice(0,limit)
     res.status(activeProducts.status ? activeProducts.status : 200)
-       .send(`${JSON.stringify({status: activeProducts.status ? 'error'         : 'success', 
+       .send(`${JSON.stringify({status: activeProducts.status ? 'error'      : 'success', 
                                payload: limit              ? limitedProducts : activeProducts})}`)
 })
 
 router.get('/:pid',async (req,res) =>{
     const id = Number(req.params.pid)
     const product = await productManager.getProductById(id)
-    console.log({product,status: product.status})
     let activeProduct = {
         "status": 404,
         "message": 'Product is disabled'
