@@ -13,33 +13,33 @@
     ]
   },
   {
+    "id": 3,
+    "products": []
+  },
+  {
     "id": 2,
     "products": [
       {
-        "id": 6,
-        "quantify": 1
+        "id": 1,
+        "quantify": 6
       },
       {
-        "id": 10,
-        "quantify": 2
-      }
-    ]
-  },
-  {
-    "id": 3,
-    "products": [
-      {
-        "id": 2,
-        "quantify": 1
+        "id": 5,
+        "quantify": 3
       },
       {
         "id": 3,
-        "quantify": 2
+        "quantify": 1
       }
     ]
   },
   {
     "id": 4,
-    "products": []
+    "products": [
+      {
+        "id": 5,
+        "quantify": 1
+      }
+    ]
   }
 ]

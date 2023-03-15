@@ -30,7 +30,7 @@ router.get('/:pid',async (req,res) =>{
 router.post('/', async (req,res) => {
     const product = req.body
     const response = await productManager.addProduct(product)
-    res.status(response.status ? response.status : 200)
+    res.status(response.status ? response.status : 201)
        .send(`${JSON.stringify({status: response.status ? 'error' : 'success', 
                                payload: response})}`)
 })
@@ -39,7 +39,7 @@ router.put('/:pid',async (req,res) =>{
     const id = Number(req.params.pid)
     const changes = req.body
     const response = await productManager.updateProduct(id,changes)
-    res.status(response.status ? response.status : 200)
+    res.status(response.status ? response.status : 201)
        .send(`${JSON.stringify({status: response.status ? 'error' : 'success', 
                                payload: response})}`)
 })
