@@ -1,92 +1,132 @@
 [
   {
     "id": 1,
-    "title": "product prueba",
-    "description": "Aumento el precio porque mejoramos su calidad",
-    "price": 250,
-    "thumbnail": "Sin imagen",
-    "code": "abc124",
-    "stock": 25
+    "title": "Titulo de prueba",
+    "description": "Code",
+    "price": 1,
+    "stock": 50,
+    "code": "code1",
+    "category": "tech",
+    "status": true,
+    "thumbnails": [
+      "https://placehold.co/300x200"
+    ]
   },
   {
     "id": 2,
-    "title": "product prueba",
-    "description": "Este es un producto prueba",
-    "price": 200,
-    "thumbnail": "Sin imagen",
-    "code": "abc125",
-    "stock": 25
+    "title": "Titulo de prueba",
+    "description": "Code",
+    "price": 1,
+    "stock": 50,
+    "code": "code2",
+    "category": "tech",
+    "status": true,
+    "thumbnails": [
+      "https://placehold.co/300x200"
+    ]
   },
   {
     "id": 3,
-    "title": "product prueba",
-    "description": "Este es un producto prueba",
-    "price": 200,
-    "thumbnail": "Sin imagen",
-    "code": "abc126",
-    "stock": 25
+    "title": "Titulo de prueba",
+    "description": "Code",
+    "price": 1,
+    "stock": 50,
+    "code": "code3",
+    "category": "tech",
+    "status": true,
+    "thumbnails": [
+      "https://placehold.co/300x200"
+    ]
   },
   {
     "id": 4,
-    "title": "product prueba",
-    "description": "Este es un producto prueba",
-    "price": 200,
-    "thumbnail": "Sin imagen",
-    "code": "abc127",
-    "stock": 25
+    "title": "Titulo de prueba",
+    "description": "Code",
+    "price": 1,
+    "stock": 50,
+    "code": "code4",
+    "category": "tech",
+    "status": true,
+    "thumbnails": [
+      "https://placehold.co/300x200"
+    ]
   },
   {
     "id": 5,
-    "title": "product prueba",
-    "description": "Este es un producto prueba",
-    "price": 200,
-    "thumbnail": "Sin imagen",
-    "code": "abc128",
-    "stock": 25
+    "title": "Titulo de prueba",
+    "description": "Code",
+    "price": 1,
+    "stock": 50,
+    "code": "code5",
+    "category": "tech",
+    "status": true,
+    "thumbnails": [
+      "https://placehold.co/300x200"
+    ]
   },
   {
     "id": 6,
-    "title": "product prueba",
-    "description": "Este es un producto prueba",
-    "price": 200,
-    "thumbnail": "Sin imagen",
-    "code": "abc129",
-    "stock": 25
+    "title": "Titulo de prueba",
+    "description": "Code",
+    "price": 1,
+    "stock": 50,
+    "code": "code6",
+    "category": "tech",
+    "status": true,
+    "thumbnails": [
+      "https://placehold.co/300x200"
+    ]
   },
   {
     "id": 7,
-    "title": "product prueba",
-    "description": "Este es un producto prueba",
-    "price": 200,
-    "thumbnail": "Sin imagen",
-    "code": "abc130",
-    "stock": 25
+    "title": "Titulo de prueba",
+    "description": "Code",
+    "price": 1,
+    "stock": 50,
+    "code": "code7",
+    "category": "tech",
+    "status": true,
+    "thumbnails": [
+      "https://placehold.co/300x200"
+    ]
   },
   {
     "id": 8,
-    "title": "product prueba",
-    "description": "Este es un producto prueba",
-    "price": 200,
-    "thumbnail": "Sin imagen",
-    "code": "abc131",
-    "stock": 25
+    "title": "Titulo de prueba",
+    "description": "Code",
+    "price": 1,
+    "stock": 50,
+    "code": "code8",
+    "category": "tech",
+    "status": true,
+    "thumbnails": [
+      "https://placehold.co/300x200"
+    ]
   },
   {
     "id": 9,
-    "title": "product prueba",
-    "description": "Este es un producto prueba",
-    "price": 200,
-    "thumbnail": "Sin imagen",
-    "code": "abc132",
-    "stock": 25
+    "title": "Titulo de prueba",
+    "description": "Code",
+    "price": 1,
+    "stock": 50,
+    "code": "code9",
+    "category": "tech",
+    "status": true,
+    "thumbnails": [
+      "https://placehold.co/300x200"
+    ]
   },
   {
     "id": 10,
-    "title": "product prueba",
-    "description": "Este es un producto prueba",
-    "price": 200,
-    "thumbnail": "Sin imagen",
-    "code": "abc133",
-    "stock": 25
+    "title": "Titulo de prueba",
+    "description": "Code",
+    "price": 1,
+    "stock": 50,
+    "code": "code10",
+    "category": "tech",
+    "status": true,
+    "thumbnails": [
+      "https://placehold.co/300x200"
+    ]
   }
 ]
