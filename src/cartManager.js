@@ -13,6 +13,10 @@ class CartManager {
         return products.some(product => (product.id === id && product.status))
     }
 
+    #saveCarts = async (carts) => {
+        await fs.promises.writeFile(this.#path,`${JSON.stringify(carts,null,2)}`)
+    } 
+
     getCarts = async _ => {
         try {
             if(!(fs.existsSync(this.#path))) return []
@@ -40,34 +44,22 @@ class CartManager {
         }
     }
 
-    addProductByCartId = async (cartId,productId) => {
+    addProductByCartId = async (cartId,productId,quantify=1) => {
         try {
-            if(!(await this.#isValid(productId))) throw new Error('This product id not exists or is disabled')
+            if(!(await this.#isValid(productId))) throw new Error('Invalid product ID')
             const carts = await this.getCarts()
-            
-            if(!(carts.some(cart => (cart.id === cartId)))) throw new Error('This cart id not exists')
-            
-            let quantify = 1
-            const positionCart = carts.findIndex(cart => cart.id === cartId)
-            let positionProduct = "no encontrado"
-            const cart = carts[positionCart]
-            
-            for (let j = 0; j < cart.products.length; j++) {
-                const product = cart.products[j]
-                if(product.id === productId) {
-                    positionProduct = j
-                    quantify = product.quantify += 1
-                }
-            } 
-            const product = {id: productId, quantify}
 
-            let oldCart = carts.splice(positionCart,1)[0]
-            if(positionProduct === "no encontrado") positionProduct = oldCart.products.length
-            oldCart.products.splice(positionProduct,1,product)
-            let products = [...oldCart.products]
-            let newCart = {...oldCart,products}
-            carts.push(newCart)
-            await fs.promises.writeFile(this.#path,`${JSON.stringify(carts,null,2)}`)
+            let cart = carts.find(cart => cart.id === cartId)
+            if(!cart) throw new Error('Invalid cart ID')
+            
+            let index = cart.products.findIndex(product => product.id === productId)           
+            if(index === -1) {
+                cart.products.push({id:productId,quantify})
+            }else {
+                cart.products[index].quantify += quantify
+            }
+
+            this.#saveCarts(carts)
             return {message:'Product add succesfully.'}
         } catch (error) {
             return {status: 400, message: error.message}
@@ -78,11 +70,13 @@ class CartManager {
         try {
             let cart = {products: []}
             const carts = await this.getCarts()
+
             let lastElement = carts[carts.length-1]
             let newId = lastElement.id + 1
             let newCart = {id: newId, ...cart}
             carts.push(newCart)
-            await fs.promises.writeFile(this.#path,`${JSON.stringify(carts,null,2)}`)
+
+            this.#saveCarts(carts)
             return {message:'Cart add succesfully.'}
         } catch (error) {
             return {status: 400, message: error.message}
