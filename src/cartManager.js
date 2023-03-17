@@ -32,10 +32,10 @@ class CartManager {
 
     getProductsByCartId = async id => {
         try {
-            const array = await this.getCarts()
-            if (array.length === 0) throw new Error('Not found')
+            const carts = await this.getCarts()
+            if (carts.length === 0) throw new Error('Not found')
             
-            const filteredCart = array.filter(cart => cart.id === id)
+            const filteredCart = carts.filter(cart => cart.id === id)
             if (filteredCart == '') throw new Error('Not found')
 
             return filteredCart[0].products ?? []

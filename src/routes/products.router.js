@@ -10,8 +10,8 @@ router.get('/',async (req,res) =>{
     let limitedProducts = []
     if (limit) limitedProducts = activeProducts.slice(0,limit)
     res.status(activeProducts.status ? activeProducts.status : 200)
-       .json({status: activeProducts.status ? 'error'      : 'success', 
-                               payload: limit              ? limitedProducts : activeProducts})
+       .json({status: activeProducts.status ? 'error'         : 'success', 
+             payload: limit                 ? limitedProducts : activeProducts})
 })
 
 router.get('/:pid',async (req,res) =>{
@@ -24,7 +24,7 @@ router.get('/:pid',async (req,res) =>{
     if(product[0].status) activeProduct = product
     res.status(activeProduct.status ? activeProduct.status : 200)
        .json({status: activeProduct.status ? 'error' : 'success', 
-                               payload: activeProduct})
+             payload: activeProduct})
 })
 
 router.post('/', async (req,res) => {
@@ -32,7 +32,7 @@ router.post('/', async (req,res) => {
     const response = await productManager.addProduct(product)
     res.status(response.status ? response.status : 201)
        .json({status: response.status ? 'error' : 'success', 
-                               payload: response})
+             payload: response})
 })
 
 router.put('/:pid',async (req,res) =>{
@@ -41,7 +41,7 @@ router.put('/:pid',async (req,res) =>{
     const response = await productManager.updateProduct(id,changes)
     res.status(response.status ? response.status : 201)
        .json({status: response.status ? 'error' : 'success', 
-                               payload: response})
+             payload: response})
 })
 
 router.delete('/:pid',async (req,res) =>{
@@ -49,7 +49,7 @@ router.delete('/:pid',async (req,res) =>{
     const response = await productManager.deleteProduct(id)
     res.status(response.status ? response.status : 200)
        .json({status: response.status ? 'error' : 'success', 
-                               payload: response})
+             payload: response})
 })
 
 export default router

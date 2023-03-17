@@ -23,9 +23,9 @@ class ProductManager {
     }
 
     #updateProductValidator = (product) => {
-        const array = Object.keys(product)
-        for (let i = 0; i < array.length; i++) {
-            const key = array[i]
+        const keysProduct = Object.keys(product)
+        for (let i = 0; i < keysProduct.length; i++) {
+            const key = keysProduct[i]
             if ((key === 'price' || key === 'stock') && isNaN(product[key])) {
                 throw new Error(`The property '${key}' not is Number.`)
             }
@@ -128,7 +128,7 @@ class ProductManager {
             if(!(length && isProduct)) throw new Error('Invalid product ID')
             
             for (let i = 0; i < products.length; i++) {
-                const element = products[i];
+                const element = products[i]
                 if(element.id === id) {
                     products[i].status = changes.status
                 }
