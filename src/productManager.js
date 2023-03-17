@@ -3,29 +3,33 @@ import fs from 'fs'
 class ProductManager {
 
     #path
+    #keysRequired
+    #allKeys
     constructor(path) {
         this.#path = path
+        this.#keysRequired = ['title','description','price','category','code','stock']
+        this.#allKeys = [...this.#keysRequired, 'status', 'thumbnails']
     }
-    
-    #productValidator = (product,flag=0) => {
-        const keysRequired = ['title','description','price','category','code','stock']
-        const allKeys = [...keysRequired, 'status', 'thumbnails']
-        if(flag) {
-            for (let i = 0; i < keysRequired.length; i++) {
-                const key = keysRequired[i];
-                if (!product.hasOwnProperty(key)) {
-                    throw new Error(`${key} is required.`)
-                } 
-            }
-        }
 
+    #addProductValidator = (product) => {
+        for (let i = 0; i < this.#keysRequired.length; i++) {
+            const key = this.#keysRequired[i];
+            if (!product.hasOwnProperty(key)) {
+                throw new Error(`${key} is required.`)
+            } 
+        }
+        
+        return this.#updateProductValidator(product)
+    }
+
+    #updateProductValidator = (product) => {
         const array = Object.keys(product)
         for (let i = 0; i < array.length; i++) {
             const key = array[i]
             if ((key === 'price' || key === 'stock') && isNaN(product[key])) {
                 throw new Error(`The property '${key}' not is Number.`)
             }
-            if (!allKeys.includes(key)) {
+            if (!this.#allKeys.includes(key)) {
                 throw new Error(`Cannot change or add this key: ${key}.`)
             } 
         }
@@ -38,22 +42,28 @@ class ProductManager {
         return product
     }
 
+    #saveProducts = async (products) => {
+        await fs.promises.writeFile(this.#path,`${JSON.stringify(products,null,2)}`)
+    }
+
     addProduct = async product => {
         try {
-            let productValid = this.#productValidator(product,true)
+            let productValid = this.#addProductValidator(product)
             const products = await this.getProducts()
-            if(products.length !== 0 && products.some(element => element.code === productValid.code)) {
-                throw new Error('This product code already exists')                
-            } else {
-                let lastElement = products[products.length-1]
-                let newId = lastElement.id + 1
-                let status = productValid.status ? productValid.status : true
-                let thumbnails = productValid.thumbnails ? productValid.thumbnails : ['https://placehold.co/300x200']
-                let newProduct = {id: newId, ...productValid, status, thumbnails }
-                products.push(newProduct)
-                await fs.promises.writeFile(this.#path,`${JSON.stringify(products,null,2)}`)
-                return {message:'Product add succesfully.'}
-            }
+
+            const { length } = products
+            const isProduct = products.some(product => product.code === productValid.code)
+            if(length && isProduct) throw new Error('This product code already exists')                
+       
+            let lastElement = products[products.length-1]
+            let newId = lastElement.id + 1
+            let status = productValid.status ?? true
+            let thumbnails = productValid.thumbnails ?? ['https://placehold.co/300x200']
+            let newProduct = {id: newId, ...productValid, status, thumbnails }
+            products.push(newProduct)
+            await this.#saveProducts(products)
+            return {message:'Product add succesfully.'}
+            
         } catch (error) {
             return {status: 400, message: error.message}
         }
@@ -89,15 +99,17 @@ class ProductManager {
     
     updateProduct = async (id,changes) => {
         try {
-            let changesValid = this.#productValidator(changes)
+            let changesValid = this.#updateProductValidator(changes)
             let products = await this.getProducts()
-            
-            if(!(products.length !== 0 && products.some(product => product.id === id))) throw new Error('This product id not exists')
+
+            const { length } = products
+            const isProduct = products.some(product => (product.id === id))
+            if(!(length && isProduct)) throw new Error('Invalid product ID')
             
             const index = products.findIndex(product => product.id === id)
             products[index] = {...products[index],...changesValid}
           
-            await fs.promises.writeFile(this.#path,`${JSON.stringify(products,null,2)}`)
+            await this.#saveProducts(products)
             return {message: 'Product update succesfully.'}
            
         } catch (error) {
@@ -109,17 +121,19 @@ class ProductManager {
     deleteProduct = async id => {
         try {
             let changes = {status: false}
-            let array = await this.getProducts()
+            let products = await this.getProducts()
             
-            if(!(array.length !== 0 && array.some(element => (element.id === id && element.status)))) throw new Error('This product id not exists')
+            const { length } = products
+            const isProduct = products.some(product => (product.id === id && product.status))
+            if(!(length && isProduct)) throw new Error('Invalid product ID')
             
-            for (let i = 0; i < array.length; i++) {
-                const element = array[i];
+            for (let i = 0; i < products.length; i++) {
+                const element = products[i];
                 if(element.id === id) {
-                    array[i].status = changes.status
+                    products[i].status = changes.status
                 }
             }
-            await fs.promises.writeFile(this.#path,`${JSON.stringify(array,null,2)}`)
+            await this.#saveProducts(products)
             return {message: 'Product delete succesfully.'}
         } catch (error) {
             return {status: 400, message: error.message}
