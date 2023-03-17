@@ -90,21 +90,14 @@ class ProductManager {
     updateProduct = async (id,changes) => {
         try {
             let changesValid = this.#productValidator(changes)
-            let array = await this.getProducts()
-            let array2 = Object.keys(changesValid)
+            let products = await this.getProducts()
             
-            if(!(array.length !== 0 && array.some(element => element.id === id))) throw new Error('This product id not exists')
+            if(!(products.length !== 0 && products.some(product => product.id === id))) throw new Error('This product id not exists')
             
-            for (let i = 0; i < array.length; i++) {
-                const element = array[i];
-                if(element.id === id) {
-                    for (let j = 0; j < array2.length; j++) {
-                        const element2 = array2[j]
-                        array[i][element2] = changesValid[element2]
-                    }
-                }
-            }
-            await fs.promises.writeFile(this.#path,`${JSON.stringify(array,null,2)}`)
+            const index = products.findIndex(product => product.id === id)
+            products[index] = {...products[index],...changesValid}
+          
+            await fs.promises.writeFile(this.#path,`${JSON.stringify(products,null,2)}`)
             return {message: 'Product update succesfully.'}
            
         } catch (error) {
