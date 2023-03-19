@@ -55,8 +55,8 @@ class ProductManager {
             const isProduct = products.some(product => product.code === productValid.code)
             if(length && isProduct) throw new Error('This product code already exists')                
        
-            let lastElement = products[products.length-1]
-            let newId = lastElement.id + 1
+            let lastProduct = products[products.length-1] ?? 0
+            let newId = lastProduct.id ? lastProduct.id + 1 : 1
             let status = productValid.status ?? true
             let thumbnails = productValid.thumbnails ?? ['https://placehold.co/300x200']
             let newProduct = {id: newId, ...productValid, status, thumbnails }
@@ -141,6 +141,6 @@ class ProductManager {
     }
 }
 
-const productManager = new ProductManager('./src/Products.json')
+const productManager = new ProductManager('./src/databases/Products.json')
 
 export {ProductManager, productManager}

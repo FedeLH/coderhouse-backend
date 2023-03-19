@@ -71,8 +71,8 @@ class CartManager {
             let cart = {products: []}
             const carts = await this.getCarts()
 
-            let lastElement = carts[carts.length-1]
-            let newId = lastElement.id + 1
+            let lastCart = carts[carts.length-1] ?? 0
+            let newId = lastCart.id ? lastCart.id + 1 : 1
             let newCart = {id: newId, ...cart}
             carts.push(newCart)
 
@@ -84,6 +84,6 @@ class CartManager {
     }
 }
 
-const cartManager = new CartManager('./src/Carts.json')
+const cartManager = new CartManager('./src/databases/Carts.json')
 
 export {CartManager, cartManager}
