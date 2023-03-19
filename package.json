@@ -5,8 +5,8 @@
   "description": "Este repositorio contendrá los entregables y proyecto final correspondientes al curso de \"Programación-Backend\" de Coderhouse comisión #39730 del alumno \"Federico Hanson\".",
   "main": "productManager.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "nodemon src/app.js",
+    "start": "nodemon src/app.js"
   },
   "repository": {
     "type": "git",

@@ -9,7 +9,7 @@ router.get('/', async (req,res) => {
     let limitedCarts = []
     if (limit) limitedCarts = allCarts.slice(0,limit)
     res.status(allCarts.status ? allCarts.status : 200)
-       .json({status: response.status ? 'error'      : 'success',
+       .json({status: allCarts.status ? 'error'      : 'success',
              payload: limit           ? limitedCarts : allCarts})
 })
 
