@@ -1,5 +1,7 @@
 import { Router } from 'express'
 import { productManager } from '../productManager.js'
+import { uploader } from '../utils/multer.js'
+import __dirname from '../utils/utils.js'
 
 const router = Router()
 
@@ -27,8 +29,16 @@ router.get('/:pid',async (req,res) =>{
              payload: activeProduct})
 })
 
-router.post('/', async (req,res) => {
-    const product = req.body
+router.post('/', uploader.array('files'), async (req,res) => {
+    if (!req.files) throw new Error ('Could not save images')
+    let thumbnails = []
+    req.files.forEach(file => {
+        file.filename += Date.now()
+        let path = file.destination + '\\' + file.filename
+        thumbnails.push(path)
+    })
+    const {title, description, price, stock, code, category} = req.body
+    const product = {title, description, price, stock, code, category, thumbnails}
     const response = await productManager.addProduct(product)
     res.status(response.status ? response.status : 201)
        .json({status: response.status ? 'error' : 'success', 
