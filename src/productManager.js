@@ -23,6 +23,11 @@ class ProductManager {
     }
 
     #updateProductValidator = (product) => {
+        for (const propiedad in product) {
+            if (product[propiedad] === undefined) {
+              delete product[propiedad];
+            }
+        }
         const keysProduct = Object.keys(product)
         for (let i = 0; i < keysProduct.length; i++) {
             const key = keysProduct[i]
