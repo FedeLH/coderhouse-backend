@@ -12,7 +12,7 @@ Precondición:
 
 Para ejecutar el entregable correspondiente se debe contar con node instalado y correr el comando: 
 
-  node <file_name>.js
+  npm run start
 
 Para levantar el servidor se debe ejecutar desde el proyecto:
 
