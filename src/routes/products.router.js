@@ -30,24 +30,46 @@ router.get('/:pid',async (req,res) =>{
 })
 
 router.post('/', uploader.array('files'), async (req,res) => {
-    if (!req.files) throw new Error ('Could not save images')
-    let thumbnails = []
-    req.files.forEach(file => {
-        file.filename += Date.now()
-        let path = file.destination + '\\' + file.filename
-        thumbnails.push(path)
-    })
+    if (req.files.length) {
+        let thumbnails = []
+        req.files.forEach(file => {
+            file.filename += Date.now()
+            let path = file.destination + '\\' + file.filename
+            thumbnails.push(path)
+        })
+        const {title, description, price, stock, code, category} = req.body
+        const product = {title, description, price, stock, code, category, thumbnails}
+        const response = await productManager.addProduct(product)
+        return res.status(response.status ? response.status : 201)
+                  .json({status: response.status ? 'error' : 'success', 
+                        payload: response})
+    }
     const {title, description, price, stock, code, category} = req.body
-    const product = {title, description, price, stock, code, category, thumbnails}
+    const product = {title, description, price, stock, code, category}
     const response = await productManager.addProduct(product)
     res.status(response.status ? response.status : 201)
        .json({status: response.status ? 'error' : 'success', 
              payload: response})
 })
 
-router.put('/:pid',async (req,res) =>{
+router.put('/:pid', uploader.array('files'), async (req,res) =>{
     const id = Number(req.params.pid)
-    const changes = req.body
+    if (req.files.length) {
+        let thumbnails = []
+        req.files.forEach(file => {
+            file.filename += Date.now()
+            let path = file.destination + '\\' + file.filename
+            thumbnails.push(path)
+        })
+        const {title, description, price, stock, code, status, category} = req.body
+        const changes = {title, description, price, stock, code, category, status, thumbnails}
+        const response = await productManager.updateProduct(id,changes)
+        return res.status(response.status ? response.status : 201)
+                  .json({status: response.status ? 'error' : 'success', 
+                        payload: response})
+    }
+    const {title, description, price, stock, code, category, status} = req.body
+    const changes = {title, description, price, stock, code, category, status}
     const response = await productManager.updateProduct(id,changes)
     res.status(response.status ? response.status : 201)
        .json({status: response.status ? 'error' : 'success', 
