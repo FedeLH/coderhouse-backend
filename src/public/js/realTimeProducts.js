@@ -11,11 +11,6 @@ const createHtmlProduct = product => {
         socket.emit('delete-product', productId)
     })
 
-    const addToCartButton = document.createElement('button')
-    addToCartButton.dataset['productId'] = product.id
-    addToCartButton.classList.add('add-to-cart')
-    addToCartButton.innerText = 'Añadir al carrito'
-
     const productElement = document.createElement('div')
     productElement.classList.add('product')
     productElement.innerHTML = `
@@ -26,7 +21,6 @@ const createHtmlProduct = product => {
         <p>Stock:${product.stock}</p>
     `
     productElement.appendChild(deleteButton)
-    productElement.appendChild(addToCartButton)
 
     return productElement
 }
