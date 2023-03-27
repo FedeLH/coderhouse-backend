@@ -1,7 +1,8 @@
 import { Router } from 'express'
-import { productManager } from '../productManager.js'
+import { productManager } from '../Daos/ProductDaos/productManager.js'
 import { uploader } from '../utils/multer.js'
 import __dirname from '../utils/utils.js'
+import { io } from '../config/server.js'
 
 const router = Router()
 
@@ -29,51 +30,23 @@ router.get('/:pid',async (req,res) =>{
              payload: activeProduct})
 })
 
-router.post('/', uploader.array('files'), async (req,res) => {
-    if (req.files.length) {
-        let thumbnails = []
-        req.files.forEach(file => {
-            file.filename += Date.now()
-            let path = file.destination + '\\' + file.filename
-            thumbnails.push(path)
-        })
-        const {title, description, price, stock, code, category} = req.body
-        const product = {title, description, price, stock, code, category, thumbnails}
-        const response = await productManager.addProduct(product)
-        return res.status(response.status ? response.status : 201)
-                  .json({status: response.status ? 'error' : 'success', 
-                        payload: response})
-    }
-    const {title, description, price, stock, code, category} = req.body
-    const product = {title, description, price, stock, code, category}
+router.post('/', async (req,res) => {
+    const product = req.body
     const response = await productManager.addProduct(product)
     res.status(response.status ? response.status : 201)
        .json({status: response.status ? 'error' : 'success', 
              payload: response})
+    if (response.product) io.emit('add-new-product', response.product)
 })
 
-router.put('/:pid', uploader.array('files'), async (req,res) =>{
+router.put('/:pid', async (req,res) =>{
     const id = Number(req.params.pid)
-    if (req.files.length) {
-        let thumbnails = []
-        req.files.forEach(file => {
-            file.filename += Date.now()
-            let path = file.destination + '\\' + file.filename
-            thumbnails.push(path)
-        })
-        const {title, description, price, stock, code, status, category} = req.body
-        const changes = {title, description, price, stock, code, category, status, thumbnails}
-        const response = await productManager.updateProduct(id,changes)
-        return res.status(response.status ? response.status : 201)
-                  .json({status: response.status ? 'error' : 'success', 
-                        payload: response})
-    }
-    const {title, description, price, stock, code, category, status} = req.body
-    const changes = {title, description, price, stock, code, category, status}
+    const changes = req.body
     const response = await productManager.updateProduct(id,changes)
     res.status(response.status ? response.status : 201)
        .json({status: response.status ? 'error' : 'success', 
              payload: response})
+    if (response.product) io.emit('update-product', response.product)
 })
 
 router.delete('/:pid',async (req,res) =>{
