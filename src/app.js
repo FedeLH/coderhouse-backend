@@ -5,10 +5,11 @@ import __dirname from './utils/utils.js'
 import path from 'path'
 import handlerbars from 'express-handlebars'
 import viewsRouter from './routes/views.router.js'
+import { firstItem } from './config/helper.js'
 
 const app = express()
 
-app.engine('handlebars', handlerbars.engine())
+app.engine('handlebars', handlerbars.engine({helpers: {firstItem: firstItem}}))
 app.set('view engine', 'handlebars')
 app.set('views',path.dirname(__dirname)+'/views')
 

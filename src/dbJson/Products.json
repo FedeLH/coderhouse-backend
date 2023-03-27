@@ -124,7 +124,7 @@
     "stock": 50,
     "code": "code10",
     "category": "tech",
-    "status": false,
+    "status": true,
     "thumbnails": [
       "https://placehold.co/300x200"
     ]

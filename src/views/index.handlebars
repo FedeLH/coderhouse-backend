@@ -5,9 +5,7 @@
 </div>
 {{#each products}}
     <div class="product">
-      {{#each thumbnails}}
-        <img src={{this}} alt="Imagen del producto">
-      {{/each}}
+      <img class="thumbnails" src="{{firstItem thumbnails}}" alt="Imagen del producto">
       <h2>{{title}}</h2>
       <p class="description">{{description}}</p>
       <p>Precio: ${{price}}</p>
