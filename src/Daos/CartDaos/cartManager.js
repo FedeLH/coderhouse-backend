@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { productManager } from './productManager.js'
+import { productManager } from '../ProductDaos/productManager.js'
 
 class CartManager {
     
@@ -84,6 +84,6 @@ class CartManager {
     }
 }
 
-const cartManager = new CartManager('./src/databases/Carts.json')
+const cartManager = new CartManager('./src/dbJson/Carts.json')
 
 export {CartManager, cartManager}

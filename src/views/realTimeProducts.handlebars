@@ -1,0 +1,46 @@
+<div>
+    <h1>
+        E-Commerce de tecnología
+    </h1>
+</div>
+<div>
+  <form id="add-product-form">
+
+      <label for="title">Nombre</label>
+      <input type="text" name="title" id="title">
+
+      <label for="description">Descipción</label>
+      <input type="text" name="description" id="description">
+
+      <label for="price">Precio</label>
+      <input type="number" name="price" id="price">
+
+      <label for="stock">Stock</label>
+      <input type="number" name="stock" id="stock">
+
+      <label for="code">Código</label>
+      <input type="text" name="code" id="code">
+      
+      <label for="category">Categoría</label>
+      <input type="text" name="category" id="category">
+
+      <button type="submit">Agregar producto</button>
+  </form>
+  <div id="product-list">
+    {{#each products}}
+        <div class="product">
+          {{#each thumbnails}}
+            <img src={{this}} alt="Imagen del producto">
+          {{/each}}
+          <h2>{{title}}</h2>
+          <p class="description">{{description}}</p>
+          <p>Precio: ${{price}}</p>
+          <p>Stock:{{stock}}</p>
+          <button class="delete-product" data-product-id="{{id}}">Eliminar producto</button>
+          <button class="add-to-cart" data-product-id="{{id}}">Añadir al carrito</button>
+        </div>
+    {{/each}}
+  </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realTimeProducts.js"></script>

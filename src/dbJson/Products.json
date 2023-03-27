@@ -33,7 +33,7 @@
     "stock": 50,
     "code": "code3",
     "category": "tech",
-    "status": true,
+    "status": false,
     "thumbnails": [
       "https://placehold.co/300x200"
     ]
@@ -46,7 +46,7 @@
     "stock": 50,
     "code": "code4",
     "category": "tech",
-    "status": true,
+    "status": false,
     "thumbnails": [
       "https://placehold.co/300x200"
     ]
@@ -59,7 +59,7 @@
     "stock": 50,
     "code": "code5",
     "category": "tech",
-    "status": true,
+    "status": false,
     "thumbnails": [
       "https://placehold.co/300x200"
     ]
@@ -72,7 +72,7 @@
     "stock": 50,
     "code": "code6",
     "category": "tech",
-    "status": true,
+    "status": false,
     "thumbnails": [
       "https://placehold.co/300x200"
     ]
@@ -85,7 +85,7 @@
     "stock": 50,
     "code": "code7",
     "category": "tech",
-    "status": true,
+    "status": false,
     "thumbnails": [
       "https://placehold.co/300x200"
     ]
@@ -98,7 +98,7 @@
     "stock": 50,
     "code": "code8",
     "category": "tech",
-    "status": true,
+    "status": false,
     "thumbnails": [
       "https://placehold.co/300x200"
     ]
@@ -111,7 +111,7 @@
     "stock": 50,
     "code": "code9",
     "category": "tech",
-    "status": true,
+    "status": false,
     "thumbnails": [
       "https://placehold.co/300x200"
     ]
@@ -124,7 +124,7 @@
     "stock": 50,
     "code": "code10",
     "category": "tech",
-    "status": true,
+    "status": false,
     "thumbnails": [
       "https://placehold.co/300x200"
     ]

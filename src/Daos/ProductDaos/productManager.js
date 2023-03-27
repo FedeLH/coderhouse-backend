@@ -67,7 +67,7 @@ class ProductManager {
             let newProduct = {id: newId, ...productValid, status, thumbnails }
             products.push(newProduct)
             await this.#saveProducts(products)
-            return {message:'Product add succesfully.'}
+            return {message:'Product add succesfully.', product: newProduct}
             
         } catch (error) {
             return {status: 400, message: error.message}
@@ -115,7 +115,7 @@ class ProductManager {
             products[index] = {...products[index],...changesValid}
           
             await this.#saveProducts(products)
-            return {message: 'Product update succesfully.'}
+            return {message: 'Product update succesfully.', product: products[index]}
            
         } catch (error) {
             return {status: 400, message: error.message}
@@ -146,6 +146,6 @@ class ProductManager {
     }
 }
 
-const productManager = new ProductManager('./src/databases/Products.json')
+const productManager = new ProductManager('./src/dbJson/Products.json')
 
 export {ProductManager, productManager}
