@@ -1,10 +1,8 @@
 import express from 'express'
-import productsRouter from './routes/products.router.js'
-import cartsRouter from './routes/carts.router.js'
+import { router } from './routes/index.js'
 import __dirname from './utils/utils.js'
 import path from 'path'
 import handlerbars from 'express-handlebars'
-import viewsRouter from './routes/views.router.js'
 import { firstItem } from './config/helper.js'
 
 const app = express()
@@ -18,8 +16,6 @@ app.use(express.urlencoded({extended:true}))
 
 app.use(express.static(path.dirname(__dirname)+'/public'))
 
-app.use('/api/products',productsRouter)
-app.use('/api/carts',cartsRouter)
-app.use('/',viewsRouter)
+app.use(router)
 
 export default app

@@ -1,5 +1,5 @@
 import express from 'express'
-import { productManager } from '../Daos/ProductDaos/productManager.js'
+import { productManager } from '../daos/productDaos/mongoDBProduct.dao.js'
 
 const router = express.Router()
 
@@ -24,5 +24,10 @@ router.get('/realTimeProducts', async (req,res)=>{
         products: activeProducts
     })
 })
+
+router.get('/chat', (req, res) => {
+    res.render('chat',{title: 'Chat', style: '/chat.css'})
+})
+
 
 export default router
