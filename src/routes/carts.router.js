@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { cartManager } from "../daos/cartDaos/mongoDBCart.dao.js"
+import { cartManager } from "../daos/db/cart.mongo.dao.js"
 
 const router = Router()
 
@@ -35,8 +35,7 @@ router.post('/', async (req,res) => {
 router.get('/:cid', async (req,res) => {
     try {
         const id = req.params.cid
-        const cart = await cartManager.getProductsByCartId(id)
-        const products = cart[0].products ?? []
+        const products = await cartManager.getProductsByCartId(id)
         res.status(200)
            .json({status: 'success',
                  payload: products})
@@ -51,8 +50,8 @@ router.post('/:cid/product/:pid', async (req,res) => {
     try {     
         const cid = req.params.cid
         const pid = req.params.pid
-        let cart = await cartManager.getProductsByCartId(cid)
-        let products = cart[0].products ?? []
+        let products = await cartManager.getProductsByCartId(cid)
+
         let encontrado = false
         for (let i = 0; i < products.length; i++) {
             const product = products[i]
@@ -62,8 +61,10 @@ router.post('/:cid/product/:pid', async (req,res) => {
                 break
             }
         }
+
         if(!encontrado) products = [...products, {_id: pid, quantify: 1}]
         const response = await cartManager.addProductByCartId(cid,products)
+        
         res.status(201)
            .json({status: 'success',
                  payload: response})

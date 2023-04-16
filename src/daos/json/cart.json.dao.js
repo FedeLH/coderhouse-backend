@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { productManager } from '../productDaos/productManager.js'
+import { productManager } from '../productDaos/product.json.dao.js'
 
 class CartManager {
     

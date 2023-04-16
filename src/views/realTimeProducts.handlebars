@@ -3,7 +3,7 @@
         E-Commerce de tecnología
     </h1>
 </div>
-<div>
+<div class="form-container">
   <form id="add-product-form">
 
       <label for="title">Nombre</label>
@@ -26,19 +26,33 @@
 
       <button type="submit" disabled>Agregar producto</button>
   </form>
-  <div id="product-list">
-    {{#each products}}
-        <div class="product">
-          <img class="thumbnails" src="{{firstItem thumbnails}}" alt="Imagen del producto">
-          <h2>{{title}}</h2>
-          <p class="description">{{description}}</p>
-          <p>Precio: ${{price}}</p>
-          <p>Stock:{{stock}}</p>
-          <button class="delete-product" data-product-id="{{id}}">Eliminar producto</button>
-          <button class="add-to-cart" data-product-id="{{id}}">Añadir al carrito</button>
-        </div>
-    {{/each}}
-  </div>
+</div>
+<div class="results-container">
+    <p><strong>Total de resultados:</strong> {{paginate.totalDocs}}</p>
+    <p><strong>Página:</strong> {{paginate.page}} de {{paginate.totalPages}}</p>
+</div>
+<div class="paginate-container">
+  {{#if paginate.hasPrevPage}}
+      <a href="/realTimeProducts/?page=1"><button class="paginate">Primera Página</button></a>
+      <a href="/realTimeProducts/?page={{paginate.prevPage}}"><button class="paginate">Página Anterior</button></a>
+  {{/if}}
+  {{#if paginate.hasNextPage}}
+      <a href="/realTimeProducts/?page={{paginate.nextPage}}"><button class="paginate">Página Siguiente</button></a>
+      <a href="/realTimeProducts/?page={{paginate.totalPages}}"><button class="paginate">Última Página</button></a>
+  {{/if}}
+</div>
+<div id="product-list" class="products-container">
+  {{#each products}}
+      <div class="product">
+        <img class="thumbnails" src="{{firstItem thumbnails}}" alt="Imagen del producto">
+        <h2>{{title}}</h2>
+        <p class="description">{{description}}</p>
+        <p>Precio: ${{price}}</p>
+        <p>Stock:{{stock}}</p>
+        <button class="delete-product" data-product-id="{{id}}">Eliminar producto</button>
+        <button class="add-to-cart" data-product-id="{{id}}">Añadir al carrito</button>
+      </div>
+  {{/each}}
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/realTimeProducts.js"></script>

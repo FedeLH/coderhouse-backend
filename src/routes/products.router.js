@@ -1,7 +1,5 @@
 import { Router } from 'express'
-//import { productManager } from '../Daos/ProductDaos/productManager.js'
-import { productManager } from '../daos/productDaos/mongoDBProduct.dao.js'
-//import { uploader } from '../utils/multer.js'
+import { productManager } from '../daos/db/product.mongo.dao.js'
 import __dirname from '../utils/utils.js'
 import { io } from '../config/server.js'
 import { productCreateSchema, productUpdateSchema } from '../validators/product.validator.js'
@@ -10,15 +8,13 @@ import validateObject from '../middlewares/validator.js'
 const router = Router()
 
 router.get('/',async (req,res) =>{
-    try {     
-        const allProducts = await productManager.getProducts()
-        const activeProducts = allProducts.filter(element => element.status)
-        const limit = req.query.limit
-        let limitedProducts = []
-        if (limit) limitedProducts = activeProducts.slice(0,limit)
+    try {
+        const { limit=10, page=1 } = req.query
+        const filter = req.query.filter ? JSON.parse(req.query.filter) : {}
+        const response = await productManager.getProducts({status: true, ...filter},limit,page)
         res.status(200)
            .json({status: 'success', 
-                 payload: limit ? limitedProducts : activeProducts})
+                 payload: response})
     } catch (error) {
         res.status(404)
            .json({status: 'error', 

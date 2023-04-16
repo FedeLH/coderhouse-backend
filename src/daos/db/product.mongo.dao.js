@@ -1,9 +1,9 @@
-import { productModel } from '../models/product.model.js'
+import { productModel } from '../../models/product.model.js'
 
 class ProductManager {
 
-    getProducts = async _ => {
-        return await productModel.find().lean()
+    getProducts = async (filter,limit,page) => {
+        return await productModel.paginate(filter, {limit, page, lean:true})
     }
 
     addProduct = async (product) => {

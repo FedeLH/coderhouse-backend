@@ -1,27 +1,29 @@
 import express from 'express'
-import { productManager } from '../daos/productDaos/mongoDBProduct.dao.js'
+import { productManager } from '../daos/db/product.mongo.dao.js'
 
 const router = express.Router()
 
 router.get('/', async (req,res)=>{
-    const allProducts = await productManager.getProducts()
-    const activeProducts = allProducts.filter(element => element.status)
+    const { filter={}, limit = 10, page = 1 } = req.query
+    const {docs, ...rest} = await productManager.getProducts({status: true}, limit, page)
 
     res.render('index',{
         title: 'Fed-Tech',
         style: 'index.css',
-        products: activeProducts
+        products: docs,
+        paginate: rest
     })
 })
 
 router.get('/realTimeProducts', async (req,res)=>{
-    const allProducts = await productManager.getProducts()
-    const activeProducts = allProducts.filter(element => element.status)
+    const { limit = 10, page = 1 } = req.query
+    const {docs, ...rest} = await productManager.getProducts({status: true}, limit, page)
 
     res.render('realTimeProducts',{
         title: 'Fed-Tech',
         style: 'realTimeProducts.css',
-        products: activeProducts
+        products: docs,
+        paginate: rest
     })
 })
 

@@ -1,4 +1,4 @@
-import { messageManager } from "../daos/messageDaos/mongoDBMessage.dao.js"
+import { messageManager } from "../daos/db/message.mongo.dao.js"
 
 const chatController = (io,socket) =>{
     socket.on('message', async data => {

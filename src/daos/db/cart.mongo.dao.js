@@ -1,16 +1,16 @@
-import { cartModel } from '../models/cart.model.js'
+import { cartModel } from '../../models/cart.model.js'
 
 class CartManager {
 
-    getCarts = async _ => {
-        return await cartModel.find()
+    getCarts = async (filter) => {
+        return await cartModel.find(filter)
     }
 
     addCart = async _ => {
         return await cartModel.create({})
     }
 
-    getProductsByCartId = async cid => {
+    getCartById = async cid => {
         return await cartModel.find({_id: cid})
     }
 
@@ -21,6 +21,12 @@ class CartManager {
     addProductByCartId = async (cid,products) => {
         return await cartModel.updateOne({_id: cid},{products: products})
     }
+
+    getProductsByCartId = async cid => {
+        let cart = await this.getCartById(cid)
+        return cart[0].products ?? []
+    }
+
 }
 
 const cartManager = new CartManager()
