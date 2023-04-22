@@ -15,7 +15,7 @@ router.post('/', uploader.array('files'), async (req,res) => {
     } catch (error) {
         res.status(404)
            .json({status: 'error', 
-                 payload: error})
+                 payload: {error: error, message: error.message}})
     }
 })
 

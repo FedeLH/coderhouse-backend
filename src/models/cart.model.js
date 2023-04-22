@@ -4,11 +4,12 @@ const cartCollection = 'carts'
 
 const cartSchema = new Schema({
     products: [{
-        product_id: {
+        pid: {
             type: Schema.Types.ObjectId,
-            ref: 'products'
+            ref: 'products',
+            unique: true
         },
-        quantify: {
+        quantity: {
             type: Number,
             default: 1
         }
@@ -16,7 +17,7 @@ const cartSchema = new Schema({
 })
 
 cartSchema.pre('find', function() {
-    this.populate('products.product_id')
+    this.populate('products.pid')
 })
 
 export const cartModel = model(cartCollection,cartSchema)

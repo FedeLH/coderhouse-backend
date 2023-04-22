@@ -1,97 +1,59 @@
 # coderhouse-backend
 Este repositorio contendrá los entregables y proyecto final correspondientes al curso de "Programación-Backend" de Coderhouse comisión #39730 del alumno "Federico Hanson".
 
-Precondición:
--Tener instalado nodejs, instrucciones en la web oficial:
+Precondiciones:
+
+  1. Tener instalado nodejs, instrucciones en la web oficial:
   
-  https://nodejs.org/en/
+    https://nodejs.org/en/
 
--Tener instalado nodemon (Se necesita haber instalado nodejs y se recomienda instalarlo de forma global):
+  2. Tener instalado nodemon (Para trabajar en modo desarrollo, se recomienda instalarlo de forma global):
 
-  npm i -g nodemon
+    npm i -g nodemon
 
-Para ejecutar el entregable correspondiente se debe contar con node instalado y correr el comando: 
+  3. Tener un servidor de base de datos (MongoDB) local o en la nube (Atlas):
 
-  npm run start
+    Por defecto el servidor intentará conectarse a uno local (ver ./src/config/config.js)
 
-Para levantar el servidor se debe ejecutar desde el proyecto:
+    Se pueden pedir las variables de conexión a una BD en la nube al autor
 
-  nodemon ./src/app.js
+  4. En caso de querer instalar un servidor local de BD:
 
-Endpoints:
+    Deberá instalar el community server ver página oficial:
 
-Los endpoints siempre devolverán un objeto con las propiedades status (actualmente "error" o "success") y payload que contendra lo que se espera del endpoint, productos, carritos, etc.
+      https://www.mongodb.com/try/download/community
 
-Ejemplo:
+  5. En caso de querer levantar un servidor en la nube puede optar por la version gratuita de Atlas, creando una cuenta en:
 
-{
-  "status": "success"
-  "payload": []
-}
+    https://www.mongodb.com/docs/atlas/
 
-Si no se modifica la configuracion del servidor correrá en http://localhost:8080
+Pasos para levantar el proyecto: 
 
-Dispone de las siguientes rutas:
+  1. Clonar el proyecto en la carpeta de preferencia
 
-.../api/products
+    git clone https://github.com/FedeLH/coderhouse-backend.git
 
-Obtener producto por id
-GET    .../:pid
-  request.body = none
+  2. Instalar dependencias:
 
-Obtener productos activos
-GET    .../?limit=n
-  request.body = none
+    npm i
 
-Editar producto por id
-PUT    .../:pid
-  request.body = {
-    "description": {"type": "string" ,"required: false"},
-    "price":       {"type": "number" ,"required: false"},
-    "title":       {"type": "string" ,"required: false"},
-    "stock":       {"type": "number" ,"required: false"},
-    "code":        {"type": "string" ,"required: false"},
-    "category":    {"type": "string" ,"required: false"},
-    "status":      {"type": "boolean","required: false"},
-    "thumbnails":  {"type": "array"  ,"required: false"}
-  }
+  3. Contar con servidor de BD
 
-Borrado logico de producto
-DELETE .../:pid
-  request.body = none
+  4. Configurar variables de entorno (en caso de no hacerse hay unas por defecto):
 
-Agregar producto nuevo*
-POST   .../
-  request.body = {
-    "description": {"type": "string" ,"required: true"},
-    "price":       {"type": "number" ,"required: true"},
-    "title":       {"type": "string" ,"required: true"},
-    "stock":       {"type": "number" ,"required: true"},
-    "code":        {"type": "string" ,"required: true"},
-    "category":    {"type": "string" ,"required: true"},
-    "status":      {"type": "boolean","required: false"},
-    "thumbnails":  {"type": "array"  ,"required: false"}
-  }
+    En la carpeta raíz hay un archivo .env.sample
 
-.../api/carts
+    Se debe crear el archivo .env con las mismas variables 
 
-Obtener los productos de un carrito
-GET    .../:cid
-  request.body = none
+  5. Levantar el servidor:
 
-Obtener los carritos**
-GET    .../?limit=n
-  request.body = none
+    Con node (production):
 
-Agregar nuevo carrito
-POST   .../
-  request.body = none
+      npm run start
 
-Agregar un producto a un carrito por id
-POST   .../:cid/product/:pid
-  request.body = none
+    Con nodemon (development):
 
-Comentarios extras
-* code es un valor único, sin importar que se haya borrado el producto, actualmente si se desea agregar un producto borrado, se deberia editar el status del producto borrado, se podria implementar de ser necesario que al intentar agregar un producto borrado el mismo se reactive.
-** este endpoint no era requerido para esta entrega, pero se considera util para ver como afectan los demas endpoints al listado de carritos sin tener que abrir el archivo y poder visualizar todo desde la herramienta en la que se realicen los test (ejemplo: Postman***)
-*** en caso de usarse Postman se pueden solicitar los archivos para importar los endpoints y el entorno de trabajo 
+      npm run dev
+
+  6. Se puede solicitar collection de Postman al autor
+  

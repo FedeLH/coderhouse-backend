@@ -2,8 +2,8 @@ import { productModel } from '../../models/product.model.js'
 
 class ProductManager {
 
-    getProducts = async (filter,limit,page) => {
-        return await productModel.paginate(filter, {limit, page, lean:true})
+    getProducts = async (filter,spec) => {
+        return await productModel.paginate(filter, spec)
     }
 
     addProduct = async (product) => {
@@ -20,6 +20,10 @@ class ProductManager {
 
     deleteProduct = async pid => {
         return await productModel.updateOne({_id: pid},{status: false})
+    }
+
+    getProductsCategories = async _ => {
+        return await productModel.distinct('category')
     }
 
 }

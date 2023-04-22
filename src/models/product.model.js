@@ -24,9 +24,25 @@ const productSchema = new Schema({
     code: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        index: true
     },
-    category: String,
+    category: {
+        type: String,
+        enum: [
+                'accesorios', 
+               'auriculares', 
+                  'teclados', 
+           'placas de video', 
+                 'monitores', 
+                 'parlantes', 
+                    'mouses', 
+                'microfonos', 
+                 'notebooks',
+              'motherboards', 
+                 'gabinetes'
+              ]
+    },
     status: {
         type: Boolean,
         default: true
