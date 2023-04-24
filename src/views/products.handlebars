@@ -11,7 +11,7 @@
         <option value="false">no disponibles</option>
     </select>
     <label for="categories"><strong>Categorías:</strong></label>
-    <select name="query" id="categories" onchange="changeOptions(this)">
+    <select name="query" id="category" onchange="changeOptions(this)">
             <option value="none">todas</option>
         {{#each categories}}
             <option value="{{this}}">{{this}}</option>
