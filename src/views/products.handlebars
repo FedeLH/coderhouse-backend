@@ -1,0 +1,56 @@
+{{> header}}
+<div class="results-container">
+    <p><strong>Total de resultados:</strong> {{paginate.totalDocs}}</p>
+    <p><strong>Página:</strong> {{paginate.page}} de {{paginate.totalPages}}</p>
+</div>
+<div class="filters-container">
+    <label for="status"><strong>Disponibilidad:</strong></label>
+    <select name="query" id="status" onchange="changeOptions(this)">
+        <option value="none">todos</option>
+        <option value="true">disponibles</option>
+        <option value="false">no disponibles</option>
+    </select>
+    <label for="category"><strong>Categorías:</strong></label>
+    <select name="query" id="category" onchange="changeOptions(this)">
+            <option value="none">todas</option>
+        {{#each categories}}
+            <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+    <label for="sort"><strong>Ordenar:</strong></label>
+    <select name="sort" id="sort" onchange="changeOptions(this)">
+        <option value="none">-</option>
+        <option value="asc">menor a mayor precio</option>
+        <option value="desc">mayor a menor precio</option>
+    </select>
+</div>
+<div class="paginate-container">
+    {{#if paginate.hasPrevPage}}
+        <button class="paginate" onclick="changePage(1)">Primera Página</button>
+        <button class="paginate" onclick="changePage({{paginate.prevPage}})">Página Anterior</button>
+    {{/if}}
+    {{#if paginate.hasNextPage}}
+        <button class="paginate" onclick="changePage({{paginate.nextPage}})">Página Siguiente</button>
+        <button class="paginate" onclick="changePage({{paginate.totalPages}})">Última Página</button>
+    {{/if}}
+</div>
+<div class="products-container">
+    {{#each products}}
+        <div class="product">
+        <img class="thumbnails" src="{{firstItem thumbnails}}" alt="Imagen del producto">
+        <h2>{{title}}</h2>
+        <p class="description">{{description}}</p>
+        <p>Precio: ${{price}}</p>
+        <p>Categoría: {{category}}</p>
+        {{#if status}}
+            <p>Stock:{{stock}}</p>
+        {{else}}            
+            <p>No disponible</p>
+        {{/if}}
+        <button class="add-to-cart" id={{_id}}>Añadir al carrito</button>
+        </div>
+    {{/each}}
+</div>
+{{> footer}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/products.js"></script>

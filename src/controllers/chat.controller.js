@@ -1,4 +1,4 @@
-import { messageManager } from "../daos/messageDaos/mongoDBMessage.dao.js"
+import { messageManager } from "../daos/db/message.mongo.dao.js"
 
 const chatController = (io,socket) =>{
     socket.on('message', async data => {
@@ -12,8 +12,14 @@ const chatController = (io,socket) =>{
         }
     })
 
-    socket.on('newUser', newUser => {
-        socket.broadcast.emit('newUser', newUser)
+    socket.on('newUser', async newUser => {
+        try {
+            const messages = await messageManager.getMessages()
+            io.emit('messageLogs', messages)
+            socket.broadcast.emit('newUser', newUser)
+        } catch (error) {
+            socket.emit('error', error)
+        }
     })
 }
 

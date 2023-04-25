@@ -1,5 +1,5 @@
 import { Server } from 'socket.io'
-import { productManager } from '../Daos/ProductDaos/productManager.js'
+import { productManager } from '../daos/json/product.json.dao.js'
 import chatController from "../controllers/chat.controller.js";
 
 const createIoServer = (httpServer) => {
@@ -16,6 +16,10 @@ const createIoServer = (httpServer) => {
         })
 
         chatController(io,socket)
+
+        socket.on('disconnect', socket => {
+            console.log('Cliente desconectado')
+        })
     })
 
     return io

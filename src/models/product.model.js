@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose"
+import mongoosePaginate from "mongoose-paginate-v2"
 
 const productCollection = 'products'
 
@@ -23,9 +24,25 @@ const productSchema = new Schema({
     code: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        index: true
     },
-    category: String,
+    category: {
+        type: String,
+        enum: [
+                'accesorios', 
+               'auriculares', 
+                  'teclados', 
+           'placas de video', 
+                 'monitores', 
+                 'parlantes', 
+                    'mouses', 
+                'microfonos', 
+                 'notebooks',
+              'motherboards', 
+                 'gabinetes'
+              ]
+    },
     status: {
         type: Boolean,
         default: true
@@ -35,5 +52,7 @@ const productSchema = new Schema({
         default: ["https://placehold.co/300x200"]
     }
 })
+
+productSchema.plugin(mongoosePaginate)
 
 export const productModel = model(productCollection,productSchema)

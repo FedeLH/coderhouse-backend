@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { productManager } from '../productDaos/productManager.js'
+import { productManager } from '../productDaos/product.json.dao.js'
 
 class CartManager {
     
@@ -44,7 +44,7 @@ class CartManager {
         }
     }
 
-    addProductByCartId = async (cartId,productId,quantify=1) => {
+    addProductByCartId = async (cartId,productId,quantity=1) => {
         try {
             if(!(await this.#isValid(productId))) throw new Error('Invalid product ID')
             const carts = await this.getCarts()
@@ -54,9 +54,9 @@ class CartManager {
             
             let index = cart.products.findIndex(product => product.id === productId)           
             if(index === -1) {
-                cart.products.push({id:productId,quantify})
+                cart.products.push({id:productId,quantity: quantity})
             }else {
-                cart.products[index].quantify += quantify
+                cart.products[index].quantity += quantity
             }
 
             this.#saveCarts(carts)
