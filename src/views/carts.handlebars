@@ -5,16 +5,17 @@
         <img class="thumbnails" src="{{firstItem pid.thumbnails}}" alt="Imagen del producto">
         <h2>{{pid.title}}</h2>
         <p class="description">{{pid.description}}</p>
-        <p>Precio: ${{pid.price}}</p>
-        <p>Categoría: {{pid.category}}</p>
+        <p><strong>Precio: </strong>${{pid.price}}</p>
+        <p><strong>Categoría: </strong>{{pid.category}}</p>
         {{#if pid.status}}
-            <p>Stock:{{pid.stock}}</p>
+            <p><strong>Stock: </strong>{{pid.stock}}</p>
         {{else}}            
             <p>No disponible</p>
         {{/if}}
-        <label for="quantity">Cantidad:</label>
+        <p><strong>Cantidad: </strong>{{quantity}}</p>
+        {{!-- <label for="quantity"><strong>Cantidad:</strong></label>
         <input type="number" name="quantity" id="quantity" placeholder="{{quantity}}">
-        <button class="del-to-cart">Eliminar del carrito</button>
+        <button class="del-to-cart">Eliminar del carrito</button> funcionalidad no implementada --}}
         </div>
     {{/each}}
 </div>

@@ -4,7 +4,8 @@ let searchParams = urlObj.searchParams
 let sort = document.getElementById('sort')
 let category = document.getElementById('category')
 let state = document.getElementById('status')
-let cart
+let buttons = document.querySelectorAll(".add-to-cart")
+let cid
 
 const findIndex = (valueToFind, options) => {
     for (let i = 0; i < options.length; i++) {
@@ -61,6 +62,57 @@ const changeOptions = select => {
     if (searchParams.toString().length > 0) {
         window.location.href = urlObj.origin+urlObj.pathname+"?"+searchParams.toString()
     } else {
-        window.location.href = console.log(urlObj.origin+urlObj.pathname)
+        window.location.href = urlObj.origin+urlObj.pathname
     }
 }
+
+const changePage = page => {
+    if (searchParams.has('page')) searchParams.delete('page')
+    if (searchParams.toString().length > 0) {
+        window.location.href = urlObj.origin+urlObj.pathname+"?page="+page+"&"+searchParams.toString()
+    } else {
+        window.location.href = urlObj.origin+urlObj.pathname+"?page="+page
+    }
+}
+
+const addToCart = async pid => {
+    try {
+        if (!cid) {
+            let response = await fetch('/api/carts',{method: 'POST', headers:{'content-type': 'application/json'}})
+            let data = await response.json()
+            cid = data.payload._id
+            let nav = document.querySelector('.navbar-menu')
+            nav.innerHTML += `<li><a href="/carts/${cid}">Cart</a></li>`
+        }
+        let response = await fetch(`/api/carts/${cid}/products/${pid}`,{method: 'POST', headers:{'content-type': 'application/json'}})
+        let data = await response.json()
+        let statusResponse = data.status
+        if (statusResponse !== 'success') {
+            return Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: `El producto no pudo ser agregado`,
+            })  
+        }
+        Swal.fire({
+            text: `Producto agregado`,
+            toast: true,
+            position: 'top-right',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500
+        })
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: `Ocurrió un error: ${error} ${error.message}`,
+        })  
+    }
+}
+
+buttons.forEach(button => {
+    button.addEventListener('click', _ => {
+       addToCart(button.id)
+    })
+})

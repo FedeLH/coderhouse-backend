@@ -10,7 +10,7 @@
         <option value="true">disponibles</option>
         <option value="false">no disponibles</option>
     </select>
-    <label for="categories"><strong>Categorías:</strong></label>
+    <label for="category"><strong>Categorías:</strong></label>
     <select name="query" id="category" onchange="changeOptions(this)">
             <option value="none">todas</option>
         {{#each categories}}
@@ -26,12 +26,12 @@
 </div>
 <div class="paginate-container">
     {{#if paginate.hasPrevPage}}
-        <a href="/products?page=1"><button class="paginate">Primera Página</button></a>
-        <a href="/products?page={{paginate.prevPage}}"><button class="paginate">Página Anterior</button></a>
+        <button class="paginate" onclick="changePage(1)">Primera Página</button>
+        <button class="paginate" onclick="changePage({{paginate.prevPage}})">Página Anterior</button>
     {{/if}}
     {{#if paginate.hasNextPage}}
-        <a href="/products?page={{paginate.nextPage}}"><button class="paginate">Página Siguiente</button></a>
-        <a href="/products?page={{paginate.totalPages}}"><button class="paginate">Última Página</button></a>
+        <button class="paginate" onclick="changePage({{paginate.nextPage}})">Página Siguiente</button>
+        <button class="paginate" onclick="changePage({{paginate.totalPages}})">Última Página</button>
     {{/if}}
 </div>
 <div class="products-container">
@@ -47,9 +47,10 @@
         {{else}}            
             <p>No disponible</p>
         {{/if}}
-        <button class="add-to-cart">Añadir al carrito</button>
+        <button class="add-to-cart" id={{_id}}>Añadir al carrito</button>
         </div>
     {{/each}}
 </div>
 {{> footer}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/products.js"></script>
