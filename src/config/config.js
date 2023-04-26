@@ -7,3 +7,5 @@ export const DB_HOST = process.env.DB_HOST || 'mongodb://127.0.0.1:27017/ecommer
 export const DB_AUTO_INDEX= Boolean(process.env.DB_AUTO_INDEX) || false
 export const DB_BUFFER_COMMANDS= Boolean(process.env.DB_BUFFER_COMMANDS) || false
 export const DB_OPTIONS = {autoIndex: DB_AUTO_INDEX, bufferCommands: DB_BUFFER_COMMANDS}
+export const ADMIN_USER = process.env.ADMIN_USER || "admin"
+export const ADMIN_PASS = process.env.ADMIN_PASS || "admin"
