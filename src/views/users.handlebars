@@ -1,0 +1,31 @@
+{{> header}}
+<div class="results-container">
+    <p><strong>Total de resultados:</strong> {{paginate.totalDocs}}</p>
+    <p><strong>Página:</strong> {{paginate.page}} de {{paginate.totalPages}}</p>
+</div>
+<div class="paginate-container">
+    {{#if paginate.hasPrevPage}}
+        <button class="paginate" onclick="changePage(1)">Primera Página</button>
+        <button class="paginate" onclick="changePage({{paginate.prevPage}})">Página Anterior</button>
+    {{/if}}
+    {{#if paginate.hasNextPage}}
+        <button class="paginate" onclick="changePage({{paginate.nextPage}})">Página Siguiente</button>
+        <button class="paginate" onclick="changePage({{paginate.totalPages}})">Última Página</button>
+    {{/if}}
+</div>
+<div class="users-container">
+    {{#each users}}
+        <div class="user">
+            <p><strong>Nombre: </strong>{{first_name}}</p>
+            <p><strong>Apellido: </strong>{{last_name}}</p>
+            {{#if gender}}
+                <p><strong>Genero: </strong>{{gender}}</p>
+            {{else}}            
+                <p>No disponible</p>
+            {{/if}}
+        </div>
+    {{/each}}
+</div>
+{{> footer}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/users.js"></script>

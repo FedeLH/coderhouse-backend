@@ -29,6 +29,29 @@ router.get('/products', async (req,res)=>{
     }
 })
 
+router.get('/users', async (req,res)=>{
+    try {
+        const { limit = 10, page = 1, sort = null } = req.query
+        const query = req.query.query ? JSON.parse(req.query.query) : {}
+        const spec = {limit, page, lean: true}
+        const {docs, ...rest} = await userManager.getUsers(query, spec)
+ 
+        res.render('users',{
+            title: 'Fed-Tech',
+            style: 'users.css',
+            users: docs,
+            paginate: rest
+        })
+    } catch (error) {
+        res.render('error',{
+            title: 'Error',
+            style: 'error.css',
+            error: error,
+            message: error.message
+        })
+    }
+})
+
 router.get('/realTimeProducts', async (req,res)=>{
     try {
         const { limit = 10, page = 1, sort = null } = req.query
@@ -86,5 +109,8 @@ router.get('/terms&Conditions', async (req,res) => {
     res.render('terms&Conditions',{title: 'Terms and Conditions', style: '/terms&Conditions.css'})
 })
 
+router.get('/register', async (req,res) => {
+    res.render('register',{title: 'Register', style: '/register.css'})
+})
 
 export default router
