@@ -18,4 +18,9 @@ app.use(express.static(path.dirname(__dirname)+'/public'))
 
 app.use(router)
 
+app.use((err, req, res, next)=>{
+    console.log(err)
+    res.status(500).send('Internal server error')
+})
+
 export default app
