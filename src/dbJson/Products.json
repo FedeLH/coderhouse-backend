@@ -8,9 +8,7 @@
     "code": "code1",
     "category": "tech",
     "status": false,
-    "thumbnails": [
-      "https://placehold.co/300x200"
-    ]
+    "thumbnails": ["https://placehold.co/300x200"]
   },
   {
     "id": 2,
@@ -21,9 +19,7 @@
     "code": "code2",
     "category": "tech",
     "status": false,
-    "thumbnails": [
-      "https://placehold.co/300x200"
-    ]
+    "thumbnails": ["https://placehold.co/300x200"]
   },
   {
     "id": 3,
@@ -34,9 +30,7 @@
     "code": "code3",
     "category": "tech",
     "status": false,
-    "thumbnails": [
-      "https://placehold.co/300x200"
-    ]
+    "thumbnails": ["https://placehold.co/300x200"]
   },
   {
     "id": 4,
@@ -47,9 +41,7 @@
     "code": "code4",
     "category": "tech",
     "status": false,
-    "thumbnails": [
-      "https://placehold.co/300x200"
-    ]
+    "thumbnails": ["https://placehold.co/300x200"]
   },
   {
     "id": 5,
@@ -60,9 +52,7 @@
     "code": "code5",
     "category": "tech",
     "status": false,
-    "thumbnails": [
-      "https://placehold.co/300x200"
-    ]
+    "thumbnails": ["https://placehold.co/300x200"]
   },
   {
     "id": 6,
@@ -73,9 +63,7 @@
     "code": "code6",
     "category": "tech",
     "status": false,
-    "thumbnails": [
-      "https://placehold.co/300x200"
-    ]
+    "thumbnails": ["https://placehold.co/300x200"]
   },
   {
     "id": 7,
@@ -86,9 +74,7 @@
     "code": "code7",
     "category": "tech",
     "status": false,
-    "thumbnails": [
-      "https://placehold.co/300x200"
-    ]
+    "thumbnails": ["https://placehold.co/300x200"]
   },
   {
     "id": 8,
@@ -99,9 +85,7 @@
     "code": "code8",
     "category": "tech",
     "status": false,
-    "thumbnails": [
-      "https://placehold.co/300x200"
-    ]
+    "thumbnails": ["https://placehold.co/300x200"]
   },
   {
     "id": 9,
@@ -112,9 +96,7 @@
     "code": "code9",
     "category": "tech",
     "status": false,
-    "thumbnails": [
-      "https://placehold.co/300x200"
-    ]
+    "thumbnails": ["https://placehold.co/300x200"]
   },
   {
     "id": 10,
@@ -125,8 +107,6 @@
     "code": "code10",
     "category": "tech",
     "status": false,
-    "thumbnails": [
-      "https://placehold.co/300x200"
-    ]
+    "thumbnails": ["https://placehold.co/300x200"]
   }
 ]
