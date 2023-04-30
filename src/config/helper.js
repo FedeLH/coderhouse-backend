@@ -1,5 +1,3 @@
 export const firstItem = (array) => {
-      return array[0]
-}
-  
-
+  return array[0];
+};

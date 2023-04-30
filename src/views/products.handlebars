@@ -1,4 +1,9 @@
 {{> header}}
+<div class="welcome-container">
+    <h1>Bienvenido {{userData.name}}</h1>
+    <p><strong>Email: </strong>{{userData.email}}</p>
+    <p><strong>Rol: </strong>{{userData.role}}</p>
+</div>
 <div class="results-container">
     <p><strong>Total de resultados:</strong> {{paginate.totalDocs}}</p>
     <p><strong>Página:</strong> {{paginate.page}} de {{paginate.totalPages}}</p>

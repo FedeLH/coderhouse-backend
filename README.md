@@ -1,59 +1,59 @@
 # coderhouse-backend
+
 Este repositorio contendrá los entregables y proyecto final correspondientes al curso de "Programación-Backend" de Coderhouse comisión #39730 del alumno "Federico Hanson".
 
 Precondiciones:
 
-  1. Tener instalado nodejs, instrucciones en la web oficial:
-  
-    https://nodejs.org/en/
+1. Tener instalado nodejs, instrucciones en la web oficial:
 
-  2. Tener instalado nodemon (Para trabajar en modo desarrollo, se recomienda instalarlo de forma global):
+   https://nodejs.org/en/
 
-    npm i -g nodemon
+2. Tener instalado nodemon (Para trabajar en modo desarrollo, se recomienda instalarlo de forma global):
 
-  3. Tener un servidor de base de datos (MongoDB) local o en la nube (Atlas):
+   npm i -g nodemon
 
-    Por defecto el servidor intentará conectarse a uno local (ver ./src/config/config.js)
+3. Tener un servidor de base de datos (MongoDB) local o en la nube (Atlas):
 
-    Se pueden pedir las variables de conexión a una BD en la nube al autor
+   Por defecto el servidor intentará conectarse a uno local (ver ./src/config/config.js)
 
-  4. En caso de querer instalar un servidor local de BD:
+   Se pueden pedir las variables de conexión a una BD en la nube al autor
 
-    Deberá instalar el community server ver página oficial:
+4. En caso de querer instalar un servidor local de BD:
 
-      https://www.mongodb.com/try/download/community
+   Deberá instalar el community server ver página oficial:
 
-  5. En caso de querer levantar un servidor en la nube puede optar por la version gratuita de Atlas, creando una cuenta en:
+   https://www.mongodb.com/try/download/community
 
-    https://www.mongodb.com/docs/atlas/
+5. En caso de querer levantar un servidor en la nube puede optar por la version gratuita de Atlas, creando una cuenta en:
 
-Pasos para levantar el proyecto: 
+   https://www.mongodb.com/docs/atlas/
 
-  1. Clonar el proyecto en la carpeta de preferencia
+Pasos para levantar el proyecto:
 
-    git clone https://github.com/FedeLH/coderhouse-backend.git
+1. Clonar el proyecto en la carpeta de preferencia
 
-  2. Instalar dependencias:
+   git clone https://github.com/FedeLH/coderhouse-backend.git
 
-    npm i
+2. Instalar dependencias:
 
-  3. Contar con servidor de BD
+   npm i
 
-  4. Configurar variables de entorno (en caso de no hacerse hay unas por defecto):
+3. Contar con servidor de BD
 
-    En la carpeta raíz hay un archivo .env.sample
+4. Configurar variables de entorno (en caso de no hacerse hay unas por defecto):
 
-    Se debe crear el archivo .env con las mismas variables 
+   En la carpeta raíz hay un archivo .env.sample
 
-  5. Levantar el servidor:
+   Se debe crear el archivo .env con las mismas variables
 
-    Con node (production):
+5. Levantar el servidor:
 
-      npm run start
+   Con node (production):
 
-    Con nodemon (development):
+   npm run start
 
-      npm run dev
+   Con nodemon (development):
 
-  6. Se puede solicitar collection de Postman al autor
-  
+   npm run dev
+
+6. Se puede solicitar collection de Postman al autor

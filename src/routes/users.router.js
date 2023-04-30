@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { productManager } from "../daos/db/product.mongo.dao.js";
+import { userManager } from "../daos/db/user.mongo.dao.js";
 import __dirname from "../utils/utils.js";
 import { io } from "../config/server.js";
 import {
-  productCreateSchema,
-  productUpdateSchema,
-} from "../validators/product.validator.js";
+  userCreateSchema,
+  userUpdateSchema,
+} from "../validators/user.validator.js";
 import validateObject from "../middlewares/validator.js";
 import { SERVER_URL, PORT } from "../config/config.js";
 
@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
     const spec = sort
       ? { limit, page, sort: { price: sort }, lean: true }
       : { limit, page, lean: true };
-    const response = await productManager.getProducts(query, spec);
+    const response = await userManager.getUsers(query, spec);
     const currentPage = response.page;
     const prevPage = response.prevPage;
     const nextPage = response.nextPage;
@@ -33,10 +33,10 @@ router.get("/", async (req, res) => {
       hasPrevPage: response.hasPrevPage,
       hasNextPage: response.hasNextPage,
       prevLink: prevPage
-        ? `${SERVER_URL}:${PORT}/api/products?limit=${limit}&page=${prevPage}`
+        ? `${SERVER_URL}:${PORT}/api/users?limit=${limit}&page=${prevPage}`
         : null,
       nextLink: nextPage
-        ? `${SERVER_URL}:${PORT}/api/products?limit=${limit}&page=${nextPage}`
+        ? `${SERVER_URL}:${PORT}/api/users?limit=${limit}&page=${nextPage}`
         : null,
     });
   } catch (error) {
@@ -50,8 +50,8 @@ router.get("/", async (req, res) => {
 router.get("/:pid", async (req, res) => {
   try {
     const id = req.params.pid;
-    const product = await productManager.getProductById(id);
-    res.status(200).json({ status: "success", payload: product });
+    const user = await userManager.getUserById(id);
+    res.status(200).json({ status: "success", payload: user });
   } catch (error) {
     res.status(404).json({
       status: "error",
@@ -60,12 +60,12 @@ router.get("/:pid", async (req, res) => {
   }
 });
 
-router.post("/", validateObject(productCreateSchema), async (req, res) => {
+router.post("/", validateObject(userCreateSchema), async (req, res) => {
   try {
-    const product = req.body;
-    const response = await productManager.addProduct(product);
+    const user = req.body;
+    const response = await userManager.addUser(user);
     res.status(201).json({ status: "success", payload: response });
-    if (response.product) io.emit("add-new-product", response.product);
+    if (response.user) io.emit("add-new-user", response.user);
   } catch (error) {
     if (error.code === 11000)
       return res.status(400).json({
@@ -79,13 +79,13 @@ router.post("/", validateObject(productCreateSchema), async (req, res) => {
   }
 });
 
-router.put("/:pid", validateObject(productUpdateSchema), async (req, res) => {
+router.put("/:pid", validateObject(userUpdateSchema), async (req, res) => {
   try {
     const id = req.params.pid;
     const changes = req.body;
-    const response = await productManager.updateProduct(id, changes);
+    const response = await userManager.updateUser(id, changes);
     res.status(201).json({ status: "success", payload: response });
-    if (response.product) io.emit("update-product", response.product);
+    if (response.user) io.emit("update-user", response.user);
   } catch (error) {
     res.status(404).json({
       status: "error",
@@ -97,7 +97,7 @@ router.put("/:pid", validateObject(productUpdateSchema), async (req, res) => {
 router.delete("/:pid", async (req, res) => {
   try {
     const id = req.params.pid;
-    const response = await productManager.deleteProduct(id);
+    const response = await userManager.deleteUser(id);
     res.status(200).json({ status: "success", payload: response });
   } catch (error) {
     res.status(404).json({

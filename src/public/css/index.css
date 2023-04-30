@@ -5,53 +5,60 @@ body {
   grid-template-rows: auto 1fr auto;
 }
 
+.btn-invisible {
+  background-color: transparent;
+  width: fit-content;
+  border: none;
+  color: #ffffff;
+  padding: 0;
+}
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
 }
-  
+
 .navbar-logo a {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-decoration: none;
-    color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #fff;
 }
-  
+
 .navbar-menu {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-  
+
 .navbar-menu li {
-    margin: 0 10px;
+  margin: 0 10px;
 }
-  
+
 .navbar-menu li a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
 }
-  
+
 .navbar-toggle {
-    display: none;
-    cursor: pointer;
+  display: none;
+  cursor: pointer;
 }
-  
+
 .navbar-toggle span {
-    display: block;
-    width: 25px;
-    height: 3px;
-    margin: 5px;
-    background-color: #fff;
-    transition: all 0.3s ease-in-out;
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px;
+  background-color: #fff;
+  transition: all 0.3s ease-in-out;
 }
 
 footer {
@@ -86,9 +93,8 @@ footer {
   font-size: 0.8rem;
   color: #666;
 }
-  
-@media screen and (max-width: 768px) {
 
+@media screen and (max-width: 768px) {
   .navbar-menu {
     display: flex;
     flex-direction: column;
@@ -108,7 +114,6 @@ footer {
   .navbar-menu.open {
     transform: translateY(0);
   }
-
 
   .navbar-toggle {
     display: block;
