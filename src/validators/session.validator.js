@@ -8,7 +8,9 @@ export const loginSchema = Joi.object({
 export const registerSchema = Joi.object({
   first_name: Joi.string().required(),
   last_name: Joi.string().required(),
-  email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
+  email: Joi.string()
+    .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+    .required(),
   gender: Joi.string(),
   password: Joi.string().required(),
 });

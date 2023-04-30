@@ -2,7 +2,10 @@ import { Router } from "express";
 import { userManager } from "../daos/db/user.mongo.dao.js";
 import { ADMIN_USER, ADMIN_PASS } from "../config/config.js";
 import validateObject from "../middlewares/validator.js";
-import { loginSchema, registerSchema } from "../validators/session.validator.js"
+import {
+  loginSchema,
+  registerSchema,
+} from "../validators/session.validator.js";
 
 const router = Router();
 
@@ -43,21 +46,22 @@ router.post("/login", validateObject(loginSchema), async (req, res) => {
 
 router.post("/register", validateObject(registerSchema), async (req, res) => {
   try {
-    const newUser = req.body
+    const newUser = req.body;
 
     const user = await userManager.getUserByEmail(newUser.email);
 
-    if(user.length > 0 || newUser.email === ADMIN_USER) return res.status(404).json({
-      status: "error",
-      payload: {
-        error: "Invalid",
-        message: "User already exists",
-      },
-    });
+    if (user.length > 0 || newUser.email === ADMIN_USER)
+      return res.status(404).json({
+        status: "error",
+        payload: {
+          error: "Invalid",
+          message: "User already exists",
+        },
+      });
 
-    const response = await userManager.addUser(newUser)
+    const response = await userManager.addUser(newUser);
 
-    console.log({response})
+    console.log({ response });
 
     return res.status(307).redirect("/login");
   } catch (error) {
