@@ -4,13 +4,16 @@ import __dirname from './utils/utils.js'
 import path from 'path'
 import handlerbars from 'express-handlebars'
 import { firstItem } from './config/helper.js'
+import objConfig from './config/db.js'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import FileStore from 'session-file-store'
-import { create } from 'connect-mongo'
+import pkg from 'connect-mongo'
+
+const { create } = pkg
 
 const fileStorege = FileStore(session)
-
+objConfig.connectDB()
 const app = express()
 
 app.engine('handlebars', handlerbars.engine({helpers: {firstItem: firstItem}}))

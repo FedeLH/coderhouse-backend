@@ -1,6 +1,7 @@
 import express from 'express'
 import { productManager } from '../daos/db/product.mongo.dao.js'
 import { cartManager } from '../daos/db/cart.mongo.dao.js'
+import { userManager } from '../daos/db/user.mongo.dao.js'
 
 const router = express.Router()
 
@@ -110,7 +111,20 @@ router.get('/terms&Conditions', async (req,res) => {
 })
 
 router.get('/register', async (req,res) => {
-    res.render('register',{title: 'Register', style: '/register.css'})
+    const genders = await userManager.getUsersGenders()
+    res.render('register',{
+        title: 'Register', 
+        style: '/register.css',
+        genders
+    })
+})
+
+router.get('/login', async (req,res) => {
+    res.render('login',{title: 'Login', style: '/login.css'})
+})
+
+router.get('/profile', async (req,res) => {
+    res.render('profile',{title: 'Profile', style: '/profile.css'})
 })
 
 export default router

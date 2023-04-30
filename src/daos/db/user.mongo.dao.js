@@ -20,6 +20,10 @@ class UserManager {
     deleteUser = async pid => {
         return await userModel.updateOne({_id: uid},{status: false})
     }
+
+    getUsersGenders = async _ => {
+        return await userModel.distinct('gender')
+    }
 }
 
 const userManager = new UserManager()

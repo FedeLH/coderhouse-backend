@@ -9,7 +9,8 @@ const objConfig = {
         } catch (error) {
             console.log(error)
         }
-    }
+    },
+    url: DB_HOST
 }
 
 export default objConfig

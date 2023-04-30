@@ -1,0 +1,15 @@
+{{> header}}
+<div class="user-container">
+    {{#if user}}
+        <div class="user">
+            <p><strong>Nombre: </strong>{{first_name}}</p>
+            <p><strong>Apellido: </strong>{{last_name}}</p>
+            {{#if gender}}
+                <p><strong>Genero: </strong>{{gender}}</p>
+            {{else}}            
+                <p>No disponible</p>
+            {{/if}}
+        </div>
+    {{/if}}
+</div>
+{{> footer}}
