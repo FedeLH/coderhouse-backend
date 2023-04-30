@@ -12,12 +12,10 @@ router.post("/", uploader.array("files"), async (req, res) => {
     res.status(201).json({ status: "success", payload: response });
     if (response.product) io.emit("add-new-product", response);
   } catch (error) {
-    res
-      .status(404)
-      .json({
-        status: "error",
-        payload: { error: error, message: error.message },
-      });
+    res.status(404).json({
+      status: "error",
+      payload: { error: error, message: error.message },
+    });
   }
 });
 

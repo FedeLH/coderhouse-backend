@@ -19,6 +19,10 @@ const userSchema = new Schema({
     index: true,
   },
   gender: String,
+  password: {
+    type: String,
+    required: true,
+  },
   status: {
     type: Boolean,
     default: true,

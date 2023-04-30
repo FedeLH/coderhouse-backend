@@ -24,6 +24,10 @@ class UserManager {
   getUsersGenders = async (_) => {
     return await userModel.distinct("gender");
   };
+
+  getUserByEmail = async (email) => {
+    return await userModel.find({ email });
+  };
 }
 
 const userManager = new UserManager();

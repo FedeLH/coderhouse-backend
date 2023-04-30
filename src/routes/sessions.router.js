@@ -1,18 +1,35 @@
 import { Router } from "express";
+import { userManager } from "../daos/db/user.mongo.dao.js";
+import { ADMIN_USER, ADMIN_PASS } from "../config/config.js";
+import validateObject from "../middlewares/validator.js";
+import { loginSchema, registerSchema } from "../validators/session.validator.js"
 
 const router = Router();
 
-router.post("/login", (req, res) => {
+router.post("/login", validateObject(loginSchema), async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    if (username !== "fede" || password !== "fede") {
-      return res.status(401).send("pass o username no es correcto");
+    if (username === ADMIN_USER && password === ADMIN_PASS) {
+      req.session.user = username;
+      req.session.role = "admin";
+      return res.status(307).redirect("/products");
     }
-    req.session.user = username;
-    req.session.admin = true;
 
-    res.send("login success");
+    const user = await userManager.getUserByEmail(username);
+
+    if (!user.length)
+      return res.status(404).json({
+        status: "error",
+        payload: {
+          error: "Invalid",
+          message: "User or password invalid",
+        },
+      });
+
+    req.session.user = username;
+    req.session.role = "user";
+    return res.status(307).redirect("/products");
   } catch (error) {
     res.status(404).json({
       status: "error",
@@ -24,9 +41,25 @@ router.post("/login", (req, res) => {
   }
 });
 
-router.post("/register", (req, res) => {
+router.post("/register", validateObject(registerSchema), async (req, res) => {
   try {
-    res.status(200).json({ status: "success", payload: {} });
+    const newUser = req.body
+
+    const user = await userManager.getUserByEmail(newUser.email);
+
+    if(user.length > 0 || newUser.email === ADMIN_USER) return res.status(404).json({
+      status: "error",
+      payload: {
+        error: "Invalid",
+        message: "User already exists",
+      },
+    });
+
+    const response = await userManager.addUser(newUser)
+
+    console.log({response})
+
+    return res.status(307).redirect("/login");
   } catch (error) {
     res.status(404).json({
       status: "error",
@@ -42,7 +75,7 @@ router.get("/logout", (req, res) => {
   try {
     req.session.destroy((err) => {
       if (err) return res.send({ status: "Logout error", message: err });
-      res.send("logout ok");
+      return res.status(307).redirect("/login");
     });
   } catch (error) {
     res.status(404).json({

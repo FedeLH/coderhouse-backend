@@ -6,63 +6,54 @@ Precondiciones:
 
 1. Tener instalado nodejs, instrucciones en la web oficial:
 
-
-    https://nodejs.org/en/
+   https://nodejs.org/en/
 
 2. Tener instalado nodemon (Para trabajar en modo desarrollo, se recomienda instalarlo de forma global):
 
-
-    npm i -g nodemon
+   npm i -g nodemon
 
 3. Tener un servidor de base de datos (MongoDB) local o en la nube (Atlas):
 
+   Por defecto el servidor intentará conectarse a uno local (ver ./src/config/config.js)
 
-    Por defecto el servidor intentará conectarse a uno local (ver ./src/config/config.js)
-
-    Se pueden pedir las variables de conexión a una BD en la nube al autor
+   Se pueden pedir las variables de conexión a una BD en la nube al autor
 
 4. En caso de querer instalar un servidor local de BD:
 
+   Deberá instalar el community server ver página oficial:
 
-    Deberá instalar el community server ver página oficial:
-
-      https://www.mongodb.com/try/download/community
+   https://www.mongodb.com/try/download/community
 
 5. En caso de querer levantar un servidor en la nube puede optar por la version gratuita de Atlas, creando una cuenta en:
 
-
-    https://www.mongodb.com/docs/atlas/
+   https://www.mongodb.com/docs/atlas/
 
 Pasos para levantar el proyecto:
 
 1. Clonar el proyecto en la carpeta de preferencia
 
-
-    git clone https://github.com/FedeLH/coderhouse-backend.git
+   git clone https://github.com/FedeLH/coderhouse-backend.git
 
 2. Instalar dependencias:
 
-
-    npm i
+   npm i
 
 3. Contar con servidor de BD
 
 4. Configurar variables de entorno (en caso de no hacerse hay unas por defecto):
 
+   En la carpeta raíz hay un archivo .env.sample
 
-    En la carpeta raíz hay un archivo .env.sample
-
-    Se debe crear el archivo .env con las mismas variables
+   Se debe crear el archivo .env con las mismas variables
 
 5. Levantar el servidor:
 
+   Con node (production):
 
-    Con node (production):
+   npm run start
 
-      npm run start
+   Con nodemon (development):
 
-    Con nodemon (development):
-
-      npm run dev
+   npm run dev
 
 6. Se puede solicitar collection de Postman al autor

@@ -64,6 +64,7 @@ button {
 }
 
 .results-container,
-.filters-container {
+.filters-container,
+.welcome-container {
   padding-left: 200px;
 }

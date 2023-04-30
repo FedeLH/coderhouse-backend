@@ -23,31 +23,27 @@ router.get("/", async (req, res) => {
     const prevPage = response.prevPage;
     const nextPage = response.nextPage;
 
-    res
-      .status(200)
-      .json({
-        status: "success",
-        payload: response.docs,
-        totalPages: response.totalPages,
-        prevPage: response.prevPage,
-        nextPage: response.nextPage,
-        page: currentPage,
-        hasPrevPage: response.hasPrevPage,
-        hasNextPage: response.hasNextPage,
-        prevLink: prevPage
-          ? `${SERVER_URL}:${PORT}/api/products?limit=${limit}&page=${prevPage}`
-          : null,
-        nextLink: nextPage
-          ? `${SERVER_URL}:${PORT}/api/products?limit=${limit}&page=${nextPage}`
-          : null,
-      });
+    res.status(200).json({
+      status: "success",
+      payload: response.docs,
+      totalPages: response.totalPages,
+      prevPage: response.prevPage,
+      nextPage: response.nextPage,
+      page: currentPage,
+      hasPrevPage: response.hasPrevPage,
+      hasNextPage: response.hasNextPage,
+      prevLink: prevPage
+        ? `${SERVER_URL}:${PORT}/api/products?limit=${limit}&page=${prevPage}`
+        : null,
+      nextLink: nextPage
+        ? `${SERVER_URL}:${PORT}/api/products?limit=${limit}&page=${nextPage}`
+        : null,
+    });
   } catch (error) {
-    res
-      .status(404)
-      .json({
-        status: "error",
-        payload: { error: error, message: error.message },
-      });
+    res.status(404).json({
+      status: "error",
+      payload: { error: error, message: error.message },
+    });
   }
 });
 
@@ -57,12 +53,10 @@ router.get("/:pid", async (req, res) => {
     const product = await productManager.getProductById(id);
     res.status(200).json({ status: "success", payload: product });
   } catch (error) {
-    res
-      .status(404)
-      .json({
-        status: "error",
-        payload: { error: error, message: error.message },
-      });
+    res.status(404).json({
+      status: "error",
+      payload: { error: error, message: error.message },
+    });
   }
 });
 
@@ -74,18 +68,14 @@ router.post("/", validateObject(productCreateSchema), async (req, res) => {
     if (response.product) io.emit("add-new-product", response.product);
   } catch (error) {
     if (error.code === 11000)
-      return res
-        .status(400)
-        .json({
-          status: "error",
-          payload: { error: error, message: error.message }.message,
-        });
-    res
-      .status(404)
-      .json({
+      return res.status(400).json({
         status: "error",
-        payload: { error: error, message: error.message },
+        payload: { error: error, message: error.message }.message,
       });
+    res.status(404).json({
+      status: "error",
+      payload: { error: error, message: error.message },
+    });
   }
 });
 
@@ -97,12 +87,10 @@ router.put("/:pid", validateObject(productUpdateSchema), async (req, res) => {
     res.status(201).json({ status: "success", payload: response });
     if (response.product) io.emit("update-product", response.product);
   } catch (error) {
-    res
-      .status(404)
-      .json({
-        status: "error",
-        payload: { error: error, message: error.message },
-      });
+    res.status(404).json({
+      status: "error",
+      payload: { error: error, message: error.message },
+    });
   }
 });
 
@@ -112,12 +100,10 @@ router.delete("/:pid", async (req, res) => {
     const response = await productManager.deleteProduct(id);
     res.status(200).json({ status: "success", payload: response });
   } catch (error) {
-    res
-      .status(404)
-      .json({
-        status: "error",
-        payload: { error: error, message: error.message },
-      });
+    res.status(404).json({
+      status: "error",
+      payload: { error: error, message: error.message },
+    });
   }
 });
 

@@ -14,12 +14,10 @@ router.get("/", async (req, res) => {
       .status(200)
       .json({ status: "success", payload: limit ? limitedCarts : allCarts });
   } catch (error) {
-    res
-      .status(404)
-      .json({
-        status: "error",
-        payload: { error: error, message: error.message },
-      });
+    res.status(404).json({
+      status: "error",
+      payload: { error: error, message: error.message },
+    });
   }
 });
 
@@ -28,12 +26,10 @@ router.post("/", async (req, res) => {
     const response = await cartManager.addCart();
     res.status(201).json({ status: "success", payload: response });
   } catch (error) {
-    res
-      .status(404)
-      .json({
-        status: "error",
-        payload: { error: error, message: error.message },
-      });
+    res.status(404).json({
+      status: "error",
+      payload: { error: error, message: error.message },
+    });
   }
 });
 
@@ -43,12 +39,10 @@ router.get("/:cid", async (req, res) => {
     const products = await cartManager.getProductsByCartId(id);
     res.status(200).json({ status: "success", payload: products });
   } catch (error) {
-    res
-      .status(404)
-      .json({
-        status: "error",
-        payload: { error: error, message: error.message },
-      });
+    res.status(404).json({
+      status: "error",
+      payload: { error: error, message: error.message },
+    });
   }
 });
 
@@ -72,12 +66,10 @@ router.post("/:cid/products/:pid", async (req, res) => {
 
     res.status(201).json({ status: "success", payload: response });
   } catch (error) {
-    res
-      .status(404)
-      .json({
-        status: "error",
-        payload: { error: error, message: error.message },
-      });
+    res.status(404).json({
+      status: "error",
+      payload: { error: error, message: error.message },
+    });
   }
 });
 
@@ -88,12 +80,10 @@ router.delete("/:cid/products/:pid", async (req, res) => {
     const response = await cartManager.deleteProductFromCart(cid, pid);
     res.status(200).json({ status: "success", payload: response });
   } catch (error) {
-    res
-      .status(404)
-      .json({
-        status: "error",
-        payload: { error: error, message: error.message },
-      });
+    res.status(404).json({
+      status: "error",
+      payload: { error: error, message: error.message },
+    });
   }
 });
 
@@ -103,12 +93,10 @@ router.delete("/:cid", async (req, res) => {
     const response = await cartManager.deleteProductsByCartId(cid);
     res.status(200).json({ status: "success", payload: response });
   } catch (error) {
-    res
-      .status(404)
-      .json({
-        status: "error",
-        payload: { error: error, message: error.message },
-      });
+    res.status(404).json({
+      status: "error",
+      payload: { error: error, message: error.message },
+    });
   }
 });
 
@@ -119,12 +107,10 @@ router.put("/:cid", async (req, res) => {
     const response = await cartManager.updateProductsByCartId(cid, products);
     res.status(201).json({ status: "success", payload: response });
   } catch (error) {
-    res
-      .status(404)
-      .json({
-        status: "error",
-        payload: { error: error, message: error.message },
-      });
+    res.status(404).json({
+      status: "error",
+      payload: { error: error, message: error.message },
+    });
   }
 });
 
@@ -140,12 +126,10 @@ router.put("/:cid/products/:pid", async (req, res) => {
     );
     res.status(201).json({ status: "success", payload: response });
   } catch (error) {
-    res
-      .status(404)
-      .json({
-        status: "error",
-        payload: { error: error, message: error.message },
-      });
+    res.status(404).json({
+      status: "error",
+      payload: { error: error, message: error.message },
+    });
   }
 });
 

@@ -1,22 +1,12 @@
 <div>
-    <h1>Inyección de session</h1>
-    {{!-- <h1>Inyección de cookies</h1> --}}
-    {{!-- <form id="cookieForm" onsubmit="return false">
+    <h1>Login</h1>
+    <form method="POST" action="/api/sessions/login" >
         <label>Username</label>
         <input name="username">
-        <br />
+        <br>
         <label>password</label>
-        <input name="password">
-        <input type="submit">
-    </form> --}}
-    <form method="POST" action="/session/login" >
-        <label>Username</label>
-        <input name="username">
-        <br />
-        <label>password</label>
-        <input name="password">
+        <input type="password" name="password">
         <input type="submit">
     </form>
-    {{!-- <button onclick="getCookie()">Ver Cookie</button> --}}
+    <a href="/register">Registrate</a>
 </div>
-{{!-- <script src="/virtual/js/cookieSetter.js"></script> --}}

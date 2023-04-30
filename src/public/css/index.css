@@ -5,6 +5,13 @@ body {
   grid-template-rows: auto 1fr auto;
 }
 
+.btn-invisible {
+  background-color: transparent;
+  width: fit-content;
+  border: none;
+  color: #ffffff;
+  padding: 0;
+}
 .navbar {
   display: flex;
   justify-content: space-between;

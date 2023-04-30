@@ -8,6 +8,7 @@ import objConfig from "./config/db.js";
 import session from "express-session";
 import FileStore from "session-file-store";
 import pkg from "connect-mongo";
+import authSession from "./middlewares/auth.middleware.js";
 
 const { create } = pkg;
 
@@ -43,7 +44,7 @@ app.use(
 
 app.use(express.static(path.dirname(__dirname) + "/public"));
 
-app.use(router);
+app.use(authSession, router);
 
 app.use((err, req, res, next) => {
   console.log(err);

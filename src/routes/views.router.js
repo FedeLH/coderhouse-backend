@@ -7,6 +7,24 @@ const router = express.Router();
 
 router.get("/products", async (req, res) => {
   try {
+    const { user, role } = req.session
+    const dataUser = await userManager.getUserByEmail(user);
+
+
+    let first_name = "ADMIN"
+    let last_name = ""
+
+    if (dataUser.length > 0) {
+      first_name = dataUser[0].first_name
+      last_name = dataUser[0].last_name
+    }
+
+    const userData = {
+      name: first_name+" "+last_name,
+      role,
+      email: user
+    }
+
     const { limit = 10, page = 1, sort = null } = req.query;
     const query = req.query.query ? JSON.parse(req.query.query) : {};
     const spec = sort
@@ -21,6 +39,7 @@ router.get("/products", async (req, res) => {
       products: docs,
       paginate: rest,
       categories,
+      userData
     });
   } catch (error) {
     res.render("error", {
@@ -139,7 +158,40 @@ router.get("/login", async (req, res) => {
 });
 
 router.get("/profile", async (req, res) => {
-  res.render("profile", { title: "Profile", style: "/profile.css" });
+  try {
+    const { user, role } = req.session
+    const dataUser = await userManager.getUserByEmail(user);
+
+    let first_name = "ADMIN"
+    let last_name = "Unknow"
+    let gender
+
+    if (dataUser.length > 0) {
+      first_name = dataUser[0].first_name
+      last_name = dataUser[0].last_name
+      gender = dataUser[0].gender
+    }
+
+    const userData = {
+      first_name,
+      last_name,
+      role,
+      email: user,
+      gender
+    }
+    res.render("profile", { 
+      title: "Profile", 
+      style: "/profile.css",
+      user: userData
+    });
+  } catch (error) {
+    res.render("error", {
+      title: "Error",
+      style: "error.css",
+      error: error,
+      message: error.message,
+    });
+  }
 });
 
 export default router;
