@@ -29,6 +29,15 @@ router.post("/login", validateObject(loginSchema), async (req, res) => {
           message: "User or password invalid",
         },
       });
+    
+    if (password !== user[0].password)
+      return res.status(404).json({
+        status: "error",
+        payload: {
+          error: "Invalid",
+          message: "User or password invalid",
+        },
+      });
 
     req.session.user = username;
     req.session.role = "user";
@@ -60,8 +69,6 @@ router.post("/register", validateObject(registerSchema), async (req, res) => {
       });
 
     const response = await userManager.addUser(newUser);
-
-    console.log({ response });
 
     return res.status(307).redirect("/login");
   } catch (error) {
