@@ -6,6 +6,7 @@ import {
   loginSchema,
   registerSchema,
 } from "../validators/session.validator.js";
+import { createHash, checkValidPassword } from '../utils/utils.js';
 
 const router = Router();
 
@@ -22,6 +23,20 @@ router.post("/login", validateObject(loginSchema), async (req, res) => {
     const user = await userManager.getUserByEmail(username);
 
     if (!user.length)
+      return res.status(404).json({
+        status: "error",
+        payload: {
+          error: "Invalid",
+          message: "User or password invalid",
+        },
+      });
+    
+    const isValidPassword = checkValidPassword({
+      hashedPassword: user.password,
+      password
+    })
+
+    if (!isValidPassword)
       return res.status(404).json({
         status: "error",
         payload: {
@@ -47,7 +62,7 @@ router.post("/login", validateObject(loginSchema), async (req, res) => {
 router.post("/register", validateObject(registerSchema), async (req, res) => {
   try {
     const newUser = req.body;
-
+    newUser.password = createHash(newUser.password)
     const user = await userManager.getUserByEmail(newUser.email);
 
     if (user.length > 0 || newUser.email === ADMIN_USER)
