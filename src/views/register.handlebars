@@ -1,16 +1,21 @@
 <div>
     <h1>Registro</h1>
-    <form action="/api/usuarios" method="post">
+    <form method="POST" action="/api/sessions/register">
         <label>Nombre</label>
-        <input name="name">
+        <input name="first_name">
         <label>Apellido</label>
         <input name="last_name">
         <label>Email</label>
         <input name="email">
-        <label>Edad</label>
-        <input type="number" name="age">
-        <label>Teléfono</label>
-        <input name="phone">
+        <label>Género</label>
+        <select name="gender">
+            <option value="none">-</option>
+        {{#each genders}}
+            <option value="{{this}}">{{this}}</option>
+        {{/each}}
+        </select>
+        <label>Constraseña</label>
+        <input type="password" name="password">
         <input type="submit">
     </form>
 </div>

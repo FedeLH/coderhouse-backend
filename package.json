@@ -6,7 +6,8 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "clean": "prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -37,5 +38,8 @@
     "ignore": [
       "*.json"
     ]
+  },
+  "devDependencies": {
+    "prettier": "2.8.8"
   }
 }

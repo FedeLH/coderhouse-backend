@@ -1,48 +1,54 @@
-import express from 'express'
-import { router } from './routes/index.js'
-import __dirname from './utils/utils.js'
-import path from 'path'
-import handlerbars from 'express-handlebars'
-import { firstItem } from './config/helper.js'
-import cookieParser from 'cookie-parser'
-import session from 'express-session'
-import FileStore from 'session-file-store'
-import { create } from 'connect-mongo'
+import express from "express";
+import { router } from "./routes/index.js";
+import __dirname from "./utils/utils.js";
+import path from "path";
+import handlerbars from "express-handlebars";
+import { firstItem } from "./config/helper.js";
+import objConfig from "./config/db.js";
+import session from "express-session";
+import FileStore from "session-file-store";
+import pkg from "connect-mongo";
+import authSession from "./middlewares/auth.middleware.js";
 
-const fileStorege = FileStore(session)
+const { create } = pkg;
 
-const app = express()
+const fileStorege = FileStore(session);
+objConfig.connectDB();
+const app = express();
 
-app.engine('handlebars', handlerbars.engine({helpers: {firstItem: firstItem}}))
-app.set('view engine', 'handlebars')
-app.set('views',path.dirname(__dirname)+'/views')
+app.engine(
+  "handlebars",
+  handlerbars.engine({ helpers: { firstItem: firstItem } })
+);
+app.set("view engine", "handlebars");
+app.set("views", path.dirname(__dirname) + "/views");
 
-app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(cookieParser('CoderS3cR3t@'))
-
-app.use(session({
+app.use(
+  session({
     store: create({
-        mongoUrl: objConfig.url,
-        mongoOptions: {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        },
-        ttl: 100000000*24
+      mongoUrl: objConfig.url,
+      mongoOptions: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
+      ttl: 100000000 * 24,
     }),
-    secret: 'secretCoder',
+    secret: "secretCoder",
     resave: true,
-    saveUninitialized: true
-}))
+    saveUninitialized: true,
+  })
+);
 
-app.use(express.static(path.dirname(__dirname)+'/public'))
+app.use(express.static(path.dirname(__dirname) + "/public"));
 
-app.use(router)
+app.use(authSession, router);
 
-app.use((err, req, res, next)=>{
-    console.log(err)
-    res.status(500).send('Internal error')
-})
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.status(500).send("Internal error");
+});
 
-export default app
+export default app;

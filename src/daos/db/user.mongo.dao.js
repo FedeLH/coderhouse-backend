@@ -1,26 +1,34 @@
-import { userModel } from '../../models/user.model.js'
+import { userModel } from "../../models/user.model.js";
 
 class UserManager {
-    getUsers = async (filter,spec) => {
-        return await userModel.paginate(filter, spec)
-    }
+  getUsers = async (filter, spec) => {
+    return await userModel.paginate(filter, spec);
+  };
 
-    addUser = async (user) => {
-        return await userModel.create(user)
-    }
-    
-    updateUser = async (uid,changes) => {
-        return await userModel.updateOne({_id: uid},changes)
-    }
+  addUser = async (user) => {
+    return await userModel.create(user);
+  };
 
-    getUserById = async uid => {
-        return await userModel.find({_id: uid})
-    }
+  updateUser = async (uid, changes) => {
+    return await userModel.updateOne({ _id: uid }, changes);
+  };
 
-    deleteUser = async pid => {
-        return await userModel.updateOne({_id: uid},{status: false})
-    }
+  getUserById = async (uid) => {
+    return await userModel.find({ _id: uid });
+  };
+
+  deleteUser = async (pid) => {
+    return await userModel.updateOne({ _id: uid }, { status: false });
+  };
+
+  getUsersGenders = async (_) => {
+    return await userModel.distinct("gender");
+  };
+
+  getUserByEmail = async (email) => {
+    return await userModel.find({ email });
+  };
 }
 
-const userManager = new UserManager()
-export { userManager, UserManager }
+const userManager = new UserManager();
+export { userManager, UserManager };
