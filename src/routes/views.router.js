@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/products", async (req, res) => {
   try {
-    const { user, role } = req.session;
+    let { user, role } = req.session;
     const dataUser = await userManager.getUserByEmail(user);
 
     let first_name = "ADMIN";
@@ -16,6 +16,11 @@ router.get("/products", async (req, res) => {
     if (dataUser.length > 0) {
       first_name = dataUser[0].first_name;
       last_name = dataUser[0].last_name;
+    }
+ 
+    if (role === 'user-github') {
+      first_name = user[0].first_name
+      user = user[0].email
     }
 
     const userData = {

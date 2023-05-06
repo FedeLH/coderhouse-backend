@@ -7,6 +7,7 @@ import {
   registerSchema,
 } from "../validators/session.validator.js";
 import { createHash, checkValidPassword } from '../utils/utils.js';
+import passport from "passport";
 
 const router = Router();
 
@@ -32,7 +33,7 @@ router.post("/login", validateObject(loginSchema), async (req, res) => {
       });
     
     const isValidPassword = checkValidPassword({
-      hashedPassword: user.password,
+      hashedPassword: user[0].password,
       password
     })
 
@@ -76,8 +77,6 @@ router.post("/register", validateObject(registerSchema), async (req, res) => {
 
     const response = await userManager.addUser(newUser);
 
-    console.log({ response });
-
     return res.status(307).redirect("/login");
   } catch (error) {
     res.status(404).json({
@@ -105,6 +104,22 @@ router.get("/logout", (req, res) => {
       },
     });
   }
+});
+
+router.get("/github", passport.authenticate("github", { scope: [ 'user:email' ] }));
+
+router.get(
+  "/githubcallback",
+  passport.authenticate("github", { failureRedirect: "/api/sessions/failregister" }),
+  (req, res) => {
+    req.session.user = req.user;
+    req.session.role = "user-github";
+    res.redirect("/products");
+  }
+);
+
+router.get("/failregister", (req, res) => {
+  res.send({ status: "error", message: "Error al crear el usuario" });
 });
 
 export default router;

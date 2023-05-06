@@ -1,32 +1,24 @@
 import passport from "passport";
 import GitHubStrategy from 'passport-github2';
-import { userManager } from "../daos/db/user.mongo.dao";
-import { CLIENT_ID, CLIENT_PASS, CB_URL } from './config/config.js'
+import { userManager } from "../daos/db/user.mongo.dao.js";
+import { CLIENT_ID, CLIENT_PASS, CB_URL } from '../config/config.js'
 
 const initializePassport = () => {
-    // passport.serializeUser((user, done) => {
-    //     done(null, user._id);
-    // });
-
-    // passport.deserializeUser(async (id, done) => {
-    //     let user = await userManager.findById(id);
-    //     done(null, user);
-    // });
     passport.use('github', new GitHubStrategy({
         clientID: CLIENT_ID,
         clientSecret: CLIENT_PASS,
-        callbackURL: CB_URL
+        callbackURL: CB_URL,
+        scope: ["user:email"]
     }, async (accessToken, refreshToken, profile, done) => {
         try {
-            console.log(profile);
-            let user = userManager.getUserByEmail(emails[0])
-            if(!user) {
+            let user = await userManager.getUserByEmail(profile.emails[0].value)
+            if(!user.length) {
                 let newUser = {
                     first_name: profile._json.name,
-                    last_name: '',
-                    email: emails[0],
-                    gender: '',
-                    password: ''
+                    last_name: 'Unknow',
+                    email: profile.emails[0].value,
+                    gender: 'Unknow',
+                    password: 'Unknow'
                 }
                 let result = await userManager.addUser(newUser);
                 done(null, result);
@@ -37,6 +29,14 @@ const initializePassport = () => {
             return done(error);
         }
     }))
+
+    passport.serializeUser((user, done) => {
+        done(null, user);
+    });
+    
+    passport.deserializeUser(async (user, done) => {
+        done(null, user);
+    });
 }
 
 export default initializePassport;
