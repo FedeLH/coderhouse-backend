@@ -6,13 +6,14 @@ import handlerbars from "express-handlebars";
 import { firstItem } from "./config/helper.js";
 import objConfig from "./config/db.js";
 import session from "express-session";
-import FileStore from "session-file-store";
 import pkg from "connect-mongo";
 import authSession from "./middlewares/auth.middleware.js";
+import { SESSION_SECRET } from "./config/config.js";
+import initializePassport from "./config/passport.config.js";
+import passport from "passport";
 
 const { create } = pkg;
 
-const fileStorege = FileStore(session);
 objConfig.connectDB();
 const app = express();
 
@@ -26,6 +27,8 @@ app.set("views", path.dirname(__dirname) + "/views");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+initializePassport();
+
 app.use(
   session({
     store: create({
@@ -36,11 +39,14 @@ app.use(
       },
       ttl: 100000000 * 24,
     }),
-    secret: "secretCoder",
+    secret: SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
   })
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.static(path.dirname(__dirname) + "/public"));
 
