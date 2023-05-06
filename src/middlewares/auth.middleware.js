@@ -1,7 +1,10 @@
 const authSession = (req, res, next) => {
   const isLoggedIn = req.session.user !== undefined;
   const isLoggingIn =
-    req.path === "/login" || req.path === "/api/sessions/login" || req.path === "/api/sessions/github" || req.path === "/api/sessions/githubcallback";
+    req.path === "/login" ||
+    req.path === "/api/sessions/login" ||
+    req.path === "/api/sessions/github" ||
+    req.path === "/api/sessions/githubcallback";
   const isRegistering =
     req.path === "/register" || req.path === "/api/sessions/register";
 

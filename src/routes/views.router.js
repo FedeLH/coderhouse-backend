@@ -17,10 +17,10 @@ router.get("/products", async (req, res) => {
       first_name = dataUser[0].first_name;
       last_name = dataUser[0].last_name;
     }
- 
-    if (role === 'user-github') {
-      first_name = user[0].first_name
-      user = user[0].email
+
+    if (role === "user-github") {
+      first_name = user[0].first_name;
+      user = user[0].email;
     }
 
     const userData = {
