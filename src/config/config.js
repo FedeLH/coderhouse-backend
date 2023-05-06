@@ -12,9 +12,7 @@ export const DB_OPTIONS = {
   autoIndex: DB_AUTO_INDEX,
   bufferCommands: DB_BUFFER_COMMANDS,
 };
-export const ADMIN_USER = process.env.ADMIN_USER || "admin@admin.com";
-export const ADMIN_PASS = process.env.ADMIN_PASS || "admin";
-export const SESSION_SECRET = process.env.SESSION_SECRET || "secretCoder"
-export const CLIENT_ID = process.env.CLIENT_ID || ""
-export const CLIENT_PASS = process.env.CLIENT_PASS || ""
-export const CB_URL = process.env.CB_URL || ""
+export const SESSION_SECRET = process.env.SESSION_SECRET || "secretCoder";
+export const CLIENT_ID = process.env.CLIENT_ID || "";
+export const CLIENT_PASS = process.env.CLIENT_PASS || "";
+export const CB_URL = process.env.CB_URL || "";

@@ -7,20 +7,20 @@ const router = express.Router();
 
 router.get("/products", async (req, res) => {
   try {
-    let { user, role } = req.session;
+    let { user, role = "user" } = req.session;
     const dataUser = await userManager.getUserByEmail(user);
 
-    let first_name = "ADMIN";
+    let first_name = "Unknow";
     let last_name = "";
 
     if (dataUser.length > 0) {
       first_name = dataUser[0].first_name;
       last_name = dataUser[0].last_name;
     }
- 
-    if (role === 'user-github') {
-      first_name = user[0].first_name
-      user = user[0].email
+
+    if (role === "user-github") {
+      first_name = user[0].first_name;
+      user = user[0].email;
     }
 
     const userData = {
@@ -164,25 +164,17 @@ router.get("/login", async (req, res) => {
 router.get("/profile", async (req, res) => {
   try {
     const { user, role } = req.session;
-    const dataUser = await userManager.getUserByEmail(user);
 
-    let first_name = "ADMIN";
-    let last_name = "Unknow";
-    let gender;
-
-    if (dataUser.length > 0) {
-      first_name = dataUser[0].first_name;
-      last_name = dataUser[0].last_name;
-      gender = dataUser[0].gender;
-    }
+    const { first_name, last_name, email, gender } = user[0];
 
     const userData = {
       first_name,
       last_name,
-      role,
-      email: user,
+      email,
       gender,
+      role,
     };
+
     res.render("profile", {
       title: "Profile",
       style: "/profile.css",
