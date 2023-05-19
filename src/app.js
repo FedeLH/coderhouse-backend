@@ -50,7 +50,7 @@ app.use(passport.session());
 
 app.use(express.static(path.dirname(__dirname) + "/public"));
 
-app.use(router);
+app.use(authSession, router);
 
 app.use((err, req, res, next) => {
   console.log(err);

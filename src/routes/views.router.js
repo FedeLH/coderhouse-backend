@@ -157,7 +157,9 @@ router.get("/profile", async (req, res) => {
       role,
       email,
       gender,
+      role,
     };
+
 
     res.render("profile", {
       title: "Profile",
