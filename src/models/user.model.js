@@ -27,6 +27,19 @@ const userSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  cart: {
+    type: Schema.Types.ObjectId,
+    ref: "carts",
+    unique: true,
+  },
+  role: {
+    type: String,
+    default: "user",
+  },
+});
+
+userSchema.pre("find", function () {
+  this.populate("cart");
 });
 
 userSchema.plugin(mongoosePaginate);

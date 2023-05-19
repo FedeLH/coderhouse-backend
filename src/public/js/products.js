@@ -5,7 +5,7 @@ let sort = document.getElementById("sort");
 let category = document.getElementById("category");
 let state = document.getElementById("status");
 let buttons = document.querySelectorAll(".add-to-cart");
-let cid;
+let cart = document.querySelector(".cart");
 
 const findIndex = (valueToFind, options) => {
   for (let i = 0; i < options.length; i++) {
@@ -84,16 +84,7 @@ const changePage = (page) => {
 
 const addToCart = async (pid) => {
   try {
-    if (!cid) {
-      let response = await fetch("/api/carts", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-      });
-      let data = await response.json();
-      cid = data.payload._id;
-      let nav = document.querySelector(".navbar-menu");
-      nav.innerHTML += `<li><a href="/carts/${cid}">Cart</a></li>`;
-    }
+    let cid = cart.id;
     let response = await fetch(`/api/carts/${cid}/products/${pid}`, {
       method: "POST",
       headers: { "content-type": "application/json" },

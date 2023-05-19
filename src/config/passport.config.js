@@ -1,9 +1,10 @@
 import passport from "passport";
 import local from "passport-local";
+import { createHash, checkValidPassword } from "../utils/utils.js";
 import GitHubStrategy from "passport-github2";
 import { userManager } from "../daos/db/user.mongo.dao.js";
+import { cartManager } from "../daos/db/cart.mongo.dao.js";
 import { CLIENT_ID, CLIENT_PASS, CB_URL } from "../config/config.js";
-import { createHash, checkValidPassword } from "../utils/utils.js";
 
 const LocalStrategy = local.Strategy;
 
@@ -11,18 +12,29 @@ const initializePassport = () => {
   passport.use(
     "register",
     new LocalStrategy(
-      { passReqToCallback: true, usernameField: "email" },
+      {
+        passReqToCallback: true,
+        usernameField: "email",
+      },
       async (req, username, password, done) => {
         try {
-          let newUser = req.body;
-          newUser.password = createHash(newUser.password);
-          let user = await userManager.getUserByEmail(newUser.email);
+          let user = await userManager.getUserByEmail(username);
           if (user.length) {
             console.log("User already exists");
             return done(null, false);
           }
-          const result = await userManager.addUser(newUser);
-          return done(null, result);
+          const { first_name, last_name, gender } = req.body;
+          let cart = await cartManager.addCart();
+          let newUser = {
+            first_name,
+            last_name,
+            email: username,
+            gender,
+            password: createHash(password),
+            cart,
+          };
+          let result = await userManager.addUser(newUser);
+          done(null, result);
         } catch (error) {
           return done(error);
         }
@@ -32,23 +44,29 @@ const initializePassport = () => {
 
   passport.use(
     "login",
-    new LocalStrategy(async (username, password, done) => {
-      try {
-        const user = await userManager.getUserByEmail(username);
+    new LocalStrategy(
+      { usernameField: "email" },
+      async (username, password, done) => {
+        try {
+          let user = await userManager.getUserByEmail(username);
+          if (!user.length) {
+            console.log("User doesn't exist");
+            return done(null, false);
+          }
 
-        if (!user.length) {
-          console.log("User doesn't exist");
-          return done(null, false);
+          const isValidPassword = checkValidPassword({
+            hashedPassword: user[0].password,
+            password,
+          });
+
+          if (!isValidPassword) return done(null, false);
+
+          done(null, user);
+        } catch (error) {
+          return done(error);
         }
-        const isValidPassword = checkValidPassword({
-          hashedPassword: user[0].password,
-          password,
-        });
-
-        if (!isValidPassword) return done(null, false);
-        return done(null, user[0]);
-      } catch (error) {}
-    })
+      }
+    )
   );
 
   passport.use(
@@ -64,12 +82,14 @@ const initializePassport = () => {
         try {
           let user = await userManager.getUserByEmail(profile.emails[0].value);
           if (!user.length) {
+            let cart = await cartManager.addCart();
             let newUser = {
-              first_name: profile._json.name,
+              first_name: profile._json.name ?? "Unknow",
               last_name: "Unknow",
               email: profile.emails[0].value,
               gender: "Unknow",
               password: "Unknow",
+              cart,
             };
             let result = await userManager.addUser(newUser);
             done(null, result);
