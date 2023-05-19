@@ -11,7 +11,9 @@ const router = Router();
 router.post(
   "/login",
   validateObject(loginSchema),
-  passport.authenticate("login", { failureRedirect: "/api/sessions/faillogin" }),
+  passport.authenticate("login", {
+    failureRedirect: "/api/sessions/faillogin",
+  }),
   async (req, res) => {
     try {
       if (!req.user) {
@@ -39,7 +41,9 @@ router.post(
 router.post(
   "/register",
   validateObject(registerSchema),
-  passport.authenticate("register", { failureRedirect: "/api/sessions/failregister" }),
+  passport.authenticate("register", {
+    failureRedirect: "/api/sessions/failregister",
+  }),
   async (req, res) => {
     return res.status(307).redirect("/login");
   }
@@ -96,7 +100,7 @@ router.get("/faillogin", (req, res) => {
 
 router.get("/current", (req, res) => {
   try {
-    res.status(200).json({ status: 'success', payload: req.user })
+    res.status(200).json({ status: "success", payload: req.user });
   } catch (error) {
     res.status(404).json({
       status: "error",
@@ -106,6 +110,6 @@ router.get("/current", (req, res) => {
       },
     });
   }
-})
+});
 
 export default router;

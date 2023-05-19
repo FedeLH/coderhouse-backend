@@ -13,7 +13,7 @@ router.get("/products", async (req, res) => {
       name: first_name + " " + last_name,
       role,
       email,
-      cart
+      cart,
     };
 
     const { limit = 10, page = 1, sort = null } = req.query;
@@ -29,7 +29,7 @@ router.get("/products", async (req, res) => {
       products: docs,
       paginate: rest,
       categories,
-      userData
+      userData,
     });
   } catch (error) {
     res.render("error", {
@@ -95,7 +95,7 @@ router.get("/realTimeProducts", async (req, res) => {
 router.get("/carts", async (req, res) => {
   try {
     const { cart } = req.user[0];
-    const products = await cartManager.getProductsByCartId(cart._id)
+    const products = await cartManager.getProductsByCartId(cart._id);
     res.render("carts", {
       status: "success",
       title: "Cart",
@@ -159,7 +159,6 @@ router.get("/profile", async (req, res) => {
       gender,
       role,
     };
-
 
     res.render("profile", {
       title: "Profile",

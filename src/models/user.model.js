@@ -34,8 +34,8 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    default: 'user',
-  }
+    default: "user",
+  },
 });
 
 userSchema.pre("find", function () {

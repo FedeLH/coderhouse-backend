@@ -23,15 +23,15 @@ const initializePassport = () => {
             console.log("User already exists");
             return done(null, false);
           }
-          const { first_name, last_name, gender } = req.body
-          let cart = await cartManager.addCart()
+          const { first_name, last_name, gender } = req.body;
+          let cart = await cartManager.addCart();
           let newUser = {
             first_name,
             last_name,
             email: username,
             gender,
             password: createHash(password),
-            cart
+            cart,
           };
           let result = await userManager.addUser(newUser);
           done(null, result);
@@ -82,14 +82,14 @@ const initializePassport = () => {
         try {
           let user = await userManager.getUserByEmail(profile.emails[0].value);
           if (!user.length) {
-            let cart = await cartManager.addCart()
+            let cart = await cartManager.addCart();
             let newUser = {
               first_name: profile._json.name ?? "Unknow",
               last_name: "Unknow",
               email: profile.emails[0].value,
               gender: "Unknow",
               password: "Unknow",
-              cart
+              cart,
             };
             let result = await userManager.addUser(newUser);
             done(null, result);
