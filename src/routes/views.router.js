@@ -7,26 +7,13 @@ const router = express.Router();
 
 router.get("/products", async (req, res) => {
   try {
-    let { user, role } = req.session;
-    const dataUser = await userManager.getUserByEmail(user);
-
-    let first_name = "ADMIN";
-    let last_name = "";
-
-    if (dataUser.length > 0) {
-      first_name = dataUser[0].first_name;
-      last_name = dataUser[0].last_name;
-    }
-
-    if (role === "user-github") {
-      first_name = user[0].first_name;
-      user = user[0].email;
-    }
+    let { first_name, last_name, role, email, cart } = req.user[0];
 
     const userData = {
       name: first_name + " " + last_name,
       role,
-      email: user,
+      email,
+      cart
     };
 
     const { limit = 10, page = 1, sort = null } = req.query;
@@ -36,14 +23,13 @@ router.get("/products", async (req, res) => {
       : { limit, page, lean: true };
     const { docs, ...rest } = await productManager.getProducts(query, spec);
     const categories = await productManager.getProductsCategories();
-
     res.render("products", {
       title: "Fed-Tech",
       style: "products.css",
       products: docs,
       paginate: rest,
       categories,
-      userData,
+      userData
     });
   } catch (error) {
     res.render("error", {
@@ -106,15 +92,15 @@ router.get("/realTimeProducts", async (req, res) => {
   }
 });
 
-router.get("/carts/:cid", async (req, res) => {
+router.get("/carts", async (req, res) => {
   try {
-    const id = req.params.cid;
-    const products = await cartManager.getProductsByCartId(id);
+    const { cart } = req.user[0];
+    const products = await cartManager.getProductsByCartId(cart._id)
     res.render("carts", {
       status: "success",
       title: "Cart",
       style: "cart.css",
-      products: products,
+      products,
     });
   } catch (error) {
     res.render("error", {
@@ -163,26 +149,16 @@ router.get("/login", async (req, res) => {
 
 router.get("/profile", async (req, res) => {
   try {
-    const { user, role } = req.session;
-    const dataUser = await userManager.getUserByEmail(user);
-
-    let first_name = "ADMIN";
-    let last_name = "Unknow";
-    let gender;
-
-    if (dataUser.length > 0) {
-      first_name = dataUser[0].first_name;
-      last_name = dataUser[0].last_name;
-      gender = dataUser[0].gender;
-    }
+    const { first_name, last_name, gender, email, role } = req.user[0];
 
     const userData = {
       first_name,
       last_name,
       role,
-      email: user,
+      email,
       gender,
     };
+
     res.render("profile", {
       title: "Profile",
       style: "/profile.css",

@@ -3,6 +3,7 @@ import local from "passport-local";
 import { createHash, checkValidPassword } from "../utils/utils.js";
 import GitHubStrategy from "passport-github2";
 import { userManager } from "../daos/db/user.mongo.dao.js";
+import { cartManager } from "../daos/db/cart.mongo.dao.js";
 import { CLIENT_ID, CLIENT_PASS, CB_URL } from "../config/config.js";
 
 const LocalStrategy = local.Strategy;
@@ -23,12 +24,14 @@ const initializePassport = () => {
             return done(null, false);
           }
           const { first_name, last_name, gender } = req.body
+          let cart = await cartManager.addCart()
           let newUser = {
             first_name,
             last_name,
             email: username,
             gender,
             password: createHash(password),
+            cart
           };
           let result = await userManager.addUser(newUser);
           done(null, result);
@@ -79,12 +82,14 @@ const initializePassport = () => {
         try {
           let user = await userManager.getUserByEmail(profile.emails[0].value);
           if (!user.length) {
+            let cart = await cartManager.addCart()
             let newUser = {
               first_name: profile._json.name ?? "Unknow",
               last_name: "Unknow",
               email: profile.emails[0].value,
               gender: "Unknow",
               password: "Unknow",
+              cart
             };
             let result = await userManager.addUser(newUser);
             done(null, result);

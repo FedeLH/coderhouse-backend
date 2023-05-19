@@ -1,6 +1,7 @@
 {{> header}}
 <div class="user-container">
     <div class="user">
+    {{#if user}}
         <p><strong>Nombre: </strong>{{user.first_name}}</p>
         <p><strong>Apellido: </strong>{{user.last_name}}</p>
         {{#if user.gender}}
@@ -10,6 +11,9 @@
         {{/if}}
         <p><strong>Email: </strong>{{user.email}}</p>
         <p><strong>Rol: </strong>{{user.role}}</p>
+    {{else}}
+        <p>Usuario no disponible</p>
+    {{/if}}
     </div>
 </div>
 {{> footer}}

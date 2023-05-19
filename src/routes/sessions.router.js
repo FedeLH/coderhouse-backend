@@ -23,8 +23,6 @@ router.post(
           },
         });
       }
-      req.session.user = username;
-      req.session.role = "user";
       return res.status(307).redirect("/products");
     } catch (error) {
       res.status(404).json({
@@ -88,4 +86,19 @@ router.get("/failregister", (req, res) => {
 router.get("/faillogin", (req, res) => {
   res.send({ status: "error", message: "Failed Login" });
 });
+
+router.get("/current", (req, res) => {
+  try {
+    res.status(200).json({ status: 'success', payload: req.user })
+  } catch (error) {
+    res.status(404).json({
+      status: "error",
+      payload: {
+        error: error,
+        message: error.message,
+      },
+    });
+  }
+})
+
 export default router;
