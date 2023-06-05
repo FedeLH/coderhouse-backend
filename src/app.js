@@ -14,7 +14,6 @@ import passport from "passport";
 
 const { create } = pkg;
 
-objConfig.connectDB();
 const app = express();
 
 app.engine(
@@ -50,7 +49,8 @@ app.use(passport.session());
 
 app.use(express.static(path.dirname(__dirname) + "/public"));
 
-app.use(authSession, router);
+//app.use(authSession, router);
+app.use(router);
 
 app.use((err, req, res, next) => {
   console.log(err);
