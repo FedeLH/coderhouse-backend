@@ -11,10 +11,11 @@ import authSession from "./middlewares/auth.middleware.js";
 import { SESSION_SECRET } from "./config/config.js";
 import initializePassport from "./config/passport.config.js";
 import passport from "passport";
+import { MongoSingleton } from "./MongoSingleton.js";
 
 const { create } = pkg;
 
-objConfig.connectDB();
+MongoSingleton.getInstance();
 const app = express();
 
 app.engine(

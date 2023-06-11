@@ -1,6 +1,6 @@
-import { messageModel } from "../../models/message.model.js";
+import { messageModel } from "./models/message.model.js";
 
-class MessageManager {
+class MessageDaoMongo {
   getMessages = async (_) => {
     return await messageModel.find();
   };
@@ -22,5 +22,4 @@ class MessageManager {
   };
 }
 
-const messageManager = new MessageManager();
-export { messageManager, MessageManager };
+export default MessageDaoMongo;

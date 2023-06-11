@@ -1,6 +1,6 @@
-import { cartModel } from "../../models/cart.model.js";
+import { cartModel } from "./models/cart.model.js";
 
-class CartManager {
+class CartDaoMongo {
   getCarts = async (filter) => {
     return await cartModel.find(filter);
   };
@@ -63,5 +63,4 @@ class CartManager {
   };
 }
 
-const cartManager = new CartManager();
-export { cartManager, CartManager };
+export default CartDaoMongo;
