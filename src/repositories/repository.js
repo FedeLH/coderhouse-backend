@@ -3,17 +3,17 @@ class Repository {
         this.dao = dao
     }
 
-    async getOrders(){
+    async getItems(){
         return await this.dao.get()
     }
-    async getOrder(oid){
-        return await this.dao.getById(oid)
+    async getItem(id){
+        return await this.dao.getById(id)
     }
-    async createOrder(){
+    async createItem(){
         return await this.dao.create()
     }
-    async deleteOrder(oid){
-        return await this.dao.delete(oid)
+    async deleteItem(id){
+        return await this.dao.delete(id)
     }
 }
 

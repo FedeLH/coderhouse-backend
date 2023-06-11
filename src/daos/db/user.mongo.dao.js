@@ -1,6 +1,6 @@
-import { userModel } from "../../models/user.model.js";
+import { userModel } from "./models/user.model.js";
 
-class UserManager {
+class UserDaoMongo {
   getUsers = async (filter, spec) => {
     return await userModel.paginate(filter, spec);
   };
@@ -30,5 +30,4 @@ class UserManager {
   };
 }
 
-const userManager = new UserManager();
-export { userManager, UserManager };
+export default UserDaoMongo

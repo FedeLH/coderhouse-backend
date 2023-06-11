@@ -11,9 +11,11 @@ import authSession from "./middlewares/auth.middleware.js";
 import { SESSION_SECRET } from "./config/config.js";
 import initializePassport from "./config/passport.config.js";
 import passport from "passport";
+import { MongoSingleton } from "./MongoSingleton.js";
 
 const { create } = pkg;
 
+MongoSingleton.getInstance();
 const app = express();
 
 app.engine(
@@ -49,8 +51,7 @@ app.use(passport.session());
 
 app.use(express.static(path.dirname(__dirname) + "/public"));
 
-//app.use(authSession, router);
-app.use(router);
+app.use(authSession, router);
 
 app.use((err, req, res, next) => {
   console.log(err);

@@ -1,4 +1,4 @@
-import { orderModel } from '../../models/order.model.js';
+import { orderModel } from './models/order.model.js';
 
 class OrderDaoMongo {
     constructor(){
@@ -14,3 +14,5 @@ class OrderDaoMongo {
         return await this.orderModel.create()
     }
 }
+
+export default OrderDaoMongo

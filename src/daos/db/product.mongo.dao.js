@@ -1,6 +1,6 @@
-import { productModel } from "../../models/product.model.js";
+import { productModel } from "./models/product.model.js";
 
-class ProductManager {
+class ProductDaoMongo {
   getProducts = async (filter, spec) => {
     return await productModel.paginate(filter, spec);
   };
@@ -26,5 +26,4 @@ class ProductManager {
   };
 }
 
-const productManager = new ProductManager();
-export { productManager, ProductManager };
+export default ProductDaoMongo;

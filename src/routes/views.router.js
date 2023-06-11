@@ -1,7 +1,5 @@
 import express from "express";
-import { productManager } from "../daos/db/product.mongo.dao.js";
-import { cartManager } from "../daos/db/cart.mongo.dao.js";
-import { userManager } from "../daos/db/user.mongo.dao.js";
+import { productDao, cartDao, userDao } from "../daos/factory.js";
 
 const router = express.Router();
 
@@ -21,8 +19,8 @@ router.get("/products", async (req, res) => {
     const spec = sort
       ? { limit, page, sort: { price: sort }, lean: true }
       : { limit, page, lean: true };
-    const { docs, ...rest } = await productManager.getProducts(query, spec);
-    const categories = await productManager.getProductsCategories();
+    const { docs, ...rest } = await productDao.getProducts(query, spec);
+    const categories = await productDao.getProductsCategories();
     res.render("products", {
       title: "Fed-Tech",
       style: "products.css",
@@ -46,7 +44,7 @@ router.get("/users", async (req, res) => {
     const { limit = 10, page = 1, sort = null } = req.query;
     const query = req.query.query ? JSON.parse(req.query.query) : {};
     const spec = { limit, page, lean: true };
-    const { docs, ...rest } = await userManager.getUsers(query, spec);
+    const { docs, ...rest } = await userDao.getUsers(query, spec);
 
     res.render("users", {
       title: "Fed-Tech",
@@ -71,7 +69,7 @@ router.get("/realTimeProducts", async (req, res) => {
     const spec = sort
       ? { limit, page, sort: { price: sort }, lean: true }
       : { limit, page, lean: true };
-    const { docs, ...rest } = await productManager.getProducts(
+    const { docs, ...rest } = await productDao.getProducts(
       { status: true },
       spec
     );
@@ -95,7 +93,7 @@ router.get("/realTimeProducts", async (req, res) => {
 router.get("/carts", async (req, res) => {
   try {
     const { cart } = req.user[0];
-    const products = await cartManager.getProductsByCartId(cart._id);
+    const products = await cartDao.getProductsByCartId(cart._id);
     res.render("carts", {
       status: "success",
       title: "Cart",
@@ -135,7 +133,7 @@ router.get("/terms&Conditions", async (req, res) => {
 });
 
 router.get("/register", async (req, res) => {
-  const genders = await userManager.getUsersGenders();
+  const genders = await userDao.getUsersGenders();
   res.render("register", {
     title: "Register",
     style: "/register.css",

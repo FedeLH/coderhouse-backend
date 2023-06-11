@@ -70,22 +70,15 @@ router.get(
   "/github",
   passport.authenticate("github", { scope: ["user:email"] })
 );
-router.get(
-  "/github",
-  passport.authenticate("github", { scope: ["user:email"] })
-);
 
 router.get(
   "/githubcallback",
   passport.authenticate("github", {
     failureRedirect: "/api/sessions/failregister",
   }),
-  passport.authenticate("github", {
-    failureRedirect: "/api/sessions/failregister",
-  }),
   (req, res) => {
     req.session.user = req.user;
-    req.session.role = "user-github";
+    req.session.role = "user";
     res.redirect("/products");
   }
 );

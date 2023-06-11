@@ -2,8 +2,7 @@ import passport from "passport";
 import local from "passport-local";
 import { createHash, checkValidPassword } from "../utils/utils.js";
 import GitHubStrategy from "passport-github2";
-import { userManager } from "../daos/db/user.mongo.dao.js";
-import { cartManager } from "../daos/db/cart.mongo.dao.js";
+import { userDao, cartDao } from "../daos/factory.js";
 import { CLIENT_ID, CLIENT_PASS, CB_URL } from "../config/config.js";
 
 const LocalStrategy = local.Strategy;
@@ -18,13 +17,13 @@ const initializePassport = () => {
       },
       async (req, username, password, done) => {
         try {
-          let user = await userManager.getUserByEmail(username);
+          let user = await userDao.getUserByEmail(username);
           if (user.length) {
             console.log("User already exists");
             return done(null, false);
           }
           const { first_name, last_name, gender } = req.body;
-          let cart = await cartManager.addCart();
+          let cart = await cartDao.addCart();
           let newUser = {
             first_name,
             last_name,
@@ -33,7 +32,7 @@ const initializePassport = () => {
             password: createHash(password),
             cart,
           };
-          let result = await userManager.addUser(newUser);
+          let result = await userDao.addUser(newUser);
           done(null, result);
         } catch (error) {
           return done(error);
@@ -48,7 +47,7 @@ const initializePassport = () => {
       { usernameField: "email" },
       async (username, password, done) => {
         try {
-          let user = await userManager.getUserByEmail(username);
+          let user = await userDao.getUserByEmail(username);
           if (!user.length) {
             console.log("User doesn't exist");
             return done(null, false);
@@ -80,9 +79,9 @@ const initializePassport = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          let user = await userManager.getUserByEmail(profile.emails[0].value);
+          let user = await userDao.getUserByEmail(profile.emails[0].value);
           if (!user.length) {
-            let cart = await cartManager.addCart();
+            let cart = await cartDao.addCart();
             let newUser = {
               first_name: profile._json.name ?? "Unknow",
               last_name: "Unknow",
@@ -91,7 +90,7 @@ const initializePassport = () => {
               password: "Unknow",
               cart,
             };
-            let result = await userManager.addUser(newUser);
+            let result = await userDao.addUser(newUser);
             done(null, result);
           } else {
             done(null, user);

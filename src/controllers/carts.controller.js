@@ -1,10 +1,10 @@
-import { cartManager } from "../daos/db/cart.mongo.dao.js";
+import { cartDao } from "../daos/factory.js";
 
 class CartController {
     getCarts = async (req, res) => {
         try {
           const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
-          const allCarts = await cartManager.getCarts();
+          const allCarts = await cartDao.getCarts();
           const limit = req.query.limit;
           let limitedCarts = [];
           if (limit) limitedCarts = allCarts.slice(0, limit);
@@ -21,7 +21,7 @@ class CartController {
 
     addCart = async (req, res) => {
         try {
-          const response = await cartManager.addCart();
+          const response = await cartDao.addCart();
           res.status(201).json({ status: "success", payload: response });
         } catch (error) {
           res.status(404).json({
@@ -34,7 +34,7 @@ class CartController {
     getProducts = async (req, res) => {
         try {
           const id = req.params.cid;
-          const products = await cartManager.getProductsByCartId(id);
+          const products = await cartDao.getProductsByCartId(id);
           res.status(200).json({ status: "success", payload: products });
         } catch (error) {
           res.status(404).json({
@@ -48,7 +48,7 @@ class CartController {
         try {
           const cid = req.params.cid;
           const pid = req.params.pid;
-          let products = await cartManager.getProductsByCartId(cid);
+          let products = await cartDao.getProductsByCartId(cid);
           let encontrado = false;
           for (let i = 0; i < products.length; i++) {
             const product = products[i];
@@ -60,7 +60,7 @@ class CartController {
           }
       
           if (!encontrado) products = [...products, { pid: pid, quantity: 1 }];
-          const response = await cartManager.addProductByCartId(cid, products);
+          const response = await cartDao.addProductByCartId(cid, products);
       
           res.status(201).json({ status: "success", payload: response });
         } catch (error) {
@@ -75,7 +75,7 @@ class CartController {
         try {
           const cid = req.params.cid;
           const pid = req.params.pid;
-          const response = await cartManager.deleteProductFromCart(cid, pid);
+          const response = await cartDao.deleteProductFromCart(cid, pid);
           res.status(200).json({ status: "success", payload: response });
         } catch (error) {
           res.status(404).json({
@@ -88,7 +88,7 @@ class CartController {
     deleteCart = async (req, res) => {
         try {
           const cid = req.params.cid;
-          const response = await cartManager.deleteProductsByCartId(cid);
+          const response = await cartDao.deleteProductsByCartId(cid);
           res.status(200).json({ status: "success", payload: response });
         } catch (error) {
           res.status(404).json({
@@ -102,7 +102,7 @@ class CartController {
         try {
           const cid = req.params.cid;
           const products = req.body;
-          const response = await cartManager.updateProductsByCartId(cid, products);
+          const response = await cartDao.updateProductsByCartId(cid, products);
           res.status(201).json({ status: "success", payload: response });
         } catch (error) {
           res.status(404).json({
@@ -117,7 +117,7 @@ class CartController {
           const cid = req.params.cid;
           const pid = req.params.pid;
           const { quantity } = req.body;
-          const response = await cartManager.updateProductFromCart(
+          const response = await cartDao.updateProductFromCart(
             cid,
             pid,
             quantity
@@ -129,6 +129,18 @@ class CartController {
             payload: { error: error, message: error.message },
           });
         }
+    }
+
+    purchaseCart = async (req, res) => {
+      try {
+        const response = "Ticket"
+        res.status(201).json({ status: "success", payload: response });
+      } catch (error) {
+        res.status(404).json({
+          status: "error",
+          payload: { error: error, message: error.message },
+        });
+      }
     }
 }
 

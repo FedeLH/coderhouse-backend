@@ -3,6 +3,9 @@ import { Schema, model } from "mongoose";
 const orderCollection = 'orders'
 
 const orderSchema = new Schema({
+    code: {
+        type: String
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'users'
@@ -11,8 +14,8 @@ const orderSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'products'
     }],
-    total: Number,
-    created: Date
+    amount: Number,
+    purchase_datetime: Date
 })
 
 export const orderModel = model(orderCollection, orderSchema)

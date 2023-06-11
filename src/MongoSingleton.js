@@ -1,5 +1,5 @@
 import { connect } from "mongoose";
-import { DB_HOST } from "./config/config";
+import { DB_HOST } from "./config/config.js";
 
 class MongoSingleton {
     static #instance
