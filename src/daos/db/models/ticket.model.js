@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
 
-const orderCollection = 'orders'
+const ticketCollection = 'tickets'
 
-const orderSchema = new Schema({
+const ticketSchema = new Schema({
     code: {
         type: String
     },
@@ -15,7 +15,8 @@ const orderSchema = new Schema({
         ref: 'products'
     }],
     amount: Number,
-    purchase_datetime: Date
+    purchase_datetime: Date,
+    purchaser: String
 })
 
-export const orderModel = model(orderCollection, orderSchema)
+export const ticketModel = model(ticketCollection, ticketSchema)

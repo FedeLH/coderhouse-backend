@@ -1,4 +1,4 @@
-import { cartDao } from "../daos/factory.js";
+import { cartDao, productDao, ticketDao } from "../daos/factory.js";
 
 class CartController {
     getCarts = async (req, res) => {
@@ -133,8 +133,47 @@ class CartController {
 
     purchaseCart = async (req, res) => {
       try {
-        const response = "Ticket"
-        res.status(201).json({ status: "success", payload: response });
+        const { cart, email } = req.user;
+        const products = await cartDao.getProductsByCartId(cart._id);
+        if (!products.length) {
+          return res.status(404).json({
+            status: "error",
+            payload: "The cart is empty or the selected products are not valid",
+          });
+        }
+        const generateId = () => Math.random().toString(36).substring(2, 18);
+        let remainingProducts = []
+        let purchasedProducts = []
+        let totalAmount = 0
+        for (let i = 0; i < products.length; i++) {
+          const product = products[i];
+          const arrayProduct = await productDao.getProductById(product.pid._id)
+          const { stock } = arrayProduct[0]
+          if ( product.quantity <= stock) {
+            const newStock = stock - product.quantity
+            await productDao.updateProduct(product.pid._id,{stock: newStock})
+            purchasedProducts.push(product)
+            totalAmount += product.pid.price * product.quantity
+          } else {
+            remainingProducts.push(product)
+          }
+        }
+        await cartDao.updateProductsByCartId(cart._id, remainingProducts)
+        if (!purchasedProducts.length) {
+          return res.status(404).json({
+            status: "error",
+            payload: "This purchase could not be made possibly due to lack of stock of the selected products",
+          });
+        }
+        const newTicket = {
+          code: generateId(),
+          purchase_datetime: Date.now(),
+          products: purchasedProducts,
+          amount: totalAmount,
+          purchaser: email
+        }
+        await ticketDao.create(newTicket)
+        res.status(201).json({ status: "success", payload: newTicket });
       } catch (error) {
         res.status(404).json({
           status: "error",

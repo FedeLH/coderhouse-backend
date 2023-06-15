@@ -2,23 +2,24 @@ import commander from '../utils/commander.js'
 import { MongoSingleton } from '../MongoSingleton.js'
 import CartDaoMongo from './db/cart.mongo.dao.js'
 import MessageDaoMongo from './db/message.mongo.dao.js'
-import OrderDaoMongo from './db/message.mongo.dao.js'
+import TicketDaoMongo from './db/ticket.mongo.dao.js'
 import ProductDaoMongo from './db/product.mongo.dao.js'
-import UserDaoMongo from './db/product.mongo.dao.js'
+import UserDaoMongo from './db/user.mongo.dao.js'
 
 const { persistence } = commander
 
 let CartDao
 let MessageDao
-let OrderDao
+let TicketDao
 let ProductDao
 let UserDao
 
 const configPersistence = {
     MONGO: () => {
+        MongoSingleton.getInstance();
         CartDao = CartDaoMongo
         MessageDao = MessageDaoMongo
-        OrderDao = OrderDaoMongo
+        TicketDao = TicketDaoMongo
         ProductDao = ProductDaoMongo
         UserDao = UserDaoMongo
         return 'Persistence selected is MONGO'
@@ -38,8 +39,8 @@ console.log(configuredPersistence)
 
 const cartDao = new CartDao()
 const messageDao = new MessageDao()
-const orderDao = new OrderDao()
+const ticketDao = new TicketDao()
 const productDao = new ProductDao()
 const userDao = new UserDao()
 
-export { cartDao, messageDao, orderDao, productDao, userDao }
+export { cartDao, messageDao, ticketDao, productDao, userDao }
