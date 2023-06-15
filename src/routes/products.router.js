@@ -5,7 +5,7 @@ import {
   productUpdateSchema,
 } from "../validators/product.validator.js";
 import validateObject from "../middlewares/validator.js";
-
+import authorization from "../middlewares/authorization.middleware.js";
 
 const router = Router();
 
