@@ -1,4 +1,7 @@
 import { cartDao, productDao, ticketDao } from "../daos/factory.js";
+import EErrors from "../utils/errors/EErrors.js";
+import CustomError from "../utils/errors/CustomError.js";
+import { generateEmptyCartErrorInfo, generatePurchaseCartErrorInfo } from "../utils/errors/info.js";
 
 class CartController {
     getCarts = async (req, res) => {
@@ -131,15 +134,17 @@ class CartController {
         }
     }
 
-    purchaseCart = async (req, res) => {
+    purchaseCart = async (req, res, next) => {
       try {
-        const { cart, email } = req.user;
+        const { cart, email } = req.user[0];
         const products = await cartDao.getProductsByCartId(cart._id);
         if (!products.length) {
-          return res.status(404).json({
-            status: "error",
-            payload: "The cart is empty or the selected products are not valid",
-          });
+          CustomError.createError({
+            name: "Empty cart error",
+            cause: generateEmptyCartErrorInfo(),
+            message: "Error trying to get products from the cart",
+            code: EErrors.EMPTY_CART_ERROR
+          })
         }
         const generateId = () => Math.random().toString(36).substring(2, 18);
         let remainingProducts = []
@@ -160,10 +165,12 @@ class CartController {
         }
         await cartDao.updateProductsByCartId(cart._id, remainingProducts)
         if (!purchasedProducts.length) {
-          return res.status(404).json({
-            status: "error",
-            payload: "This purchase could not be made possibly due to lack of stock of the selected products",
-          });
+          CustomError.createError({
+            name: "Purchase cart error",
+            cause: generatePurchaseCartErrorInfo(),
+            message: "Error trying to purchase products",
+            code: EErrors.PURCHASE_CART_ERROR
+          })
         }
         const newTicket = {
           code: generateId(),
@@ -175,10 +182,7 @@ class CartController {
         await ticketDao.create(newTicket)
         res.status(201).json({ status: "success", payload: newTicket });
       } catch (error) {
-        res.status(404).json({
-          status: "error",
-          payload: { error: error, message: error.message },
-        });
+          next(error)
       }
     }
 }
