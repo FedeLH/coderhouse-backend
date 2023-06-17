@@ -44,7 +44,6 @@ const initializePassport = () => {
   passport.use(
     "login",
     new LocalStrategy(
-      { usernameField: "email" },
       async (username, password, done) => {
         try {
           let user = await userDao.getUserByEmail(username);
@@ -52,17 +51,14 @@ const initializePassport = () => {
             console.log("User doesn't exist");
             return done(null, false);
           }
-
           const isValidPassword = checkValidPassword({
             hashedPassword: user[0].password,
             password,
           });
-
           if (!isValidPassword) return done(null, false);
-
           done(null, user);
         } catch (error) {
-          return done(error);
+          done(error)
         }
       }
     )
