@@ -1,6 +1,7 @@
-export const generateUserErrorInfo = (user) => {
-    return `Una o mas propiedades están incompletas, no es válido.Lista de propiedades requeridas:
-    first_name: necesita ser string, y se recibió ${user.first_name}
-    last_name: necesita ser string, y se recibió ${user.last_name}
-    email: necesita ser string, y se recibió ${user.email}`
+export const generateEmptyCartErrorInfo = () => {
+    return "The cart is empty or the selected products are not valid"
+}
+
+export const generatePurchaseCartErrorInfo = () => {
+    return "This purchase could not be made possibly due to lack of stock of the selected products"
 }
