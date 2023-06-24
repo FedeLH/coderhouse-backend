@@ -1,6 +1,7 @@
 import multer from "multer";
 import __dirname from "./utils.js";
 import path from "path";
+import { logger } from "../utils/logger.js"
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -14,7 +15,7 @@ const storage = multer.diskStorage({
 export const uploader = multer({
   storage,
   onError: (error, next) => {
-    console.log(error);
+    logger.error(error);
     next();
   },
 });

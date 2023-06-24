@@ -10,7 +10,7 @@ router.get('/mail', async (req, res) => {
         await sendMailTransport()
         res.send('Email sended')
     } catch (error) {
-        console.log(error)
+        req.logger.error(error)
     }
 })
 
@@ -19,7 +19,7 @@ router.get('/sms', async (req, res) => {
         await sendSms()
         res.send('SMS sended')
     } catch (error) {
-        console.log(error)
+        req.logger.error(error)
     }
 })
 
@@ -31,8 +31,24 @@ router.get('/users', async (req, res) => {
         }
         res.send(users)
     } catch (error) {
-        console.log(error)
+        req.logger.error(error)
     }
+})
+
+router.get('/sencilla', (req, res) => {
+    let sum = 0;
+    for (let i =0; i < 1000000; i++) {
+        sum += i
+    }
+    res.send(`This response comes from the worker: ${process.pid}, respuesta: ${sum}`)
+})
+
+router.get('/compleja', (req, res) => {
+    let sum = 0;
+    for (let i =0; i < 5e8; i++) {
+        sum += i
+    }
+    res.send(`This response comes from the worker: ${process.pid}, respuesta: ${sum}`)
 })
 
 export default router;

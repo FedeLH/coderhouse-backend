@@ -1,7 +1,4 @@
 node_modules
-.env
 *.txt
 uploads/*
 errors.log
-*.json
-*.html

@@ -5,7 +5,7 @@
   "description": "Este repositorio contendrá los entregables y proyecto final correspondientes al curso de \"Programación-Backend\" de Coderhouse comisión #39730 del alumno \"Federico Hanson\".",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon src/server.js",
+    "dev": "nodemon src/server.js --environment DEVELOPMENT",
     "start": "node src/server.js",
     "clean": "prettier --write ."
   },
@@ -41,7 +41,8 @@
     "passport-local": "^1.0.0",
     "session-file-store": "^1.5.0",
     "socket.io": "^4.6.1",
-    "twilio": "^4.11.2"
+    "twilio": "^4.11.2",
+    "winston": "^3.9.0"
   },
   "nodemonConfig": {
     "ignore": [

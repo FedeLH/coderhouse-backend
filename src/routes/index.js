@@ -9,6 +9,7 @@ import usersRouter from "./users.router.js";
 import errorHandler from "../middlewares/errors/index.js";
 import authorization from "../middlewares/authorization.middleware.js";
 import mockingRouter from "./mocking.router.js";
+import loggerTestRouter from "./loggerTest.router.js"
 
 export const router = Router();
 router.use("/api/images", authorization('user'), imagesRouter);
@@ -17,6 +18,7 @@ router.use("/api/carts", authorization('user'), cartsRouter);
 router.use("/api/sessions", sessionsRouter);
 router.use("/api/users", authorization('admin'), usersRouter);
 router.use("/api/tests", testsRouter);
-router.use("/mockingproducts", mockingRouter)
+router.use("/mocking", mockingRouter)
+router.use("/loggerTest", loggerTestRouter)
 router.use("/", viewsRouter);
 router.use(errorHandler)
