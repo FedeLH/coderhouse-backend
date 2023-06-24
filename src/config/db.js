@@ -1,13 +1,13 @@
 import { connect } from "mongoose";
 import { DB_HOST, DB_OPTIONS } from "./config.js";
-
+import { logger } from '../utils/logger.js'
 const objConfig = {
   connectDB: async (_) => {
     try {
       await connect(DB_HOST, DB_OPTIONS);
-      console.log("Connect to database");
+      logger.info("Connect to database");
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   },
   url: DB_HOST,

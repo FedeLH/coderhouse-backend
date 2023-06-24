@@ -11,6 +11,7 @@ import authSession from "./middlewares/auth.middleware.js";
 import { SESSION_SECRET } from "./config/config.js";
 import initializePassport from "./config/passport.config.js";
 import passport from "passport";
+import addLogger from "./utils/logger.js";
 
 const { create } = pkg;
 
@@ -46,13 +47,15 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(addLogger)
 
 app.use(express.static(path.dirname(__dirname) + "/public"));
 
-app.use(authSession, router);
+app.use(router);
+//app.use(authSession, router);
 
 app.use((err, req, res, next) => {
-  console.log(err);
+  req.logger.error(err);
   res.status(500).send("Internal error");
 });
 

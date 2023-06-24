@@ -1,12 +1,13 @@
 import { Server } from "socket.io";
 import { productManager } from "../daos/json/product.json.dao.js";
 import chatController from "../controllers/chat.controller.js";
+import { logger } from '../utils/logger.js'
 
 const createIoServer = (httpServer) => {
   const io = new Server(httpServer);
 
   io.on("connection", (socket) => {
-    console.log("Nuevo cliente conectado");
+    logger.info("Nuevo cliente conectado");
 
     socket.on("delete-product", async (productId) => {
       const response = await productManager.deleteProduct(Number(productId));
@@ -18,7 +19,7 @@ const createIoServer = (httpServer) => {
     chatController(io, socket);
 
     socket.on("disconnect", (socket) => {
-      console.log("Cliente desconectado");
+      logger.info("Cliente desconectado");
     });
   });
 

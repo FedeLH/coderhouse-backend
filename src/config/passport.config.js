@@ -19,7 +19,7 @@ const initializePassport = () => {
         try {
           let user = await userDao.getUserByEmail(username);
           if (user.length) {
-            console.log("User already exists");
+            req.logger.error("User already exists");
             return done(null, false);
           }
           const { first_name, last_name, gender } = req.body;
@@ -48,7 +48,7 @@ const initializePassport = () => {
         try {
           let user = await userDao.getUserByEmail(username);
           if (!user.length) {
-            console.log("User doesn't exist");
+            req.logger.error("User doesn't exist");
             return done(null, false);
           }
           const isValidPassword = checkValidPassword({

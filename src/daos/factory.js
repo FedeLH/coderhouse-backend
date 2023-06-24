@@ -5,6 +5,7 @@ import MessageDaoMongo from './db/message.mongo.dao.js'
 import TicketDaoMongo from './db/ticket.mongo.dao.js'
 import ProductDaoMongo from './db/product.mongo.dao.js'
 import UserDaoMongo from './db/user.mongo.dao.js'
+import { logger } from '../utils/logger.js'
 
 const { persistence } = commander
 
@@ -35,7 +36,7 @@ const persistenceUndefined = 'This persistence is not defined'
 
 const configuredPersistence = configPersistence[persistence] ? configPersistence[persistence]() : persistenceUndefined
 
-console.log(configuredPersistence)
+logger.info(configuredPersistence)
 
 const cartDao = new CartDao()
 const messageDao = new MessageDao()

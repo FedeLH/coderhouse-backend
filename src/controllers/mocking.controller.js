@@ -1,4 +1,4 @@
-import { generateProducts } from "../utils/faker.js";
+import { generateProducts, generateUser } from "../utils/faker.js";
 
 class MockingController {
     getProducts = async (req, res) => {
@@ -9,7 +9,14 @@ class MockingController {
             }
             res.send(products)
         } catch (error) {
-            console.log(error)
+            req.logger.error(error)
+        }
+    }
+    getUser = async (req, res) => {
+        try {
+            res.send(generateUser())
+        } catch (error) {
+            req.logger.error(error)
         }
     }
 }

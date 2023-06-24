@@ -1,4 +1,3 @@
-console.log("estamos acá");
 const form = document.querySelector("#cookieForm");
 
 form.addEventListener("submit", (e) => {

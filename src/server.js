@@ -1,9 +1,26 @@
 import { server } from "./config/server.js";
 import "./config/io.js";
 import { PORT, SERVER_URL } from "./config/config.js";
+import cluster from 'cluster'
+import { logger } from './utils/logger.js'
+import { cpus } from 'os'
 
-server.listen(PORT, (error) => {
-  if (error) console.log(error);
-  console.log(`Server up in port: ${PORT}`);
-  console.log(`${SERVER_URL}:${PORT}`);
-});
+const numProcess = cpus().length
+
+const initServer = () => {
+  server.listen(PORT, (error) => {
+    if (error) logger.info(error);
+    logger.info(`Server up in port: ${PORT}`);
+    logger.info(`${SERVER_URL}:${PORT}`);
+  });
+}
+
+if (cluster.isPrimary) {
+  logger.info(`primary process ${process.pid}, generating a process worker`)
+  for(let i = 0; i < numProcess; i++){
+    cluster.fork()
+  }
+} else {
+  logger.info(`I am worker ${process.pid}`)
+  initServer()
+}
