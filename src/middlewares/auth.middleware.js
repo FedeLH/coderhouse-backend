@@ -4,11 +4,12 @@ const authSession = (req, res, next) => {
     req.path === "/login" ||
     req.path === "/api/sessions/login" ||
     req.path === "/api/sessions/github" ||
-    req.path === "/api/sessions/githubcallback";
+    req.path === "/api/sessions/githubcallback" ||
+    req.path === "/api/sessions/faillogin";
   const isRegistering =
     req.path === "/register" ||
     req.path === "/api/sessions/register" ||
-    req.path === "/api/sessions/failedregister";
+    req.path === "/api/sessions/failregister";
 
   if ((isLoggingIn || isRegistering) && isLoggedIn) return res.redirect("/");
 

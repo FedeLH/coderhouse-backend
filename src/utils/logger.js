@@ -1,7 +1,6 @@
 import winston from "winston";
 import commander from './commander.js'
 const { environment } = commander
-console.log(commander)
 const configEnvironment = {
     PRODUCTION: () => {
         logger = loggerProd
