@@ -51,8 +51,8 @@ app.use(addLogger)
 
 app.use(express.static(path.dirname(__dirname) + "/public"));
 
-app.use(router);
-//app.use(authSession, router);
+//app.use(router);
+app.use(authSession, router);
 
 app.use((err, req, res, next) => {
   req.logger.error(err);

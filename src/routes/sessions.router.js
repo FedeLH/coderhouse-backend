@@ -12,41 +12,18 @@ router.post(
   "/login",
   validateObject(loginSchema),
   passport.authenticate("login", {
+    successRedirect: "/products",
     failureRedirect: "/api/sessions/faillogin",
-  }),
-  async (req, res) => {
-    try {
-      if (!req.user) {
-        return res.status(400).json({
-          status: "error",
-          payload: {
-            error: "Invalid credentials",
-            message: "User or password invalid",
-          },
-        });
-      }
-      return res.status(307).redirect("/products");
-    } catch (error) {
-      res.status(404).json({
-        status: "error",
-        payload: {
-          error: error,
-          message: error.message,
-        },
-      });
-    }
-  }
+  })
 );
 
 router.post(
   "/register",
   validateObject(registerSchema),
   passport.authenticate("register", {
+    successRedirect: "/login",
     failureRedirect: "/api/sessions/failregister",
-  }),
-  async (req, res) => {
-    return res.status(307).redirect("/login");
-  }
+  })
 );
 
 router.get("/logout", (req, res) => {
@@ -88,7 +65,13 @@ router.get("/failregister", (req, res) => {
 });
 
 router.get("/faillogin", (req, res) => {
-  res.send({ status: "error", message: "Failed Login" });
+  return res.status(400).json({
+    status: "error",
+    payload: {
+      error: "Invalid credentials",
+      message: "User or password invalid",
+    },
+  });
 });
 
 router.get("/current", (req, res) => {

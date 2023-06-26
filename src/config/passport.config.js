@@ -4,6 +4,7 @@ import { createHash, checkValidPassword } from "../utils/utils.js";
 import GitHubStrategy from "passport-github2";
 import { userDao, cartDao } from "../daos/factory.js";
 import { CLIENT_ID, CLIENT_PASS, CB_URL } from "../config/config.js";
+import { logger } from "../utils/logger.js";
 
 const LocalStrategy = local.Strategy;
 
@@ -19,7 +20,7 @@ const initializePassport = () => {
         try {
           let user = await userDao.getUserByEmail(username);
           if (user.length) {
-            req.logger.error("User already exists");
+            logger.error("User already exists");
             return done(null, false);
           }
           const { first_name, last_name, gender } = req.body;
@@ -48,7 +49,7 @@ const initializePassport = () => {
         try {
           let user = await userDao.getUserByEmail(username);
           if (!user.length) {
-            req.logger.error("User doesn't exist");
+            logger.error("User doesn't exist");
             return done(null, false);
           }
           const isValidPassword = checkValidPassword({
