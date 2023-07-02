@@ -5,7 +5,7 @@ import path from "path";
 
 const transport = createTransport({
     service: 'gmail',
-    port: '587',
+    port: 587,
     auth: {
         user: GMAIL_MAIL_USER,
         pass: GMAIL_PASS
