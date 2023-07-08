@@ -5,18 +5,21 @@ import {
   userUpdateSchema,
 } from "../validators/user.validator.js";
 import validateObject from "../middlewares/validator.js";
+import authorization from "../middlewares/authorization.middleware.js"
 
 
 const router = Router();
 
-router.get("/", userController.getUsers);
+router.get("/", authorization(['admin']), userController.getUsers);
 
-router.get("/:uid", userController.getUser);
+router.get("/:uid", authorization(['admin']), userController.getUser);
 
-router.post("/", validateObject(userCreateSchema), userController.addUser);
+router.post("/", authorization(['admin']), validateObject(userCreateSchema), userController.addUser);
 
-router.put("/:uid", validateObject(userUpdateSchema), userController.updateUser);
+router.put("/:uid", authorization(['admin']), validateObject(userUpdateSchema), userController.updateUser);
 
-router.delete("/:uid", userController.deleteUser);
+router.delete("/:uid", authorization(['admin']), userController.deleteUser);
+
+router.put("/premium/:uid", authorization(['premium','user']), userController.changeRoleUser);
 
 export default router;

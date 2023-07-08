@@ -5,6 +5,7 @@ import MessageDaoMongo from './db/message.mongo.dao.js'
 import TicketDaoMongo from './db/ticket.mongo.dao.js'
 import ProductDaoMongo from './db/product.mongo.dao.js'
 import UserDaoMongo from './db/user.mongo.dao.js'
+import TokenDaoMongo from './db/token.mongo.dao.js'
 import { logger } from '../utils/logger.js'
 
 const { persistence } = commander
@@ -14,6 +15,7 @@ let MessageDao
 let TicketDao
 let ProductDao
 let UserDao
+let TokenDao
 
 const configPersistence = {
     MONGO: () => {
@@ -23,6 +25,7 @@ const configPersistence = {
         TicketDao = TicketDaoMongo
         ProductDao = ProductDaoMongo
         UserDao = UserDaoMongo
+        TokenDao = TokenDaoMongo
         return 'Persistence selected is MONGO'
     },
     FILE: () => {
@@ -43,5 +46,6 @@ const messageDao = new MessageDao()
 const ticketDao = new TicketDao()
 const productDao = new ProductDao()
 const userDao = new UserDao()
+const tokenDao = new TokenDao()
 
-export { cartDao, messageDao, ticketDao, productDao, userDao }
+export { cartDao, messageDao, ticketDao, productDao, userDao, tokenDao }

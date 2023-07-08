@@ -12,20 +12,28 @@ const transport = createTransport({
     }
 })
 
-export const sendMailTransport = async () => {
+/*
+Example:
+{
+    from: `Ecommerce <${GMAIL_MAIL_USER}>`,
+    to: 'sofiacardella5@gmail.com',
+    subject: 'Correo de prueba',
+    html: `
+        <div>
+            <h1>Mensaje de prueba</h1>
+        </div>
+    `,
+    attachments: [{
+        filename: 'Regalo.PNG',
+        path: path.dirname(__dirname)+'/images/auto.PNG',
+        cid: 'test_image',
+    }]
+}
+*/
+
+export const sendMailTransport = async (configMail) => {
     transport.sendMail({
-        from: `Coder test <${GMAIL_MAIL_USER}>`,
-        to: 'sofiacardella5@gmail.com',
-        subject: 'Correo de prueba',
-        html: `
-            <div>
-                <h1>Mensaje de prueba</h1>
-            </div>
-        `,
-        attachments: [{
-            filename: 'Regalo.PNG',
-            path: path.dirname(__dirname)+'/images/auto.PNG',
-            cid: 'test_image',
-        }]
+        from: `Ecommerce <${GMAIL_MAIL_USER}>`,
+        ...configMail
     })
 }

@@ -51,6 +51,10 @@ class CartController {
         try {
           const cid = req.params.cid;
           const pid = req.params.pid;
+          const arrayProduct = await productDao.getProductById(pid)
+          if (req.user[0]._id === arrayProduct[0].owner) {
+            throw new Error("This product is yours")
+          }
           let products = await cartDao.getProductsByCartId(cid);
           let encontrado = false;
           for (let i = 0; i < products.length; i++) {

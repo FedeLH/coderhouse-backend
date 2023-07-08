@@ -41,21 +41,23 @@
 </div>
 <div class="products-container">
     <div class="cart" id={{userData.cart._id}}></div>
-    {{#each products}}
-        <div class="product">
-        <img class="thumbnails" src="{{firstItem thumbnails}}" alt="Imagen del producto">
-        <h2>{{title}}</h2>
-        <p class="description">{{description}}</p>
-        <p>Precio: ${{price}}</p>
-        <p>Categoría: {{category}}</p>
-        {{#if status}}
-            <p>Stock:{{stock}}</p>
-        {{else}}            
-            <p>No disponible</p>
-        {{/if}}
-        <button class="add-to-cart" id={{_id}}>Añadir al carrito</button>
-        </div>
-    {{/each}}
+    {{#if products}}
+        {{#each products}}
+            <div class="product">
+            <img class="thumbnails" src="{{firstItem thumbnails}}" alt="Imagen del producto">
+            <h2>{{title}}</h2>
+            <p class="description">{{description}}</p>
+            <p>Precio: ${{price}}</p>
+            <p>Categoría: {{category}}</p>
+            {{#if status}}
+                <p>Stock:{{stock}}</p>
+            {{else}}            
+                <p>No disponible</p>
+            {{/if}}
+            <button class="add-to-cart" id={{_id}}>Añadir al carrito</button>
+            </div>
+        {{/each}}
+    {{/if}}
 </div>
 {{> footer}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

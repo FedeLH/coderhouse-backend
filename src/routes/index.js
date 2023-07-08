@@ -10,13 +10,15 @@ import errorHandler from "../middlewares/errors/index.js";
 import authorization from "../middlewares/authorization.middleware.js";
 import mockingRouter from "./mocking.router.js";
 import loggerTestRouter from "./loggerTest.router.js"
+import passwordsRouter from "./passwords.router.js"
 
 export const router = Router();
-router.use("/api/images", authorization('user'), imagesRouter);
+router.use("/api/images", authorization(['user','premium']), imagesRouter);
 router.use("/api/products", productsRouter);
-router.use("/api/carts", authorization('user'), cartsRouter);
+router.use("/api/carts", authorization(['user','premium']), cartsRouter);
 router.use("/api/sessions", sessionsRouter);
-router.use("/api/users", authorization('admin'), usersRouter);
+router.use("/api/users", usersRouter);
+router.use("/api/passwords", passwordsRouter);
 router.use("/api/tests", testsRouter);
 router.use("/mocking", mockingRouter)
 router.use("/loggerTest", loggerTestRouter)

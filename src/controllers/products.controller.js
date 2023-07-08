@@ -56,6 +56,9 @@ class ProductController {
     addProduct = async (req, res) => {
         try {
           const product = req.body;
+          if (req.user[0].role === 'premium') {
+            product.owner = req.user[0]._id
+          }
           const response = await productDao.addProduct(product);
           res.status(201).json({ status: "success", payload: response });
           if (response.product) io.emit("add-new-product", response.product);
@@ -75,6 +78,10 @@ class ProductController {
     updateProduct = async (req, res) => {
         try {
           const id = req.params.pid;
+          const products = await productDao.getProductById(id)
+          if (req.user[0]._id !== products[0].owner) {
+            throw new Error("This product is not yours")
+          }
           const changes = req.body;
           const response = await productDao.updateProduct(id, changes);
           res.status(201).json({ status: "success", payload: response });
