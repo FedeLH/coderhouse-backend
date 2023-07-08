@@ -10,7 +10,7 @@ form.addEventListener("submit", (e) => {
   data.forEach((value, key) => (obj[key] = value));
   // console.log(obj)
 
-  fetch("http://localhost:8080/cookie/setSigned", {
+  fetch("/cookie/setSigned", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -13,10 +13,10 @@ router.get("/", productController.getProducts);
 
 router.get("/:pid", productController.getProduct);
 
-router.post("/", authorization('admin'), validateObject(productCreateSchema), productController.addProduct);
+router.post("/", authorization(['admin','premium']), validateObject(productCreateSchema), productController.addProduct);
 
-router.put("/:pid", authorization('admin'), validateObject(productUpdateSchema), productController.updateProduct);
+router.put("/:pid", authorization(['admin','premium']), validateObject(productUpdateSchema), productController.updateProduct);
 
-router.delete("/:pid", authorization('admin'), productController.deleteProduct);
+router.delete("/:pid", authorization(['admin','premium']), productController.deleteProduct);
 
 export default router;

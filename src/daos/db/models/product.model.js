@@ -50,6 +50,11 @@ const productSchema = new Schema({
     type: [String],
     default: ["https://placehold.co/300x200"],
   },
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "users",
+    default: "admin"
+  }
 });
 
 productSchema.plugin(mongoosePaginate);

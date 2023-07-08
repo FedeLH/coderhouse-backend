@@ -1,5 +1,5 @@
 import express from "express";
-import { productDao, cartDao, userDao } from "../daos/factory.js";
+import { productDao, cartDao, userDao, tokenDao } from "../daos/factory.js";
 
 const router = express.Router();
 
@@ -133,11 +133,9 @@ router.get("/terms&Conditions", async (req, res) => {
 });
 
 router.get("/register", async (req, res) => {
-  const genders = await userDao.getUsersGenders();
   res.render("register", {
     title: "Register",
-    style: "/register.css",
-    genders,
+    style: "/register.css"
   });
 });
 
@@ -169,6 +167,38 @@ router.get("/profile", async (req, res) => {
       style: "error.css",
       error: error,
       message: error.message,
+    });
+  }
+});
+
+router.get("/forgot-password", async (req, res) => {
+  res.render("forgotPassword", { title: "Forgot password", style: "/forgotPassword.css" });
+});
+
+router.get("/reset-password/:uid", async (req, res) => {
+  try {
+    const receivedToken = req.query.token
+    const now = new Date()
+    const uid = req.params.uid
+    const tokens = await tokenDao.getByUserId(uid)
+    if (!tokens.length > 0) {
+      throw new Error("This user don't have valid token")
+    }
+    for (let i = 0; i < tokens.length; i++) {
+      const { _id, token, expiration_date } = tokens[i];
+      if (expiration_date > now && token === receivedToken) {
+        return res.render("resetPassword", { title: "Reset password", style: "/resetPassword.css" });
+      }
+      await tokenDao.delete(_id)
+    }
+    throw new Error("This user don't have valid token or your token expirated")
+  } catch (error) {
+    res.render("error", {
+      title: "Error",
+      style: "error.css",
+      error: error,
+      message: error.message,
+      path: [{ url: "/forgot-password", text: "Back"}]
     });
   }
 });

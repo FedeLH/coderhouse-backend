@@ -1,7 +1,10 @@
-{{> header}}
 <div>
     <h1>Ocurrió un error:</h1>
     <p>{{error}}</p>
     <p>{{message}}</p>
+    {{#if path}}
+        {{#each path}}
+            <a href="{{url}}">{{text}}</a>
+        {{/each}}
+    {{/if}}
 </div>
-{{> footer}}

@@ -1,21 +1,17 @@
+import { logger } from "../utils/logger.js";
+
 const authSession = (req, res, next) => {
-  const isLoggedIn = req.session?.passport?.user !== undefined;
-  const isLoggingIn =
-    req.path === "/login" ||
-    req.path === "/api/sessions/login" ||
-    req.path === "/api/sessions/github" ||
-    req.path === "/api/sessions/githubcallback" ||
-    req.path === "/api/sessions/faillogin";
-  const isRegistering =
-    req.path === "/register" ||
-    req.path === "/api/sessions/register" ||
-    req.path === "/api/sessions/failregister";
+  const isLoggedIn = Array.isArray(req.user);
+  const isValidPath =
+    /^\/(login|register|forgot-password)$/.test(req.path) ||
+    /^\/reset-password\/\w+$/.test(req.path) ||
+    /^\/api\/sessions\/(login|github|githubcallback|faillogin|register|failregister)$/.test(req.path) ||
+    /^\/api\/passwords\/\w+$/.test(req.path);
 
-  if ((isLoggingIn || isRegistering) && isLoggedIn) return res.redirect("/");
+  if (isValidPath && isLoggedIn) return res.redirect("/");
 
-  if (!isLoggedIn && !(isLoggingIn || isRegistering))
+  if (!isLoggedIn && !isValidPath)
     return res.redirect("/login");
-
   next();
 };
 

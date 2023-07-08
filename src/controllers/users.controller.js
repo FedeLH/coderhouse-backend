@@ -99,6 +99,30 @@ class UserController {
           });
         }
     }
+
+    changeRoleUser = async (req, res) => {
+      try {
+        const id = req.params.uid;
+        let newRole = 'premium'
+        if (req.user[0].role === 'premium') {
+          newRole = 'user'
+        }
+        const changes = {
+          role: newRole
+        }
+        await userDao.updateUser(id, changes);
+        req.session.destroy((err) => {
+          if (err) return res.send({ status: "Logout error", message: err });
+          return res.status(307).redirect("/login");
+        });
+        res.status(201).json({ status: "success", payload: `Your new role is ${newRole} please login again` });
+      } catch (error) {
+        res.status(404).json({
+          status: "error",
+          payload: { error: error, message: error.message },
+        });
+      }
+    }
 }
 
 const userController = new UserController();
