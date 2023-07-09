@@ -1,0 +1,380 @@
+paths:
+  /api/products:
+    get:
+      tags:
+        - Products
+      description: Describe this route
+      summary: Describe this route
+      parameters:
+        - in: query
+          name: limit
+          description: description
+          required: false
+          schema:
+            type: number
+        - in: query
+          name: page
+          description: description
+          required: false
+          schema:
+            type: number
+        - in: query
+          name: sort
+          description: description
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: query
+          description: description
+          required: false
+          schema:
+            type: object
+            $ref: '#/components/schemas/Query'        
+      responses:
+        200:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/PaginateProducts'
+        404:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Products    
+      description: Describe this route
+      summary: Describe this route
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/requestBodies/addProduct'
+      responses:
+        201:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/SuccessAddProduct'
+        404:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'    
+  /api/products/{pid}:
+    get:
+      tags:
+        - Products
+      description: Describe this route
+      summary: Describe this route
+      parameters:
+        - in: path
+          name: pid
+          description: description
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/SuccessGetProduct'
+        404:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'      
+    put:
+      tags:
+        - Products    
+      description: Describe this route
+      summary: Describe this route
+      parameters:
+        - in: path
+          name: pid
+          description: description
+          required: true
+          schema:
+              type: object
+              $ref: '#/components/requestBodies/updateProduct'      
+      responses:
+        201:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/SuccessUpdateProduct'
+        404:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'      
+    delete:
+      tags:
+        - Products    
+      description: Describe this route
+      summary: Describe this route
+      parameters:
+        - in: path
+          name: pid
+          description: description
+          required: true
+          schema:
+            type: string      
+      responses:
+        200:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/SuccessDeleteProduct'
+        404:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'      
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Description
+          example: example
+        title:
+          type: string
+          description: Description
+          example: example
+        description:
+          type: string
+          description: Description
+          example: example
+        price:
+          type: number
+          description: Description
+          example: example
+        stock:
+          type: number
+          description: Description
+          example: example
+        code:
+          type: string
+          description: Description
+          example: example
+        category:
+          type: string
+          description: Description
+          example: example
+        status:
+          type: boolean
+          description: Description
+          example: example
+        thumbnails:
+          type: array
+          description: Description
+          items:
+            type: string
+            example: example
+        owner:
+          type: string
+          description: Description
+          example: example
+    PaginateProducts:
+      type: object
+      properties:
+        status:
+          type: string
+          example: example
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'      
+        totalPages:
+          type: number
+          example: example
+        prevPage:
+          type: number
+          example: example
+        nextPage:
+          type: number
+          example: example
+        page:
+          type: number
+          example: example
+        hasPrevPage:
+          type: boolean
+          example: example
+        hasNextPage:
+          type: boolean
+          example: example
+        prevLink:
+          type: string
+          example: example
+        nextLink:
+          type: string
+          example: example
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        payload:
+          type: object
+          properties:
+            error:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: example
+              example: example
+            message:
+              type: string
+              example: example
+    SuccessGetProduct:
+      type: object
+      properties:
+        status:
+          type: string
+          example: example
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    SuccessAddProduct:
+      type: object
+      properties:
+        status:
+          type: string
+          example: example
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    SuccessUpdateProduct:
+      type: object
+      properties:
+        status:
+          type: string
+          example: example
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    SuccessDeleteProduct:
+      type: object
+      properties:
+        status:
+          type: string
+          example: example
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    Query:
+      type: object
+      properties:
+  requestBodies:
+    addProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          required: true
+          description: Description
+          example: example
+        description:
+          type: string
+          required: true
+          description: Description
+          example: example
+        price:
+          type: number
+          required: true
+          description: Description
+          example: example
+        stock:
+          type: number
+          required: true
+          description: Description
+          example: example
+        code:
+          type: string
+          required: true
+          description: Description
+          example: example
+        category:
+          type: string
+          required: true
+          description: Description
+          example: example
+        status:
+          type: boolean
+          description: Description
+          example: example
+        thumbnails:
+          type: array
+          items:
+            type: string
+            example: example
+    updateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Description
+          example: example
+        description:
+          type: string
+          description: Description
+          example: example
+        price:
+          type: number
+          description: Description
+          example: example
+        stock:
+          type: number
+          description: Description
+          example: example
+        code:
+          type: string
+          description: Description
+          example: example
+        category:
+          type: string
+          description: Description
+          example: example
+        status:
+          type: boolean
+          description: Description
+          example: example
+        thumbnails:
+          type: array
+          items:
+            type: string
+            example: example      

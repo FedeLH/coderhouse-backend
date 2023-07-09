@@ -1,0 +1,413 @@
+paths:
+  /api/carts:
+    get:
+      tags:
+        - Carts
+      description: Describe this route
+      summary: Describe this route
+      parameters:
+        - in: query
+          name: filter
+          description: description
+          required: false
+          schema:
+            type: object
+            $ref: '#/components/schemas/Filter'
+      responses:
+        200:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: string
+        404:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Carts    
+      description: Describe this route
+      summary: Describe this route
+      responses:
+        200:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/SuccessAddCart'
+        404:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'     
+  /api/carts/{cid}:
+    get:
+      tags:
+        - Carts
+      description: Describe this route
+      summary: Describe this route
+      parameters:
+        - in: path
+          name: cid
+          description: description
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Description
+          content: 
+            application/json:
+                type: object
+                $ref: '#/components/schemas/SuccessGetProductsInCart'
+        404:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'  
+    put:
+      tags:
+        - Carts    
+      description: Describe this route
+      summary: Describe this route
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/requestBodies/updateCart'      
+      parameters:
+        - in: path
+          name: cid
+          description: description
+          required: true
+          schema:
+            type: string      
+      responses:
+        200:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/SuccessUpdateCart'
+        404:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'   
+    delete:
+      tags:
+        - Carts    
+      description: Describe this route
+      summary: Describe this route
+      parameters:
+        - in: path
+          name: cid
+          description: description
+          required: true
+          schema:
+            type: string      
+      responses:
+        200:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/SuccessDeleteCart'
+        404:
+          description: Description
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+  /api/carts/{cid}/products/{pid}:
+      post:
+        tags:
+          - Products on cart
+        description: Describe this route
+        summary: Describe this route
+        parameters:
+          - in: path
+            name: cid
+            description: description
+            required: true
+            schema:
+              type: string
+          - in: path
+            name: pid
+            description: description
+            required: true
+            schema:
+              type: string                          
+        responses:
+          200:
+            description: Description
+            content: 
+              application/json:
+                schema:
+                type: object
+                $ref: '#/components/schemas/SuccessAddProductInCart'
+          404:
+            description: Description
+            content: 
+              application/json:
+                schema:
+                  type: object
+                  $ref: '#/components/schemas/Error'   
+      put:
+        tags:
+          - Products on cart    
+        description: Describe this route
+        summary: Describe this route
+        parameters:
+          - in: path
+            name: cid
+            description: description
+            required: true
+            schema:
+              type: string
+          - in: path
+            name: pid
+            description: description
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/requestBodies/updateProductInCart'
+        responses:
+          200:
+            description: Description
+            content: 
+              application/json:
+                schema:
+                  type: object
+                  $ref: '#/components/schemas/SuccessDeleteCart'
+          404:
+            description: Description
+            content: 
+              application/json:
+                schema:
+                  type: object
+                  $ref: '#/components/schemas/Error'     
+      delete:
+        tags:
+          - Products on cart    
+        description: Describe this route
+        summary: Describe this route
+        parameters:
+          - in: path
+            name: cid
+            description: description
+            required: true
+            schema:
+              type: string
+          - in: path
+            name: pid
+            description: description
+            required: true
+            schema:
+              type: string                              
+        responses:
+          200:
+            description: Description
+            content: 
+              application/json:
+                schema:
+                  type: object
+                  $ref: '#/components/schemas/SuccessDeleteCart'
+          404:
+            description: Description
+            content: 
+              application/json:
+                schema:
+                  type: object
+                  $ref: '#/components/schemas/Error'       
+  /api/carts/{cid}/purchase:
+      post:
+        tags:
+          - Purchase
+        description: Describe this route
+        summary: Describe this route
+        parameters:
+          - in: path
+            name: cid
+            description: description
+            required: true
+            schema:
+              type: string              
+        responses:
+          200:
+            description: Description
+            content: 
+              application/json:
+                schema:
+                  type: object
+                  $ref: '#/components/schemas/SuccessPurchase'
+          404:
+            description: Description
+            content: 
+              application/json:
+                schema:
+                  type: object
+                  $ref: '#/components/schemas/Error'           
+components:
+  schemas:
+    MongoResponse:
+      properties:
+        acknowledged:
+          type: boolean
+          example: example
+        modifiedCount:
+          type: number
+          example: example              
+        upsertedId:
+          type: string
+          example: example              
+        upsertedCount:
+          type: number
+          example: example              
+        matchedCount:
+          type: number
+          example: example     
+    ProductInCart:
+      type: object
+      properties:
+              pid:
+                type: object
+                $ref: '#/components/schemas/Product'
+              quantity:
+                type: number
+                example: example
+    Ticket:
+      type: object
+      properties:
+        code:
+          type: string
+          example: example
+        purchase_datetime:
+          type: number
+          example: example
+        products:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ProductInCart'
+        amount:
+          type: number
+          example: example
+        purchaser:
+          type: string
+          example: example                
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: example
+        products:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ProductInCart'
+    Filter:
+      type: object
+      properties:
+    SuccessAddCart:
+      type: object
+      properties:
+        status:
+          type: string
+          example: example
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/Cart'
+    SuccessGetProductsInCart:
+      type: object
+      properties:
+        status:
+          type: string
+          example: example
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductInCart'
+    SuccessUpdateCart:
+      type: object
+      properties:
+        status:
+          type: string
+          example: example
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/MongoResponse'    
+    SuccessDeleteCart:
+      type: object
+      properties:
+        status:
+          type: string
+          example: example
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/MongoResponse'    
+    SuccessAddProductInCart:
+      type: object
+      properties:
+        status:
+          type: string
+          example: example
+        payload:
+          type: object
+          items:
+            $ref: '#/components/schemas/MongoResponse'       
+    SuccessPurchase:
+      type: object
+      properties:
+        status:
+          type: string
+          example: example
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ticket'    
+  requestBodies:
+    updateCart:
+      type: array
+      items:
+        type: object
+        properties:
+          pid:
+            type: string
+            example: example
+          quantity:
+            type: number
+            example: example
+    updateProductInCart:
+      type: object
+      properties:
+        quantity:
+          type: number
+          example: example
+

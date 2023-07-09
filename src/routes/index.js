@@ -11,8 +11,11 @@ import authorization from "../middlewares/authorization.middleware.js";
 import mockingRouter from "./mocking.router.js";
 import loggerTestRouter from "./loggerTest.router.js"
 import passwordsRouter from "./passwords.router.js"
+import swaggerUiExpress from 'swagger-ui-express'
+import swaggerSpecs from "../config/swagger.js"
 
 export const router = Router();
+router.use("/api/docs",swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerSpecs))
 router.use("/api/images", authorization(['user','premium']), imagesRouter);
 router.use("/api/products", productsRouter);
 router.use("/api/carts", authorization(['user','premium']), cartsRouter);

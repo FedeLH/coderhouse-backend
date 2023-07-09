@@ -63,11 +63,6 @@ class ProductController {
           res.status(201).json({ status: "success", payload: response });
           if (response.product) io.emit("add-new-product", response.product);
         } catch (error) {
-          if (error.code === 11000)
-            return res.status(400).json({
-              status: "error",
-              payload: { error: error, message: error.message }.message,
-            });
           res.status(404).json({
             status: "error",
             payload: { error: error, message: error.message },
