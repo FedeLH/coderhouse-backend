@@ -1,6 +1,32 @@
 import { faker } from '@faker-js/faker';
 
+const categories =  [
+    "accesorios",
+    "auriculares",
+    "teclados",
+    "placas de video",
+    "monitores",
+    "parlantes",
+    "mouses",
+    "microfonos",
+    "notebooks",
+    "motherboards",
+    "gabinetes",
+]
+
 faker.locale='es'
+
+export const generateProduct = () => {
+    const category = categories[Math.floor(Math.random() * categories.length)]
+    return {
+        title: faker.commerce.productName(),
+        description: faker.commerce.productDescription(),
+        price: faker.random.numeric(4),
+        stock: faker.random.numeric(3),
+        code: faker.random.alphaNumeric(16),
+        category
+    }
+}
 
 export const generateProducts = () => {
     return {
@@ -10,7 +36,7 @@ export const generateProducts = () => {
         price: faker.commerce.price(),
         stock: faker.random.numeric(),
         code: faker.random.alphaNumeric(),
-        category: faker.commerce.department(),
+        category: faker.random.arrayElement(categories),
         status: faker.datatype.boolean(),
         thumbnails: [faker.image.food()]
     }

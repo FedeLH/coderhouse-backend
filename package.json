@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "nodemon src/server.js --environment DEVELOPMENT",
     "start": "node src/server.js",
+    "test": "mocha test/api.test.js --timeout 10000",
     "clean": "prettier --write ."
   },
   "repository": {
@@ -52,6 +53,9 @@
     ]
   },
   "devDependencies": {
-    "prettier": "2.8.8"
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "prettier": "2.8.8",
+    "supertest": "^6.3.3"
   }
 }
