@@ -51,8 +51,7 @@ const productSchema = new Schema({
     default: ["https://placehold.co/300x200"],
   },
   owner: {
-    type: Schema.Types.ObjectId,
-    ref: "users",
+    type: String,
     default: "admin"
   }
 });
