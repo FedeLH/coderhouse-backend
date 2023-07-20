@@ -9,13 +9,13 @@ router.post("/", cartController.addCart);
 
 router.get("/:cid", cartController.getProducts);
 
-router.post("/:cid/products/:pid",cartController.addProduct);
-
-router.delete("/:cid/products/:pid", cartController.deleteProduct);
-
 router.delete("/:cid", cartController.deleteCart);
 
 router.put("/:cid", cartController.updateCart);
+
+router.post("/:cid/products/:pid",cartController.addProduct);
+
+router.delete("/:cid/products/:pid", cartController.deleteProduct);
 
 router.put("/:cid/products/:pid", cartController.updateProduct);
 

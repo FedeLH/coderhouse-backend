@@ -7,7 +7,7 @@ class CartController {
     getCarts = async (req, res) => {
         try {
           const filter = req.query.filter ? JSON.parse(req.query.filter) : {};
-          const allCarts = await cartDao.getCarts();
+          const allCarts = await cartDao.getCarts(filter);
           const limit = req.query.limit;
           let limitedCarts = [];
           if (limit) limitedCarts = allCarts.slice(0, limit);
