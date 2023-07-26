@@ -41,6 +41,13 @@ const userSchema = new Schema({
       "admin"
     ]
   },
+  documents: {
+    type: [{
+      name: String,
+      reference: String
+    }]
+  },
+  last_connection: Date
 });
 
 userSchema.pre("find", function () {

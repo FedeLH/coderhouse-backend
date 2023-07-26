@@ -6,8 +6,9 @@ const router = Router();
 
 router.post("/", uploader.array("files"), async (req, res) => {
   try {
-    if (!req.files)
+    if (!req.files) {
       return res.status(400).json({ status: "error", payload: "No images." });
+    }
     const response = { firstFile: req.files[0].filename, files: req.files };
     res.status(201).json({ status: "success", payload: response });
     if (response.product) io.emit("add-new-product", response);

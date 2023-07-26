@@ -5,10 +5,14 @@ import { logger } from "../utils/logger.js"
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.dirname(__dirname) + "\\public\\uploads");
+    const folder = req.body.type ?? 'tmp'
+    const destinationPath = path.join(path.dirname(__dirname), `public/uploads/${folder}`)
+    cb(null, destinationPath);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now().toString().substring(6) + "-" + file.originalname);
+    const timestamp = Date.now()
+    const filename = file.originalname
+    cb(null, `${timestamp}-${filename}`);
   },
 });
 
