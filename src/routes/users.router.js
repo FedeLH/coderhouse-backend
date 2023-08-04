@@ -6,7 +6,9 @@ import {
 } from "../validators/user.validator.js";
 import validateObject from "../middlewares/validator.js";
 import authorization from "../middlewares/authorization.middleware.js"
+import { uploader } from "../utils/multer.js";
 
+const documentationQuantity = 3
 
 const router = Router();
 
@@ -21,5 +23,7 @@ router.put("/:uid", authorization(['admin']), validateObject(userUpdateSchema), 
 router.delete("/:uid", authorization(['admin']), userController.deleteUser);
 
 router.put("/premium/:uid", authorization(['premium','user']), userController.changeRoleUser);
+
+router.post("/:uid/documents", authorization(['premium','user']), uploader.array("files", documentationQuantity), userController.updateDocumentation); 
 
 export default router;

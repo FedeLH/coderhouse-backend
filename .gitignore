@@ -1,7 +1,10 @@
 node_modules
 .env
 *.txt
-uploads/*
+src/public/uploads/documents/*
+src/public/uploads/products/*
+src/public/uploads/profiles/*
+src/public/uploads/tmp/*
 errors.log
 *.json
 *.html

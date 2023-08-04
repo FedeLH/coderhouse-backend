@@ -11,7 +11,7 @@ const swaggerOptions = {
             description: 'Ecommerce is an app developed in a didactic way for the Coderhouse-Backend course',
         }
     },
-    apis: [`${path.dirname(__dirname)}/docs/**/*.yaml`]
+    apis: [`${__dirname}/docs/**/*.yaml`]
 };
 
 const swaggerSpecs = swaggerJSDoc(swaggerOptions);

@@ -25,7 +25,7 @@ Example:
     `,
     attachments: [{
         filename: 'Regalo.PNG',
-        path: path.dirname(__dirname)+'/images/auto.PNG',
+        path: __dirname+'/images/auto.PNG',
         cid: 'test_image',
     }]
 }

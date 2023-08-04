@@ -1,5 +1,4 @@
 import { userDao } from "../daos/factory.js";
-import __dirname from "../utils/utils.js";
 import { io } from "../config/server.js";
 import { SERVER_URL, PORT } from "../config/config.js";
 
@@ -103,9 +102,21 @@ class UserController {
     changeRoleUser = async (req, res) => {
       try {
         const id = req.params.uid;
-        let newRole = 'premium'
-        if (req.user[0].role === 'premium') {
-          newRole = 'user'
+        let newRole = 'user'
+        if (req.user[0].role === 'user') {
+          const arrayUser = await userDao.getUserById(req.user[0]._id)
+          const { documents } = arrayUser[0]
+          /*
+            Documentos obligatorios
+            id = Identificación
+            address = Comprobante de domicilio
+            account = Comprobante de estado de cuenta
+          */
+          const mandatoryDocuments = ["id","address","account"]
+          const actualDocument = documents.map(obj => obj.name)
+          const hasAllDocuments = mandatoryDocuments.every(nameDocument => actualDocument.includes(nameDocument))
+          if (!hasAllDocuments) throw new Error('You have not finished processing your documentation') 
+          newRole = 'premium'
         }
         const changes = {
           role: newRole
@@ -117,6 +128,26 @@ class UserController {
         });
         res.status(201).json({ status: "success", payload: `Your new role is ${newRole} please login again` });
       } catch (error) {
+        res.status(404).json({
+          status: "error",
+          payload: { error: error, message: error.message },
+        });
+      }
+    }
+
+    updateDocumentation = async (req, res) => {
+      try {
+        const id = req.params.uid;
+        const files = req.files
+        const documents = files.map(file => ({name: file.originalname.replace(/\.[^/.]+$/,""), reference: file.path.split('\\').slice(-3).join('\\')}))
+        const changes = {
+         documents
+        }
+        const response = await userDao.updateUser(id, changes);
+        res.status(201).json({ status: "success", payload: response });
+        if (response.user) io.emit("update-user", response.user);
+      } catch (error) {
+        req.logger.error(error)
         res.status(404).json({
           status: "error",
           payload: { error: error, message: error.message },

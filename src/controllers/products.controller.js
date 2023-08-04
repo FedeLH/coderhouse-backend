@@ -1,7 +1,6 @@
 import { productDao } from "../daos/factory.js";
 import { SERVER_URL, PORT } from "../config/config.js";
 import { io } from "../config/server.js";
-import __dirname from "../utils/utils.js";
 
 class ProductController {
     getProducts = async (req, res) => {

@@ -5,6 +5,7 @@ import {
   registerSchema,
 } from "../validators/session.validator.js";
 import passport from "passport";
+import { userDao } from "../daos/factory.js"
 
 const router = Router();
 
@@ -12,9 +13,17 @@ router.post(
   "/login",
   validateObject(loginSchema),
   passport.authenticate("login", {
-    successRedirect: "/products",
     failureRedirect: "/api/sessions/faillogin",
-  })
+  }),
+  async (req, res) => {
+    const now = Date.now()
+    const id = req.user[0]._id
+    const changes = {
+      last_connection: now
+    }
+    await userDao.updateUser(id, changes);
+    res.redirect("/products");
+  }
 );
 
 router.post(
@@ -28,8 +37,14 @@ router.post(
 
 router.get("/logout", (req, res) => {
   try {
-    req.session.destroy((err) => {
+    req.session.destroy(async (err) => {
       if (err) return res.send({ status: "Logout error", message: err });
+      const now = Date.now()
+      const id = req.user[0]._id
+      const changes = {
+        last_connection: now
+      }
+      await userDao.updateUser(id, changes);
       return res.status(307).redirect("/login");
     });
   } catch (error) {
