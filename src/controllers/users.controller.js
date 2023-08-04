@@ -1,5 +1,4 @@
 import { userDao } from "../daos/factory.js";
-import __dirname from "../utils/utils.js";
 import { io } from "../config/server.js";
 import { SERVER_URL, PORT } from "../config/config.js";
 
@@ -105,11 +104,19 @@ class UserController {
         const id = req.params.uid;
         let newRole = 'user'
         if (req.user[0].role === 'user') {
-          const { documentation } = await getUserById(req.user[0]._id)
-          const mandatoryDocumentation = ["Identificación","Comprobante de domicilio","Comprobante de estado de cuenta"]
-          const actualDocumentation = documentation.map(obj => obj.name)
-          const hasAllDocumentation = mandatoryDocumentation.every(nameDocumentation => actualDocumentation.includes(nameDocumentation))
-          if (!hasAllDocumentation) throw new Error('You have not finished processing your documentation') 
+          const arrayUser = await userDao.getUserById(req.user[0]._id)
+          const { documents } = arrayUser[0]
+          console.log(documents)
+          /*
+            Documentos obligatorios
+            id = Identificación
+            address = Comprobante de domicilio
+            account = Comprobante de estado de cuenta
+          */
+          const mandatoryDocuments = ["id","address","account"]
+          const actualDocument = documents.map(obj => obj.name)
+          const hasAllDocuments = mandatoryDocuments.every(nameDocument => actualDocument.includes(nameDocument))
+          if (!hasAllDocuments) throw new Error('You have not finished processing your documentation') 
           newRole = 'premium'
         }
         const changes = {
@@ -137,6 +144,7 @@ class UserController {
         const changes = {
          documents
         }
+        console.log({documents})
         const response = await userDao.updateUser(id, changes);
         res.status(201).json({ status: "success", payload: response });
         if (response.user) io.emit("update-user", response.user);

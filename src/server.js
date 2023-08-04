@@ -4,6 +4,8 @@ import { PORT, SERVER_URL } from "./config/config.js";
 import cluster from 'cluster'
 import { logger } from './utils/logger.js'
 import { cpus } from 'os'
+import createFolders from "./config/folders.js";
+import { uploadsFoldersConfig } from "./config/folders.js";
 
 const numProcess = cpus().length
 
@@ -16,6 +18,7 @@ const initServer = () => {
 }
 
 if (cluster.isPrimary) {
+  logger.info(createFolders(uploadsFoldersConfig))
   logger.info(`primary process ${process.pid}, generating a process worker`)
   for(let i = 0; i < numProcess; i++){
     cluster.fork()

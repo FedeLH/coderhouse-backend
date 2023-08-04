@@ -10,6 +10,7 @@ class UserDaoMongo {
   };
 
   updateUser = async (uid, changes) => {
+    console.log({uid,changes})
     return await userModel.updateOne({ _id: uid }, changes);
   };
 

@@ -22,7 +22,7 @@ app.engine(
   handlerbars.engine({ helpers: { firstItem: firstItem } })
 );
 app.set("view engine", "handlebars");
-app.set("views", path.dirname(__dirname) + "/views");
+app.set("views", __dirname + "/views");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -49,7 +49,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(addLogger)
 
-app.use(express.static(path.dirname(__dirname) + "/public"));
+app.use(express.static(__dirname + "/public"));
 
 //app.use(router);
 app.use(authSession, router);

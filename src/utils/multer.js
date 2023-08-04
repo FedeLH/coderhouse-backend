@@ -5,8 +5,9 @@ import { logger } from "../utils/logger.js"
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const folder = req.body.type ?? 'tmp'
-    const destinationPath = path.join(path.dirname(__dirname), `public/uploads/${folder}`)
+    const validsTypes = ['documents','products','profiles']
+    const folder = (req.body.type && validsTypes.includes(req.body.type)) ? req.body.type : 'tmp'
+    const destinationPath = path.join(__dirname, `public/uploads/${folder}`)
     cb(null, destinationPath);
   },
   filename: (req, file, cb) => {
