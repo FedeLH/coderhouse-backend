@@ -106,7 +106,6 @@ class UserController {
         if (req.user[0].role === 'user') {
           const arrayUser = await userDao.getUserById(req.user[0]._id)
           const { documents } = arrayUser[0]
-          console.log(documents)
           /*
             Documentos obligatorios
             id = Identificación
@@ -144,7 +143,6 @@ class UserController {
         const changes = {
          documents
         }
-        console.log({documents})
         const response = await userDao.updateUser(id, changes);
         res.status(201).json({ status: "success", payload: response });
         if (response.user) io.emit("update-user", response.user);
