@@ -7,6 +7,11 @@ button {
   width: 200px;
 }
 
+.center {
+  justify-self: center;
+  align-self: center;
+}
+
 .product {
   display: inline-block;
   width: 300px;
@@ -67,4 +72,28 @@ button {
 .filters-container,
 .welcome-container {
   padding-left: 200px;
+  padding-right: 200px;
+}
+
+.add {
+  position: fixed;
+  right: 5rem;
+  bottom: 8rem;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.add a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #333; /* Cambia el color de texto según tu preferencia */
+}
+
+.add i {
+  font-size: 24px; /* Ajusta el tamaño del ícono según tu preferencia */
+  margin-bottom: 8px; /* Añade un espacio entre el ícono y el texto */
 }

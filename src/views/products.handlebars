@@ -1,47 +1,57 @@
 {{> header}}
-<div class="welcome-container">
-    <h1>Bienvenido {{userData.name}}</h1>
-    <p><strong>Email: </strong>{{userData.email}}</p>
-    <p><strong>Rol: </strong>{{userData.role}}</p>
-</div>
-<div class="results-container">
-    <p><strong>Total de resultados:</strong> {{paginate.totalDocs}}</p>
-    <p><strong>Página:</strong> {{paginate.page}} de {{paginate.totalPages}}</p>
-</div>
-<div class="filters-container">
-    <label for="status"><strong>Disponibilidad:</strong></label>
-    <select name="query" id="status" onchange="changeOptions(this)">
-        <option value="none">todos</option>
-        <option value="true">disponibles</option>
-        <option value="false">no disponibles</option>
-    </select>
-    <label for="category"><strong>Categorías:</strong></label>
-    <select name="query" id="category" onchange="changeOptions(this)">
-            <option value="none">todas</option>
-        {{#each categories}}
-            <option value="{{this}}">{{this}}</option>
-        {{/each}}
-    </select>
-    <label for="sort"><strong>Ordenar:</strong></label>
-    <select name="sort" id="sort" onchange="changeOptions(this)">
-        <option value="none">-</option>
-        <option value="asc">menor a mayor precio</option>
-        <option value="desc">mayor a menor precio</option>
-    </select>
-</div>
-<div class="paginate-container">
-    {{#if paginate.hasPrevPage}}
-        <button class="paginate" onclick="changePage(1)">Primera Página</button>
-        <button class="paginate" onclick="changePage({{paginate.prevPage}})">Página Anterior</button>
-    {{/if}}
-    {{#if paginate.hasNextPage}}
-        <button class="paginate" onclick="changePage({{paginate.nextPage}})">Página Siguiente</button>
-        <button class="paginate" onclick="changePage({{paginate.totalPages}})">Última Página</button>
-    {{/if}}
-</div>
-<div class="products-container">
-    <div class="cart" id={{userData.cart._id}}></div>
-    {{#if products}}
+{{#if userData}}
+    <div class="welcome-container">
+        {{#if userData.name}}
+        <h1>Bienvenido {{userData.name}}</h1>
+        {{else}}
+        <h1>Bienvenido</h1>
+        {{/if}}
+        {{#if userData.email}}
+        <p><strong>Email: </strong>{{userData.email}}</p>
+        {{/if}}
+        {{#if userData.role}}
+        <p><strong>Rol: </strong>{{userData.role}}</p>
+        {{/if}}
+    </div>
+{{/if}}
+{{#if products}}
+    <div class="results-container">
+        <p><strong>Total de resultados:</strong> {{paginate.totalDocs}}</p>
+        <p><strong>Página:</strong> {{paginate.page}} de {{paginate.totalPages}}</p>
+    </div>
+    <div class="filters-container">
+        <label for="status"><strong>Disponibilidad:</strong></label>
+        <select name="query" id="status" onchange="changeOptions(this)">
+            <option value="none">todos</option>
+            <option value="true">disponibles</option>
+            <option value="false">no disponibles</option>
+        </select>
+        <label for="category"><strong>Categorías:</strong></label>
+        <select name="query" id="category" onchange="changeOptions(this)">
+                <option value="none">todas</option>
+            {{#each categories}}
+                <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <label for="sort"><strong>Ordenar:</strong></label>
+        <select name="sort" id="sort" onchange="changeOptions(this)">
+            <option value="none">-</option>
+            <option value="asc">menor a mayor precio</option>
+            <option value="desc">mayor a menor precio</option>
+        </select>
+    </div>
+    <div class="paginate-container">
+        {{#if paginate.hasPrevPage}}
+            <button class="paginate" onclick="changePage(1)">Primera Página</button>
+            <button class="paginate" onclick="changePage({{paginate.prevPage}})">Página Anterior</button>
+        {{/if}}
+        {{#if paginate.hasNextPage}}
+            <button class="paginate" onclick="changePage({{paginate.nextPage}})">Página Siguiente</button>
+            <button class="paginate" onclick="changePage({{paginate.totalPages}})">Última Página</button>
+        {{/if}}
+    </div>
+    <div class="products-container">
+        <div class="cart" id={{userData.cart._id}}></div>
         {{#each products}}
             <div class="product">
             <img class="thumbnails" src="{{firstItem thumbnails}}" alt="Imagen del producto">
@@ -57,8 +67,28 @@
             <button class="add-to-cart" id={{_id}}>Añadir al carrito</button>
             </div>
         {{/each}}
-    {{/if}}
-</div>
+    </div>
+{{else}}
+    <div class="center">
+        <p>No hay productos disponibles</p>
+    </div>
+{{/if}}
+{{#if isAdmin}}
+    <div class="add">
+        <a href="/addProduct">
+            <i class="fa-solid fa-plus"></i>
+            <span>Agregar<br>Producto</span>
+        </a>
+    </div>
+{{/if}}
+{{#if isPremium}}
+    <div class="add">
+        <a href="/addProduct">
+            <i class="fa-solid fa-plus"></i>
+            <span>Agregar<br>Producto</span>
+        </a>
+    </div>
+{{/if}}
 {{> footer}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/products.js"></script>

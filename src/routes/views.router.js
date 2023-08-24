@@ -1,18 +1,31 @@
 import express from "express";
 import { productDao, cartDao, userDao, tokenDao } from "../daos/factory.js";
+import authSession from "../middlewares/auth.middleware.js"
 
 const router = express.Router();
 
 router.get("/products", async (req, res) => {
   try {
-    let { first_name, last_name, role, email, cart } = req.user[0];
+    const arrayUser = req.user ?? [{}];
+    const { first_name, last_name, role, email, cart } = arrayUser[0]
+    
+    const name = (first_name !== undefined && last_name !== undefined) 
+    ? `${first_name} ${last_name}` 
+    : undefined;
 
-    const userData = {
-      name: first_name + " " + last_name,
+    const userData = req.user 
+    ? {
+      name,
       role,
       email,
       cart,
-    };
+    }
+    : undefined;
+
+    const isLogged = req.user ? true : false
+    const isAdmin = role === "Admin"
+    const isPremium = role === "Premium"
+    const isUser = role === "User"
 
     const { limit = 10, page = 1, sort = null } = req.query;
     const query = req.query.query ? JSON.parse(req.query.query) : {};
@@ -28,6 +41,10 @@ router.get("/products", async (req, res) => {
       paginate: rest,
       categories,
       userData,
+      isLogged,
+      isAdmin,
+      isPremium,
+      isUser
     });
   } catch (error) {
     res.render("error", {
@@ -39,7 +56,35 @@ router.get("/products", async (req, res) => {
   }
 });
 
-router.get("/users", async (req, res) => {
+router.get("/addProduct", authSession, async (req, res) => {
+  try {
+    const arrayUser = req.user ?? [{}];
+    const { role } = arrayUser[0]
+
+    const isLogged = req.user ? true : false
+    const isAdmin = role === "Admin"
+    const isPremium = role === "Premium"
+    const isUser = role === "User"
+
+    res.render("addProduct", {
+      title: "Fed-Tech",
+      style: "addProduct.css",
+      isLogged,
+      isAdmin,
+      isPremium,
+      isUser
+    });
+  } catch (error) {
+    res.render("error", {
+      title: "Error",
+      style: "error.css",
+      error: error,
+      message: error.message,
+    });
+  }
+});
+
+router.get("/users", authSession, async (req, res) => {
   try {
     const { limit = 10, page = 1, sort = null } = req.query;
     const query = req.query.query ? JSON.parse(req.query.query) : {};
@@ -62,7 +107,7 @@ router.get("/users", async (req, res) => {
   }
 });
 
-router.get("/realTimeProducts", async (req, res) => {
+router.get("/realTimeProducts", authSession, async (req, res) => {
   try {
     const { limit = 10, page = 1, sort = null } = req.query;
     const query = req.query.query ? JSON.parse(req.query.query) : {};
@@ -90,15 +135,25 @@ router.get("/realTimeProducts", async (req, res) => {
   }
 });
 
-router.get("/carts", async (req, res) => {
+router.get("/carts", authSession, async (req, res) => {
   try {
-    const { cart } = req.user[0];
+    const { cart, role } = req.user[0];
+
+    const isLogged = req.user ? true : false
+    const isAdmin = role === "Admin"
+    const isPremium = role === "Premium"
+    const isUser = role === "User"
+
     const products = await cartDao.getProductsByCartId(cart._id);
     res.render("carts", {
       status: "success",
       title: "Cart",
       style: "cart.css",
       products,
+      isLogged,
+      isAdmin,
+      isPremium,
+      isUser
     });
   } catch (error) {
     res.render("error", {
@@ -110,49 +165,101 @@ router.get("/carts", async (req, res) => {
   }
 });
 
-router.get("/chat", (req, res) => {
+router.get("/chat", authSession, (req, res) => {
   res.render("chat", { title: "Chat", style: "/chat.css" });
 });
 
 router.get("/", async (req, res) => {
-  res.render("home", { title: "Home", style: "/home.css" });
+  
+  const arrayUser = req.user ?? [{}];
+  const { role } = arrayUser[0]
+
+  const isLogged = req.user ? true : false
+  const isAdmin = role === "Admin"
+  const isPremium = role === "Premium"
+  const isUser = role === "User"
+
+  res.render("home", { 
+    title: "Home", 
+    style: "/home.css",
+    isLogged,
+    isAdmin,
+    isPremium,
+    isUser 
+  });
 });
 
 router.get("/privacyPolicies", async (req, res) => {
+
+  const arrayUser = req.user ?? [{}];
+  const { role } = arrayUser[0]
+
+  const isLogged = req.user ? true : false
+  const isAdmin = role === "Admin"
+  const isPremium = role === "Premium"
+  const isUser = role === "User"
+
   res.render("privacyPolicies", {
     title: "Privacy Policies",
     style: "/privacyPolicies.css",
+    isLogged,
+    isAdmin,
+    isPremium,
+    isUser 
   });
 });
 
 router.get("/terms&Conditions", async (req, res) => {
+
+  const arrayUser = req.user ?? [{}];
+  const { role } = arrayUser[0]
+
+  const isLogged = req.user ? true : false
+  const isAdmin = role === "Admin"
+  const isPremium = role === "Premium"
+  const isUser = role === "User"
+
   res.render("terms&Conditions", {
     title: "Terms and Conditions",
     style: "/terms&Conditions.css",
+    isLogged,
+    isAdmin,
+    isPremium,
+    isUser 
   });
 });
 
-router.get("/register", async (req, res) => {
+router.get("/register", authSession, async (req, res) => {
   res.render("register", {
     title: "Register",
     style: "/register.css"
   });
 });
 
-router.get("/login", async (req, res) => {
+router.get("/login", authSession, async (req, res) => {
   res.render("login", { title: "Login", style: "/login.css" });
 });
 
-router.get("/profile", async (req, res) => {
+router.get("/profile", authSession, async (req, res) => {
   try {
     const { first_name, last_name, gender, email, role } = req.user[0];
+
+    const isLogged = req.user ? true : false
+    const isAdmin = role === "Admin"
+    const isPremium = role === "Premium"
+    const isUser = role === "User"
+
+    const spanishGenders = {
+      female: 'Femenino',
+      male: 'Masculino'
+    }
 
     const userData = {
       first_name,
       last_name,
       role,
       email,
-      gender,
+      gender: spanishGenders[gender],
       role,
     };
 
@@ -160,6 +267,10 @@ router.get("/profile", async (req, res) => {
       title: "Profile",
       style: "/profile.css",
       user: userData,
+      isLogged,
+      isAdmin,
+      isPremium,
+      isUser
     });
   } catch (error) {
     res.render("error", {
@@ -171,11 +282,11 @@ router.get("/profile", async (req, res) => {
   }
 });
 
-router.get("/forgot-password", async (req, res) => {
+router.get("/forgot-password", authSession, async (req, res) => {
   res.render("forgotPassword", { title: "Forgot password", style: "/forgotPassword.css" });
 });
 
-router.get("/reset-password/:uid", async (req, res) => {
+router.get("/reset-password/:uid", authSession, async (req, res) => {
   try {
     const receivedToken = req.query.token
     const now = new Date()

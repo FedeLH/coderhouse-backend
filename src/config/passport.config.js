@@ -3,7 +3,7 @@ import local from "passport-local";
 import { createHash, checkValidPassword } from "../utils/utils.js";
 import GitHubStrategy from "passport-github2";
 import { userDao, cartDao } from "../daos/factory.js";
-import { CLIENT_ID, CLIENT_PASS, CB_URL } from "../config/config.js";
+import { CLIENT_ID, CLIENT_PASS, CB_URL, ADMIN_USER, ADMIN_PASS } from "../config/config.js";
 import { logger } from "../utils/logger.js";
 
 const LocalStrategy = local.Strategy;
@@ -18,7 +18,13 @@ const initializePassport = () => {
       },
       async (req, username, password, done) => {
         try {
-          let user = await userDao.getUserByEmail(username);
+          let user = ""
+          if (ADMIN_USER === username) {
+            logger.error("User already exists");
+            return done(null, false);
+          } else {
+            user = await userDao.getUserByEmail(username);
+          }
           if (user.length) {
             logger.error("User already exists");
             return done(null, false);
@@ -47,7 +53,16 @@ const initializePassport = () => {
     new LocalStrategy(
       async (username, password, done) => {
         try {
-          let user = await userDao.getUserByEmail(username);
+          let user = ""
+          if (ADMIN_USER === username) {
+            user = [{
+              email: username,
+              password: createHash(ADMIN_PASS),
+              role: "Admin"
+            }]
+          } else {
+            user = await userDao.getUserByEmail(username);
+          }
           if (!user.length) {
             logger.error("User doesn't exist");
             return done(null, false);

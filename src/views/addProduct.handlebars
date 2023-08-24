@@ -1,0 +1,28 @@
+{{> header}}
+<h1>Agregar producto</h1>
+<div class="form-container">
+  <form id="add-product-form" class="aligned-form">
+
+      <label for="title">Nombre</label>
+      <input type="text" name="title" id="title" required>
+
+      <label for="description">Descipción</label>
+      <input type="text" name="description" id="description" required>
+
+      <label for="price">Precio</label>
+      <input type="number" name="price" id="price" required>
+
+      <label for="stock">Stock</label>
+      <input type="number" name="stock" id="stock" required>
+
+      <label for="code">Código</label>
+      <input type="text" name="code" id="code" required>
+      
+      <label for="category">Categoría</label>
+      <input type="text" name="category" id="category" required>
+
+      <label></label>
+      <button type="submit">Agregar producto</button>
+  </form>
+</div>
+{{>footer}}
