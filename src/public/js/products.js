@@ -94,7 +94,7 @@ const addToCart = async (pid) => {
     if (statusResponse !== "success") {
       return Swal.fire({
         icon: "error",
-        title: "Oops...",
+        title: "Ups...",
         text: `El producto no pudo ser agregado`,
       });
     }
@@ -109,7 +109,7 @@ const addToCart = async (pid) => {
   } catch (error) {
     Swal.fire({
       icon: "error",
-      title: "Oops...",
+      title: "Ups...",
       text: `Ocurrió un error: ${error} ${error.message}`,
     });
   }

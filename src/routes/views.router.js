@@ -23,9 +23,9 @@ router.get("/products", async (req, res) => {
     : undefined;
 
     const isLogged = req.user ? true : false
-    const isAdmin = role === "Admin"
-    const isPremium = role === "Premium"
-    const isUser = role === "User"
+    const isAdmin = role === "admin"
+    const isPremium = role === "premium"
+    const isUser = role === "user"
 
     const { limit = 10, page = 1, sort = null } = req.query;
     const query = req.query.query ? JSON.parse(req.query.query) : {};
@@ -62,9 +62,9 @@ router.get("/addProduct", authSession, async (req, res) => {
     const { role } = arrayUser[0]
 
     const isLogged = req.user ? true : false
-    const isAdmin = role === "Admin"
-    const isPremium = role === "Premium"
-    const isUser = role === "User"
+    const isAdmin = role === "admin"
+    const isPremium = role === "premium"
+    const isUser = role === "user"
 
     res.render("addProduct", {
       title: "Fed-Tech",
@@ -139,16 +139,18 @@ router.get("/carts", authSession, async (req, res) => {
   try {
     const { cart, role } = req.user[0];
 
+    const userData = { cart, role }
     const isLogged = req.user ? true : false
-    const isAdmin = role === "Admin"
-    const isPremium = role === "Premium"
-    const isUser = role === "User"
+    const isAdmin = role === "admin"
+    const isPremium = role === "premium"
+    const isUser = role === "user"
 
     const products = await cartDao.getProductsByCartId(cart._id);
     res.render("carts", {
       status: "success",
       title: "Cart",
       style: "cart.css",
+      userData,
       products,
       isLogged,
       isAdmin,
@@ -175,9 +177,9 @@ router.get("/", async (req, res) => {
   const { role } = arrayUser[0]
 
   const isLogged = req.user ? true : false
-  const isAdmin = role === "Admin"
-  const isPremium = role === "Premium"
-  const isUser = role === "User"
+  const isAdmin = role === "admin"
+  const isPremium = role === "premium"
+  const isUser = role === "user"
 
   res.render("home", { 
     title: "Home", 
@@ -195,9 +197,9 @@ router.get("/privacyPolicies", async (req, res) => {
   const { role } = arrayUser[0]
 
   const isLogged = req.user ? true : false
-  const isAdmin = role === "Admin"
-  const isPremium = role === "Premium"
-  const isUser = role === "User"
+  const isAdmin = role === "admin"
+  const isPremium = role === "premium"
+  const isUser = role === "user"
 
   res.render("privacyPolicies", {
     title: "Privacy Policies",
@@ -215,9 +217,9 @@ router.get("/terms&Conditions", async (req, res) => {
   const { role } = arrayUser[0]
 
   const isLogged = req.user ? true : false
-  const isAdmin = role === "Admin"
-  const isPremium = role === "Premium"
-  const isUser = role === "User"
+  const isAdmin = role === "admin"
+  const isPremium = role === "premium"
+  const isUser = role === "user"
 
   res.render("terms&Conditions", {
     title: "Terms and Conditions",
@@ -245,9 +247,9 @@ router.get("/profile", authSession, async (req, res) => {
     const { first_name, last_name, gender, email, role } = req.user[0];
 
     const isLogged = req.user ? true : false
-    const isAdmin = role === "Admin"
-    const isPremium = role === "Premium"
-    const isUser = role === "User"
+    const isAdmin = role === "admin"
+    const isPremium = role === "premium"
+    const isUser = role === "user"
 
     const spanishGenders = {
       female: 'Femenino',

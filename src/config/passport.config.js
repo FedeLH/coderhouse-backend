@@ -58,7 +58,7 @@ const initializePassport = () => {
             user = [{
               email: username,
               password: createHash(ADMIN_PASS),
-              role: "Admin"
+              role: "admin"
             }]
           } else {
             user = await userDao.getUserByEmail(username);

@@ -22,7 +22,7 @@ router.use("/api/products", productsRouter);
 router.use("/api/carts", authSession, authorization(['user','premium']), cartsRouter);
 router.use("/api/sessions", authSession, sessionsRouter);
 router.use("/api/users", authSession, usersRouter);
-router.use("/api/passwords", authSession, passwordsRouter);
+router.use("/api/passwords", passwordsRouter);
 router.use("/api/tests", authSession, testsRouter);
 router.use("/mocking", authSession, mockingRouter)
 router.use("/loggerTest", authSession, loggerTestRouter)

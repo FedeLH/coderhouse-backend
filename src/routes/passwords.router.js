@@ -29,11 +29,11 @@ router.post("/forgot", async (req, res) => {
             const url = `http://localhost:8080/reset-password/${_id}?token=${generatedToken}`
             const configMail = {
                 to: email,
-                subject: "Reset password",
+                subject: "Restablecer contraseña",
                 html: `
                     <h1>${first_name} ${last_name}</h1>
-                    <p>We received a password reset request, in case that wasn't you, just ignore this email, in case you want to reset your password just follow the following link.</p>
-                    <a href="${url}">Reset password</a>
+                    <p>Recibimos una solicitud de restablecimiento de contraseña, en caso de que no fuera usted, simplemente ignore este correo electrónico, en caso de que desee restablecer su contraseña, simplemente siga el siguiente enlace.</p>
+                    <a href="${url}">Restablecer contraseña</a>
                 `
             }
             await sendMailTransport(configMail)
@@ -41,8 +41,8 @@ router.post("/forgot", async (req, res) => {
         res.render("success", {
             title: "Success",
             style: "success.css",
-            header: "Email sent successfully",
-            message: "Please check your email, you should receive a link to reset your password shortly, don't forget to check the spam section."
+            header: "Email enviado correctamente",
+            message: "Por favor revise su casilla de correos, debería recibir un enlace para restablecer su contraseña en breve, no olvide revisar la sección de spam."
         })
     } catch (error) {
         res.render("error", {
@@ -50,7 +50,7 @@ router.post("/forgot", async (req, res) => {
             style: "error.css",
             error: error,
             message: error.message,
-            path: [{ url: "/forgot-password", text: "Back"}]
+            path: [{ url: "/forgot-password", text: "Volver"}]
           });
     }
 })
@@ -59,20 +59,20 @@ router.post("/reset", async (req, res) => {
     try {
         const { password, repeatPassword, uid, token } = req.body
         const objToken = await tokenDao.getByToken(token)
-        if (!objToken) throw new Error("This token is invalid")
+        if (!objToken) throw new Error("Este token es inválido")
         const strToken = objToken.user.toString()
-        if (uid !== strToken) throw new Error("This user id is invalid")
-        if (password !== repeatPassword) throw new Error("Both passwords not match")
+        if (uid !== strToken) throw new Error("Este id de usuario es inválido")
+        if (password !== repeatPassword) throw new Error("Ambas contraseñas no coinciden")
         const arrayUser = await userDao.getUserById(uid)
         const oldPassword = arrayUser[0].password
         const isEqualOldPassword = checkValidPassword({
             hashedPassword: oldPassword,
             password,
         });
-        if (isEqualOldPassword) throw new Error("Your new password cannot be the same as the current password")
+        if (isEqualOldPassword) throw new Error("Su nueva contraseña no puede ser igual a la contraseña actual")
         await tokenDao.delete(objToken._id)
         const now = new Date()
-        if (now > objToken.expiration_date) throw new Error("This token is expirated")
+        if (now > objToken.expiration_date) throw new Error("Este token expiró")
         const newPassword = createHash(password)
         const update = {
             password: newPassword
@@ -80,7 +80,7 @@ router.post("/reset", async (req, res) => {
         await userDao.updateUser(uid,update)
         res.json({
             status: "success",
-            payload: "The password was successfully updated"
+            payload: "La contraseña fue actualizada correctamente"
         })
     } catch (error) {
         res.status(404).json({

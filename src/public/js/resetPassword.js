@@ -18,7 +18,7 @@ form.addEventListener('submit', (e) => {
         },
         body: JSON.stringify(obj),
     })
-        .then(response =>{
+        .then(response => {
             if(response.status === 404) return response.json()
             if(!response.ok) throw new Error("Error HTTP: " + response.status)
             return response.json()
@@ -28,12 +28,12 @@ form.addEventListener('submit', (e) => {
             Swal.fire({
                 text: data.payload,
                 icon: 'success',
-                title: 'Good!'
+                title: '¡Bien!'
             }).then(_ => window.location.replace('/login'));
         })
         .catch(error => Swal.fire({
             text: error.message,
             icon: 'error',
-            title: 'Oops...'
+            title: 'Ups...'
         }))
 })
