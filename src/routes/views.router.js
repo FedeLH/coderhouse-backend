@@ -244,7 +244,7 @@ router.get("/login", authSession, async (req, res) => {
 
 router.get("/profile", authSession, async (req, res) => {
   try {
-    const { first_name, last_name, gender, email, role } = req.user[0];
+    const { _id, first_name, last_name, gender, email, role } = req.user[0];
 
     const isLogged = req.user ? true : false
     const isAdmin = role === "admin"
@@ -257,6 +257,7 @@ router.get("/profile", authSession, async (req, res) => {
     }
 
     const userData = {
+      _id,
       first_name,
       last_name,
       role,

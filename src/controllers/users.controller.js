@@ -122,11 +122,7 @@ class UserController {
           role: newRole
         }
         await userDao.updateUser(id, changes);
-        req.session.destroy((err) => {
-          if (err) return res.send({ status: "Logout error", message: err });
-          return res.status(307).redirect("/login");
-        });
-        res.status(201).json({ status: "success", payload: `Your new role is ${newRole} please login again` });
+        res.status(201).json({ status: "success", payload: `Tu nuevo rol es ${newRole} por favor inicia sesión nuevamente` });
       } catch (error) {
         res.status(404).json({
           status: "error",
