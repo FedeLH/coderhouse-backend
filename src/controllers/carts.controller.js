@@ -2,6 +2,7 @@ import { cartDao, productDao, ticketDao } from "../daos/factory.js";
 import EErrors from "../utils/errors/EErrors.js";
 import CustomError from "../utils/errors/CustomError.js";
 import { generateEmptyCartErrorInfo, generatePurchaseCartErrorInfo } from "../utils/errors/info.js";
+import { sendMailTransport } from "../utils/nodemailer.js";
 
 class CartController {
     getCarts = async (req, res) => {
@@ -140,7 +141,7 @@ class CartController {
 
     purchaseCart = async (req, res, next) => {
       try {
-        const { cart, email } = req.user[0];
+        const { first_name, last_name, cart, email } = req.user[0];
         const products = await cartDao.getProductsByCartId(cart._id);
         if (!products.length) {
           CustomError.createError({
@@ -184,6 +185,16 @@ class CartController {
           purchaser: email
         }
         await ticketDao.create(newTicket)
+        const configMail = {
+            to: email,
+            subject: "Confirmación de compra",
+            html: `
+                <h1>${first_name} ${last_name}</h1>
+                <p>Usted a realizado una compra en nuestra tienda por $ ${newTicket.amount}</p>
+                <p>El codigo de su compra es  ${newTicket.code}</p>
+            `
+        }
+        await sendMailTransport(configMail)
         res.status(201).json({ status: "success", payload: newTicket });
       } catch (error) {
           next(error)

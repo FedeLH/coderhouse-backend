@@ -2,6 +2,7 @@ import express from "express";
 import { sendMailTransport } from "../utils/nodemailer.js";
 import { userDao, tokenDao } from "../daos/factory.js";
 import { createHash, checkValidPassword } from "../utils/utils.js";
+import { PORT, SERVER_URL } from "../config/config.js";
 
 const router = express.Router();
 
@@ -25,8 +26,7 @@ router.post("/forgot", async (req, res) => {
                 user: _id
             }
             await tokenDao.create(newToken)
-            //TODO: reemplazar localhost por el dominio de nuestra pagina
-            const url = `http://localhost:8080/reset-password/${_id}?token=${generatedToken}`
+            const url = `${SERVER_URL}:${PORT}/reset-password/${_id}?token=${generatedToken}`
             const configMail = {
                 to: email,
                 subject: "Restablecer contraseña",

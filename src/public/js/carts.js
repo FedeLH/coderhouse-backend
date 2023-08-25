@@ -95,6 +95,118 @@ const validateQuantityInput = (input) => {
     }
 };
 
+const splitTextIntoLines = (text, maxLength) => {
+    const words = text.split(" ");
+    const lines = [];
+    let currentLine = "";
+
+    for (const word of words) {
+      if (currentLine.length + word.length <= maxLength) {
+        currentLine += (currentLine.length > 0 ? " " : "") + word;
+      } else {
+        lines.push(currentLine);
+        currentLine = word;
+      }
+    }
+
+    if (currentLine.length > 0) {
+      lines.push(currentLine);
+    }
+
+    return lines;
+}
+
+const generateTicket = (ticket) => {
+    const { code, purchase_datetime, products, amount, purchaser} = ticket
+    const title = "Fed-Tech";
+    const purchaseDate = new Date(purchase_datetime).toLocaleString();
+
+    let ticketContent = `=== ${title} ===\n\n`;
+    ticketContent += `Código: ${code}\n`;
+    ticketContent += `Fecha de Compra: ${purchaseDate}\n`;
+    ticketContent += `Comprador: ${purchaser}\n`;
+    ticketContent += "---------------------------------\n";
+    ticketContent += "Productos    Monto     Cant    Total\n";
+    ticketContent += "---------------------------------\n";
+    products.forEach((product) => {
+        const productNameLines = splitTextIntoLines(product.pid.title, 12);
+        const formattedPrice = `$${product.pid.price.toFixed(2)}`;
+        const formattedQuantity = product.quantity.toString();
+        const formattedTotal = `$${(product.pid.price * product.quantity).toFixed(2)}`;
+
+        for (let i = 0; i < productNameLines.length; i++) {
+            const line = productNameLines[i];
+            const isLastLine = i === productNameLines.length - 1;
+            const formattedProductName = isLastLine ? line.padEnd(12) : line;
+            const formattedPriceColumn = isLastLine ? formattedPrice.padEnd(9) : "";
+            const formattedQuantityColumn = isLastLine ? formattedQuantity.padEnd(5) : "";
+            const formattedTotalColumn = isLastLine ? formattedTotal : "";
+            ticketContent += `${formattedProductName} ${formattedPriceColumn} ${formattedQuantityColumn} ${formattedTotalColumn}\n`;
+        }
+    });
+    ticketContent += "---------------------------------\n";
+    ticketContent += `Total${"".padEnd(30)} $${amount.toFixed(2)}`;
+    
+    return ticketContent;
+}
+
+const printTicket = (ticket) => {
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Ticket de Compra</title>
+        </head>
+        <body>
+            <pre style="white-space: pre-line;">${ticket}</pre>
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+};
+
+const buyToCart = async () => {
+    try {
+        let cid = cart.id;
+        let response = await fetch(`/api/carts/${cid}/purchase`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        });
+        let data = await response.json();
+        let statusResponse = data.status;
+        if (statusResponse !== "success") {
+            return Swal.fire({
+                icon: "error",
+                title: "Ups...",
+                text: `El carrito no pudo ser comprado`,
+            });
+        }
+        const ticket = generateTicket(data.payload)
+        Swal.fire({
+            title: `Compra realizada`,
+            icon: "success",
+            html: `<pre style="text-align: left; white-space: pre-line;">${ticket}</pre>`,
+            showCancelButton: true,
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Imprimir',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            } else if (result.dismiss === 'cancel') {
+                printTicket(ticket);
+                location.reload();
+            }
+        });
+    } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "Ups...",
+            text: `Ocurrió un error: ${error} ${error.message}`,
+        });
+    }
+};
+
 document.addEventListener("input", async (event) => {
     const target = event.target;
 
@@ -140,6 +252,10 @@ document.addEventListener("click", async (event) => {
         const container = target.closest(".product");
         const pid = container.getAttribute("id");
         delToCart(pid);
+    }
+
+    if (target.classList.contains("buy-to-cart")) {
+        buyToCart();
     }
 });
 
