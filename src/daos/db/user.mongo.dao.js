@@ -17,7 +17,7 @@ class UserDaoMongo {
     return await userModel.find({ _id: uid });
   };
 
-  deleteUser = async (pid) => {
+  deleteUser = async (uid) => {
     return await userModel.updateOne({ _id: uid }, { status: false });
   };
 

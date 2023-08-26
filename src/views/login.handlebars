@@ -1,19 +1,22 @@
-<div>
-    <h1>Login</h1>
-    <form method="POST" action="/api/sessions/login" >
-        <label>Username</label>
-        <input name="username">
-        <br>
-        <label>Password</label>
-        <input type="password" name="password">
-        <input type="submit" value="Send">
+{{>header}}
+<div class="center">
+    <h1>Iniciar sesión</h1>
+    <form method="POST" action="/api/sessions/login" class="aligned-form">
+        <label>Email</label>
+        <input name="username" required>
+        <label>Contraseña</label>
+        <input type="password" name="password" required>
+        <label></label>
+        <input type="submit" value="Iniciar sesión">
     </form>
-    <a href="/register">Sign in</a>
-    <button>
-      <a href="/api/sessions/github">
+    <br>
+    <div class="spaced">
+      <a href="/register" class="button-like-link">Registrarse</a>
+      <a href="/api/sessions/github" class="button-like-link">
         <i class="fab fa-github"></i>
-        Login with GitHub
+        Iniciar sesión con GitHub
       </a>
-    </button>
-    <a href="/forgot-password">I forgot my password</a>
+      <a href="/forgot-password" class="button-like-link">Olvidé mi Contraseña</a>
+    </div>
 </div>
+{{>footer}}

@@ -1,6 +1,7 @@
-import { productDao } from "../daos/factory.js";
+import { productDao, userDao } from "../daos/factory.js";
 import { SERVER_URL, PORT } from "../config/config.js";
 import { io } from "../config/server.js";
+import { sendMailTransport } from "../utils/nodemailer.js";
 
 class ProductController {
     getProducts = async (req, res) => {
@@ -91,7 +92,25 @@ class ProductController {
     deleteProduct = async (req, res) => {
         try {
           const id = req.params.pid;
+          const arrayProduct = await productDao.getProductById(id);
+          const product = arrayProduct[0]
+          const { title, code, owner } = product
           const response = await productDao.deleteProduct(id);
+          if (owner !== 'admin') {
+            const arrayUser = await userDao.getUserById(owner)
+            const user = arrayUser[0]
+            const { first_name, last_name, email } = user
+            const configMail = {
+              to: email,
+              subject: "Eliminación de producto",
+              html: `
+                  <h1>${first_name} ${last_name}</h1>
+                  <p>Su producto: ${title}, de codigo: ${code} fue eliminado de nuestra tienda</p>
+                  <p>Si usted no fue quien elimino dicho producto contactese con nuestro equipo de atención al cliente</p>
+              `
+            }
+            await sendMailTransport(configMail)
+          }
           res.status(200).json({ status: "success", payload: response });
         } catch (error) {
           res.status(404).json({

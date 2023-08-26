@@ -20,6 +20,8 @@ router.post("/", authorization(['admin']), validateObject(userCreateSchema), use
 
 router.put("/:uid", authorization(['admin']), validateObject(userUpdateSchema), userController.updateUser);
 
+router.delete("/", authorization(['admin']), userController.deleteUsers);
+
 router.delete("/:uid", authorization(['admin']), userController.deleteUser);
 
 router.put("/premium/:uid", authorization(['premium','user']), userController.changeRoleUser);

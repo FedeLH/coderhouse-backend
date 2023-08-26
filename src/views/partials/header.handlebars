@@ -3,14 +3,37 @@
     <a href="#">Logo</a>
   </div>
   <ul class="navbar-menu">
-    <li><a href="/profile">Profile</a></li>
-    <li><a href="/">Home</a></li>
-    <li><a href="/products">Products</a></li>
-    <li><a href="/carts">Cart</a></li>
-    <li><a href="/api/docs">Documentation</a></li>
+    <li><a href="/">Inicio</a></li>
+    {{#if isLogged}}
+      <li><a href="/profile">Perfil</a></li>
+      {{#if isAdmin}}
+        <li><a href="/users">Usuarios</a></li>
+      {{else}}
+        <li><a href="/products">Productos</a></li>
+      {{/if}}
+    {{else}}
+      <li><a href="/products">Productos</a></li>
+    {{/if}}
+    {{#if isLogged}}
+      {{#if isAdmin}}
+        <li><a href="/api/docs">Documentación</a></li>
+        <li><a href="/products">Mis Productos</a></li>
+      {{else}}
+        <li><a href="/chat">Chat</a></li>
+        <li><a href="/carts">Carrito</a></li>
+        {{#if isPremium}}
+          <li><a href='/products?query={"owner":"{{userData._id}}"}'>Mis Productos</a></li>
+        {{/if}}
+      {{/if}}
+    {{/if}}
+    
     {{!-- <li><a href="/realTimeProducts">Realtime Products</a></li> temporalmente fuera de servicio --}}
-    {{!-- <li><a href="/chat">Chat</a></li> temporalmente fuera de servicio --}}
-    <li><form action="/api/sessions/logout" method="get"><button class="btn-invisible" type="submit"><strong>Log out</strong></button></form></li>
+    {{#if isLogged}}
+      <li><form action="/api/sessions/logout" method="get"><button class="btn-invisible" type="submit"><strong class="primary-font">Cerrar Sesión</strong></button></form></li>
+    {{else}}
+      <li><a href="/login">Iniciar sesión</a></li>
+      <li><a href="/register">Registrarse</a></li>
+    {{/if}}
   </ul>
   <div class="navbar-toggle">
     <span></span>

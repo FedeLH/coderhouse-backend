@@ -1,13 +1,11 @@
 import express from "express";
 import { router } from "./routes/index.js";
 import __dirname from "./utils/utils.js";
-import path from "path";
 import handlerbars from "express-handlebars";
-import { firstItem } from "./config/helper.js";
+import { firstItem, isProductOwner } from "./config/helper.js";
 import objConfig from "./config/db.js";
 import session from "express-session";
 import pkg from "connect-mongo";
-import authSession from "./middlewares/auth.middleware.js";
 import { SESSION_SECRET } from "./config/config.js";
 import initializePassport from "./config/passport.config.js";
 import passport from "passport";
@@ -19,7 +17,12 @@ const app = express();
 
 app.engine(
   "handlebars",
-  handlerbars.engine({ helpers: { firstItem: firstItem } })
+  handlerbars.engine({ 
+    helpers: { 
+      firstItem,
+      isProductOwner
+    } 
+  })
 );
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
@@ -51,8 +54,7 @@ app.use(addLogger)
 
 app.use(express.static(__dirname + "/public"));
 
-//app.use(router);
-app.use(authSession, router);
+app.use(router);
 
 app.use((err, req, res, next) => {
   req.logger.error(err);

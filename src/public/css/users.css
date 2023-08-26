@@ -1,0 +1,122 @@
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+  
+button {
+    width: 200px;
+}
+  
+.center {
+    justify-self: center;
+    align-self: center;
+}
+  
+.user {
+    display: inline-block;
+    width: 300px;
+    margin: 10px;
+    text-align: center;
+}
+  
+.paginate {
+    background: linear-gradient(to bottom, #4453a9, #874caf);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+  
+.paginate:hover {
+    background: linear-gradient(to bottom, #874caf, #4453a9);
+    color: #fff;
+}
+  
+.user .update-user {
+    background: linear-gradient(to bottom, #9fa944, #4caf50);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+  
+.user .update-user:hover {
+    background: linear-gradient(to bottom, #4caf50, #9fa944);
+    color: #fff;
+}
+
+.paginate-container a {
+    padding-inline: 5px;
+}
+
+.paginate-container,
+.users-container {
+    padding-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+  
+.results-container,
+.filters-container,
+.welcome-container {
+    padding-left: 200px;
+    padding-right: 200px;
+}
+
+.del-users,
+.user .del-user {
+    background: linear-gradient(to bottom, #a96c44, #ca2020);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .del-users,
+  .user .del-user:hover {
+    background: linear-gradient(to bottom, #ca2020, #a96c44);
+    color: #fff;
+  }
+  
+  .user .look-user {
+    background: linear-gradient(to bottom, #4453a9, #4cacaf);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .user .look-user:hover {
+    background: linear-gradient(to bottom, #4cacaf, #4453a9);
+    color: #fff;
+  }
+  
+  .user .recovery-user {
+    background: linear-gradient(to bottom, #a94477, #df0fb2);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .user .recovery-user:hover {
+    background: linear-gradient(to bottom, #df0fb2, #a94477);
+    color: #fff;
+  }

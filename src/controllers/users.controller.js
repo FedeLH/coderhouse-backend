@@ -1,6 +1,7 @@
 import { userDao } from "../daos/factory.js";
 import { io } from "../config/server.js";
 import { SERVER_URL, PORT } from "../config/config.js";
+import { sendMailTransport } from "../utils/nodemailer.js";
 
 class UserController {
     getUsers = async (req, res) => {
@@ -89,7 +90,19 @@ class UserController {
     deleteUser = async (req, res) => {
         try {
           const id = req.params.uid;
+          const arrayUser = await userDao.getUserById(owner)
+          const user = arrayUser[0]
           const response = await userDao.deleteUser(id);
+          const { first_name, last_name, email } = user
+          const configMail = {
+            to: email,
+            subject: "Usuario eliminado",
+            html: `
+                <h1>${first_name} ${last_name}</h1>
+                <p>Su usuario fue eliminado por inactividad</p>
+            `
+          }
+          await sendMailTransport(configMail)
           res.status(200).json({ status: "success", payload: response });
         } catch (error) {
           res.status(404).json({
@@ -97,6 +110,49 @@ class UserController {
             payload: { error: error, message: error.message },
           });
         }
+    }
+
+    deleteUsers = async (req, res) => {
+      try {
+          const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000);
+
+          const query = {
+              last_connection: { $lt: twoDaysAgo },
+              status: true
+          };
+
+          let currentPage = 1;
+          let hasNextPage = true;
+
+          while (hasNextPage) {
+              const usersToDelete = await userDao.getUsers( query, { page: currentPage });
+
+              if (usersToDelete.totalDocs === 0) {
+                  hasNextPage = false;
+                  return res.status(200).json({ status: "success", message: "No hay usuarios para eliminar" });
+              }
+              
+              for (const user of usersToDelete.docs) {
+                  const { first_name, last_name, email } = user;
+                  await userDao.deleteUser(user._id);
+                  const configMail = {
+                      to: email,
+                      subject: "Usuario eliminado",
+                      html: `
+                          <h1>${first_name} ${last_name}</h1>
+                          <p>Su usuario fue eliminado por inactividad</p>
+                      `
+                  };
+                  await sendMailTransport(configMail);
+              }
+
+              hasNextPage = usersToDelete.hasNextPage;
+              currentPage++;
+          }
+          res.status(200).json({ status: "success", message: "Los usuarios han sido eliminados" });
+      } catch (error) {
+          res.status(404).json({ status: "error", message: error.message });
+      }
     }
 
     changeRoleUser = async (req, res) => {
@@ -122,11 +178,7 @@ class UserController {
           role: newRole
         }
         await userDao.updateUser(id, changes);
-        req.session.destroy((err) => {
-          if (err) return res.send({ status: "Logout error", message: err });
-          return res.status(307).redirect("/login");
-        });
-        res.status(201).json({ status: "success", payload: `Your new role is ${newRole} please login again` });
+        res.status(201).json({ status: "success", payload: `Tu nuevo rol es ${newRole} por favor inicia sesión nuevamente` });
       } catch (error) {
         res.status(404).json({
           status: "error",
