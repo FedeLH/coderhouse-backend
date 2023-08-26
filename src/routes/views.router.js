@@ -193,7 +193,20 @@ router.get("/carts", authSession, async (req, res) => {
 });
 
 router.get("/chat", authSession, (req, res) => {
-  res.render("chat", { title: "Chat", style: "/chat.css" });
+  const { role } = req.user[0];
+    
+  const isLogged = req.user ? true : false
+  const isAdmin = role === "admin"
+  const isPremium = role === "premium"
+  const isUser = role === "user"
+  res.render("chat", { 
+    title: "Chat", 
+    style: "/chat.css",
+    isLogged,
+    isAdmin,
+    isPremium,
+    isUser 
+  });
 });
 
 router.get("/", async (req, res) => {

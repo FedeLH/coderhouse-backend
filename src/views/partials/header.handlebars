@@ -19,6 +19,7 @@
         <li><a href="/api/docs">Documentación</a></li>
         <li><a href="/products">Mis Productos</a></li>
       {{else}}
+        <li><a href="/chat">Chat</a></li>
         <li><a href="/carts">Carrito</a></li>
         {{#if isPremium}}
           <li><a href='/products?query={"owner":"{{userData._id}}"}'>Mis Productos</a></li>
@@ -27,7 +28,6 @@
     {{/if}}
     
     {{!-- <li><a href="/realTimeProducts">Realtime Products</a></li> temporalmente fuera de servicio --}}
-    {{!-- <li><a href="/chat">Chat</a></li> temporalmente fuera de servicio --}}
     {{#if isLogged}}
       <li><form action="/api/sessions/logout" method="get"><button class="btn-invisible" type="submit"><strong class="primary-font">Cerrar Sesión</strong></button></form></li>
     {{else}}
