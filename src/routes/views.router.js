@@ -1,13 +1,14 @@
 import express from "express";
 import { productDao, cartDao, userDao, tokenDao } from "../daos/factory.js";
 import authSession from "../middlewares/auth.middleware.js"
+import authorization from "../middlewares/authorization.middleware.js";
 
 const router = express.Router();
 
 router.get("/products", async (req, res) => {
   try {
     const arrayUser = req.user ?? [{}];
-    const { first_name, last_name, role, email, cart } = arrayUser[0]
+    const { _id, first_name, last_name, role, email, cart } = arrayUser[0]
     
     const name = (first_name !== undefined && last_name !== undefined) 
     ? `${first_name} ${last_name}` 
@@ -15,6 +16,7 @@ router.get("/products", async (req, res) => {
 
     const userData = req.user 
     ? {
+      _id,
       name,
       role,
       email,
@@ -34,10 +36,22 @@ router.get("/products", async (req, res) => {
       : { limit, page, lean: true };
     const { docs, ...rest } = await productDao.getProducts(query, spec);
     const categories = await productDao.getProductsCategories();
+    const contextProducts = {
+      products: docs.map(product => {
+        return {
+          ...product,
+          isPremium,
+          isAdmin,
+          isUser,
+          isLogged,
+          uid: userData?._id || false
+        };
+      }),
+    };
     res.render("products", {
       title: "Fed-Tech",
       style: "products.css",
-      products: docs,
+      products: contextProducts.products,
       paginate: rest,
       categories,
       userData,
@@ -84,18 +98,29 @@ router.get("/addProduct", authSession, async (req, res) => {
   }
 });
 
-router.get("/users", authSession, async (req, res) => {
+router.get("/users", authSession, authorization(['admin']), async (req, res) => {
   try {
     const { limit = 10, page = 1, sort = null } = req.query;
     const query = req.query.query ? JSON.parse(req.query.query) : {};
     const spec = { limit, page, lean: true };
     const { docs, ...rest } = await userDao.getUsers(query, spec);
 
+    const { role } = req.user[0];
+    
+    const isLogged = req.user ? true : false
+    const isAdmin = role === "admin"
+    const isPremium = role === "premium"
+    const isUser = role === "user"
+
     res.render("users", {
       title: "Fed-Tech",
       style: "users.css",
       users: docs,
       paginate: rest,
+      isLogged,
+      isAdmin,
+      isPremium,
+      isUser
     });
   } catch (error) {
     res.render("error", {

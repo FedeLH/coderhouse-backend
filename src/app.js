@@ -2,7 +2,7 @@ import express from "express";
 import { router } from "./routes/index.js";
 import __dirname from "./utils/utils.js";
 import handlerbars from "express-handlebars";
-import { firstItem } from "./config/helper.js";
+import { firstItem, isProductOwner } from "./config/helper.js";
 import objConfig from "./config/db.js";
 import session from "express-session";
 import pkg from "connect-mongo";
@@ -17,7 +17,12 @@ const app = express();
 
 app.engine(
   "handlebars",
-  handlerbars.engine({ helpers: { firstItem: firstItem } })
+  handlerbars.engine({ 
+    helpers: { 
+      firstItem,
+      isProductOwner
+    } 
+  })
 );
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");

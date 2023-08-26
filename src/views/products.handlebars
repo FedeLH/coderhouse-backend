@@ -51,9 +51,11 @@
         {{/if}}
     </div>
     <div class="products-container">
+        {{#if isLogged}}
         <div class="cart" id={{userData.cart._id}}></div>
+        {{/if}}
         {{#each products}}
-            <div class="product">
+            <div class="product" id={{_id}}>
             <img class="thumbnails" src="{{firstItem thumbnails}}" alt="Imagen del producto">
             <h2>{{title}}</h2>
             <p class="description">{{description}}</p>
@@ -64,7 +66,31 @@
             {{else}}            
                 <p>No disponible</p>
             {{/if}}
-            <button class="add-to-cart" id={{_id}}>Añadir al carrito</button>
+            {{#if isLogged}}
+                {{#if isAdmin}}
+                    {{#if status}}
+                        <button class="del-product">Eliminar producto</button>
+                    {{else}}
+                        <button class="recovery-product">Habilitar producto</button>
+                    {{/if}}
+                {{/if}}
+                {{#if isPremium}}
+                    {{#if (isProductOwner owner uid)}}
+                        {{#if status}}
+                            <button class="del-product">Eliminar producto</button>
+                        {{else}}
+                            <button class="recovery-product">Habilitar producto</button>
+                        {{/if}}
+                    {{else}}
+                        <button class="add-to-cart">Añadir al carrito</button>
+                    {{/if}}
+                {{/if}}
+                {{#if isUser}}
+                    <button class="add-to-cart">Añadir al carrito</button>
+                {{/if}}
+            {{else}}
+                <button class="login">Inciar sesión</button>
+            {{/if}}
             </div>
         {{/each}}
     </div>

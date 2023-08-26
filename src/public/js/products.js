@@ -4,7 +4,7 @@ let searchParams = urlObj.searchParams;
 let sort = document.getElementById("sort");
 let category = document.getElementById("category");
 let state = document.getElementById("status");
-let buttons = document.querySelectorAll(".add-to-cart");
+// let buttons = document.querySelectorAll(".add-to-cart");
 let cart = document.querySelector(".cart");
 
 const findIndex = (valueToFind, options) => {
@@ -115,8 +115,100 @@ const addToCart = async (pid) => {
   }
 };
 
-buttons.forEach((button) => {
-  button.addEventListener("click", (_) => {
-    addToCart(button.id);
-  });
+const delProduct = async (pid) => {
+  try {
+    let response = await fetch(`/api/products/${pid}`, {
+      method: "DELETE",
+      headers: { "content-type": "application/json" },
+    });
+    let data = await response.json();
+    let statusResponse = data.status;
+    if (statusResponse !== "success") {
+      return Swal.fire({
+        icon: "error",
+        title: "Ups...",
+        text: `El producto no pudo ser borrado`,
+      });
+    }
+    Swal.fire({
+      text: `Producto borrado`,
+      toast: true,
+      position: "top-right",
+      icon: "success",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    setTimeout(() => {
+      location.reload();
+    }, 1500);
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Ups...",
+      text: `Ocurrió un error: ${error} ${error.message}`,
+    });
+  }
+};
+
+const recoveryProduct = async (pid) => {
+  try {
+    const dataBody = { status: true };
+    let response = await fetch(`/api/products/${pid}`, {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(dataBody)
+    });
+    let data = await response.json();
+    let statusResponse = data.status;
+    if (statusResponse !== "success") {
+      return Swal.fire({
+        icon: "error",
+        title: "Ups...",
+        text: `El producto no pudo ser recuperado`,
+      });
+    }
+    Swal.fire({
+      text: `Producto habilitado`,
+      toast: true,
+      position: "top-right",
+      icon: "success",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    setTimeout(() => {
+      location.reload();
+    }, 1500);
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Ups...",
+      text: `Ocurrió un error: ${error} ${error.message}`,
+    });
+  }
+};
+
+document.addEventListener("click", async (event) => {
+  const target = event.target;
+
+  if (target.classList.contains("login")) {
+    window.location.href = "/login";
+  }
+
+  if (target.classList.contains("recovery-product")) {
+    const container = target.closest(".product");
+    const pid = container.getAttribute("id");
+    recoveryProduct(pid);
+  }
+
+  if (target.classList.contains("del-product")) {
+      const container = target.closest(".product");
+      const pid = container.getAttribute("id");
+      delProduct(pid);
+  }
+
+  if (target.classList.contains("add-to-cart")) {
+    const container = target.closest(".product");
+    const pid = container.getAttribute("id");
+    addToCart(pid);
+  }
 });

@@ -97,3 +97,51 @@ button {
   font-size: 24px; /* Ajusta el tamaño del ícono según tu preferencia */
   margin-bottom: 8px; /* Añade un espacio entre el ícono y el texto */
 }
+
+.product .del-product {
+  background: linear-gradient(to bottom, #a96c44, #ca2020);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.product .del-product:hover {
+  background: linear-gradient(to bottom, #ca2020, #a96c44);
+  color: #fff;
+}
+
+.product .login {
+  background: linear-gradient(to bottom, #4453a9, #4cacaf);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.product .login:hover {
+  background: linear-gradient(to bottom, #4cacaf, #4453a9);
+  color: #fff;
+}
+
+.product .recovery-product {
+  background: linear-gradient(to bottom, #a94477, #df0fb2);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.product .recovery-product:hover {
+  background: linear-gradient(to bottom, #df0fb2, #a94477);
+  color: #fff;
+}

@@ -7,6 +7,7 @@
     {{#if isLogged}}
       <li><a href="/profile">Perfil</a></li>
       {{#if isAdmin}}
+        <li><a href="/users">Usuarios</a></li>
       {{else}}
         <li><a href="/products">Productos</a></li>
       {{/if}}
@@ -20,7 +21,7 @@
       {{else}}
         <li><a href="/carts">Carrito</a></li>
         {{#if isPremium}}
-          <li><a href="/products">Mis Productos</a></li>
+          <li><a href='/products?query={"owner":"{{userData._id}}"}'>Mis Productos</a></li>
         {{/if}}
       {{/if}}
     {{/if}}

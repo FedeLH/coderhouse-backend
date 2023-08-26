@@ -1,4 +1,5 @@
 {{> header}}
+<button class="del-users center">Eliminar usuarios inactivos</button>
 <div class="results-container">
     <p><strong>Total de resultados:</strong> {{paginate.totalDocs}}</p>
     <p><strong>Página:</strong> {{paginate.page}} de {{paginate.totalPages}}</p>
@@ -15,13 +16,16 @@
 </div>
 <div class="users-container">
     {{#each users}}
-        <div class="user">
+        <div class="user" id={{_id}}>
             <p><strong>Nombre: </strong>{{first_name}}</p>
             <p><strong>Apellido: </strong>{{last_name}}</p>
-            {{#if gender}}
-                <p><strong>Genero: </strong>{{gender}}</p>
-            {{else}}            
-                <p>No disponible</p>
+            <p><strong>Email: </strong>{{email}}</p>
+            <p><strong>Rol: </strong>{{role}}</p>
+            <button class="look-user">Ver usuario</button>
+            {{#if status}}
+                <button class="del-user">Eliminar usuario</button>
+            {{else}}
+                <p>Usuario eliminado</p>
             {{/if}}
         </div>
     {{/each}}
